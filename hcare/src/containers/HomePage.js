@@ -17,10 +17,10 @@ export default function HomePage() {
         <div style={{ maxWidth: 500 }}>
           <h1>Healthcare Provider Portal</h1>
           <p>Manage patients, doctors, billing, and appointments in one place.</p>
-          <Button type="primary" onClick={() => navigate("/login")} style={{ marginRight: 10 }}>
-            Login
+          <Button type="primary" onClick={() => navigate("/dashboard")} style={{ marginRight: 10 }}>
+            Go to Dashboard
           </Button>
-          <Button onClick={() => navigate("/register")}>Register</Button>
+          <Button onClick={() => navigate("/doctors")}>Browse Doctors</Button>
         </div>
 
         <div style={{ width: 400 }}>

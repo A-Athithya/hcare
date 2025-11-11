@@ -50,6 +50,11 @@ export default function Sidebar() {
               Billing & Payments
             </NavLink>
           </li>
+          <li className="mb-2">
+            <NavLink to="/payment" className={({ isActive }) => (isActive ? "fw-bold" : "")}>
+              Payment Gateway
+            </NavLink>
+          </li>
           <li className="mt-3">
             <NavLink to="/profile" className={({ isActive }) => (isActive ? "fw-bold" : "")}>
               Profile & Settings

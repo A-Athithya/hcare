@@ -29,31 +29,24 @@ export default function Navbar() {
             placeholder="Search..."
             style={{ padding: 6, borderRadius: 8, border: "none" }}
           />
-          {user ? (
-            <div className="dropdown">
-              <button
-                className="btn btn-light dropdown-toggle"
-                data-bs-toggle="dropdown"
-              >
-                {user.name}
-              </button>
-              <ul className="dropdown-menu dropdown-menu-end">
-                <li>
-                  <Link className="dropdown-item" to="/profile">My Profile</Link>
-                </li>
-                <li>
-                  <button className="dropdown-item" onClick={handleLogout}>
-                    Logout
-                  </button>
-                </li>
-              </ul>
-            </div>
-          ) : (
-            <>
-              <MuiButton color="inherit" onClick={() => navigate("/login")}>Login</MuiButton>
-              <MuiButton color="inherit" onClick={() => navigate("/register")}>Register</MuiButton>
-            </>
-          )}
+          <div className="dropdown">
+            <button
+              className="btn btn-light dropdown-toggle"
+              data-bs-toggle="dropdown"
+            >
+              Guest User
+            </button>
+            <ul className="dropdown-menu dropdown-menu-end">
+              <li>
+                <Link className="dropdown-item" to="/profile">My Profile</Link>
+              </li>
+              <li>
+                <button className="dropdown-item" onClick={() => alert("No login required!")}>
+                  Logout (Disabled)
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
       </MuiToolbar>
     </MuiAppBar>
