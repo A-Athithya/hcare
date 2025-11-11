@@ -1,7 +1,5 @@
-import React, { Suspense, lazy, useEffect } from "react";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { decrypt } from "./utils/cryptoHelper";
+import React, { Suspense, lazy } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 import MuiProvider from "./mui/MaterialDesign";
 import { Spin } from "antd";
@@ -16,30 +14,12 @@ const PatientsPage = lazy(() => import("./containers/PatientsPage"));
 const AppointmentsPage = lazy(() => import("./containers/AppointmentsPage"));
 const PrescriptionsPage = lazy(() => import("./containers/PrescriptionsPage"));
 const BillingPage = lazy(() => import("./containers/BillingPage"));
+const PaymentPage = lazy(() => import("./containers/PaymentPage"));
 
-// Protected route
-const ProtectedRoute = ({ children }) => {
-  const { user, token } = useSelector((s) => s.auth || {});
-  const location = useLocation();
-  if (!user || !token) return <Navigate to="/login" state={{ from: location }} replace />;
-  return children;
-};
+// Removed ProtectedRoute - all routes are now public
 
 const AppWrapper = () => {
-  const { user } = useSelector((s) => s.auth);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const stored = localStorage.getItem("auth_data");
-    if (stored && !user) {
-      try {
-        const dec = decrypt(stored);
-        if (dec && dec.user) dispatch({ type: "auth/loginSuccess", payload: dec });
-      } catch {
-        localStorage.removeItem("auth_data");
-      }
-    }
-  }, [dispatch, user]);
+  // Removed auth persistence logic - no login required
 
   return (
     <MuiProvider>
@@ -50,12 +30,13 @@ const AppWrapper = () => {
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<RegisterForm />} />
 
-            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            <Route path="/doctors" element={<ProtectedRoute><DoctorsPage /></ProtectedRoute>} />
-            <Route path="/patients" element={<ProtectedRoute><PatientsPage /></ProtectedRoute>} />
-            <Route path="/appointments" element={<ProtectedRoute><AppointmentsPage /></ProtectedRoute>} />
-            <Route path="/prescriptions" element={<ProtectedRoute><PrescriptionsPage /></ProtectedRoute>} />
-            <Route path="/billing" element={<ProtectedRoute><BillingPage /></ProtectedRoute>} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/doctors" element={<DoctorsPage />} />
+            <Route path="/patients" element={<PatientsPage />} />
+            <Route path="/appointments" element={<AppointmentsPage />} />
+            <Route path="/prescriptions" element={<PrescriptionsPage />} />
+            <Route path="/billing" element={<BillingPage />} />
+            <Route path="/payment" element={<PaymentPage />} />
 
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
