@@ -62,7 +62,7 @@ export default function BillingPage() {
 
   return (
     <div>
-      <Title level={2}>Billing & Payments</Title>
+      <Title level={2}>Billing</Title>
       <Card>
         <Table dataSource={invoices} columns={cols} rowKey="id" />
       </Card>

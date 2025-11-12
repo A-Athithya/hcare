@@ -18,7 +18,8 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import PaymentIcon from "@mui/icons-material/Payment";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+
+import SettingsIcon from "@mui/icons-material/Settings";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import MenuIcon from "@mui/icons-material/Menu";
 
@@ -34,10 +35,12 @@ export default function Sidebar() {
     { text: "Appointments", icon: <EventAvailableIcon />, link: "/appointments" },
     { text: "Doctors", icon: <LocalHospitalIcon />, link: "/doctors" },
     { text: "Prescriptions", icon: <ReceiptLongIcon />, link: "/prescriptions" },
-    { text: "Billing & Payments", icon: <PaymentIcon />, link: "/billing" },
+    { text: "Billing", icon: <PaymentIcon />, link: "/billing" },
     { text: "Payment Gateway", icon: <PaymentIcon />, link: "/payment" },
-    { text: "Profile & Settings", icon: <AccountCircleIcon />, link: "/profile" },
+    { text: "Settings", icon: <SettingsIcon />, link: "/settings" },
   ];
+
+  const settingsItem = { text: "Settings", icon: <SettingsIcon />, link: "/settings" };
 
   return (
     <Drawer
@@ -106,6 +109,33 @@ export default function Sidebar() {
           </ListItem>
         ))}
       </List>
+
+      {/* Settings button at bottom */}
+      <Box sx={{ mt: "auto", mb: 2 }}>
+        <Divider sx={{ mb: 1 }} />
+        <ListItem disablePadding>
+          <ListItemButton
+            component={NavLink}
+            to={settingsItem.link}
+            style={({ isActive }) => ({
+              backgroundColor: isActive ? "#e3f2fd" : "transparent",
+              borderLeft: isActive ? "4px solid #1976d2" : "4px solid transparent",
+            })}
+          >
+            <ListItemIcon sx={{ color: "#1976d2", minWidth: 40 }}>
+              {settingsItem.icon}
+            </ListItemIcon>
+            <ListItemText
+              primary={settingsItem.text}
+              primaryTypographyProps={{
+                fontWeight: 500,
+                fontSize: 14.5,
+                color: "text.primary",
+              }}
+            />
+          </ListItemButton>
+        </ListItem>
+      </Box>
     </Drawer>
   );
 }

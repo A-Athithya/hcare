@@ -18,6 +18,7 @@ const AppointmentsPage = lazy(() => import("./containers/AppointmentsPage"));
 const PrescriptionsPage = lazy(() => import("./containers/PrescriptionsPage"));
 const BillingPage = lazy(() => import("./containers/BillingPage"));
 const PaymentPage = lazy(() => import("./containers/PaymentPage"));
+const SettingsPage = lazy(() => import("./containers/SettingsPage"));
 
 // Removed ProtectedRoute - all routes are now public
 
@@ -43,6 +44,7 @@ const AppWrapper = () => {
             <Route path="/prescriptions" element={<PrescriptionsPage />} />
             <Route path="/billing" element={<BillingPage />} />
             <Route path="/payment" element={<PaymentPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
 
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
