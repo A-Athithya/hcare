@@ -1,67 +1,111 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Box,
+  Divider,
+} from "@mui/material";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import PeopleIcon from "@mui/icons-material/People";
+import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import PaymentIcon from "@mui/icons-material/Payment";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import MenuIcon from "@mui/icons-material/Menu";
 
 export default function Sidebar() {
   const collapsed = useSelector((s) => s.ui?.sidebarCollapsed);
   const dispatch = useDispatch();
+  const toggleSidebar = () => dispatch({ type: "ui/toggleSidebar" });
+
+  const menuItems = [
+    { text: "Dashboard", icon: <DashboardIcon />, link: "/dashboard" },
+    { text: "Calendar", icon: <CalendarMonthIcon />, link: "/calendar" },
+    { text: "Patients", icon: <PeopleIcon />, link: "/patients" },
+    { text: "Appointments", icon: <EventAvailableIcon />, link: "/appointments" },
+    { text: "Doctors", icon: <LocalHospitalIcon />, link: "/doctors" },
+    { text: "Prescriptions", icon: <ReceiptLongIcon />, link: "/prescriptions" },
+    { text: "Billing & Payments", icon: <PaymentIcon />, link: "/billing" },
+    { text: "Payment Gateway", icon: <PaymentIcon />, link: "/payment" },
+    { text: "Profile & Settings", icon: <AccountCircleIcon />, link: "/profile" },
+  ];
 
   return (
-    <aside
-      className={collapsed ? "sidebar-collapsed bg-light sidebar" : "sidebar-expanded bg-white sidebar"}
-      style={{ padding: 16, minHeight: "100vh" }}
+    <Drawer
+      variant="persistent"
+      open={!collapsed}
+      anchor="left"
+      sx={{
+        width: collapsed ? 0 : 240,
+        flexShrink: 0,
+        "& .MuiDrawer-paper": {
+          width: 240,
+          boxSizing: "border-box",
+          top: "70px", // 🔽 slightly below navbar (with gutter)
+          backgroundColor: "#f7f9fc",
+          borderRight: "1px solid #ddd",
+          transition: "all 0.3s ease-in-out",
+        },
+      }}
     >
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <h5 style={{ margin: 0 }}>Menu</h5>
-        <button className="btn btn-sm btn-outline-secondary" onClick={() => dispatch({ type: "ui/toggleSidebar" })}>
-          Toggle
-        </button>
-      </div>
+      {/* Header */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          px: 2,
+          py: 1.5,
+          background: "#1976d2",
+          color: "white",
+        }}
+      >
+        <Box sx={{ fontWeight: 600 }}>Menu</Box>
+        <Box
+          sx={{ cursor: "pointer", display: "flex", alignItems: "center" }}
+          onClick={toggleSidebar}
+        >
+          {collapsed ? <MenuIcon /> : <MenuOpenIcon />}
+        </Box>
+      </Box>
 
-      <nav style={{ marginTop: 16 }}>
-        <ul className="list-unstyled" style={{ paddingLeft: 0 }}>
-          <li className="mb-2">
-            <NavLink to="/dashboard" className={({ isActive }) => (isActive ? "fw-bold" : "")}>
-              Dashboard
-            </NavLink>
-          </li>
-          <li className="mb-2">
-            <NavLink to="/patients" className={({ isActive }) => (isActive ? "fw-bold" : "")}>
-              Patients
-            </NavLink>
-          </li>
-          <li className="mb-2">
-            <NavLink to="/appointments" className={({ isActive }) => (isActive ? "fw-bold" : "")}>
-              Appointments
-            </NavLink>
-          </li>
-          <li className="mb-2">
-            <NavLink to="/doctors" className={({ isActive }) => (isActive ? "fw-bold" : "")}>
-              Doctors
-            </NavLink>
-          </li>
-          <li className="mb-2">
-            <NavLink to="/prescriptions" className={({ isActive }) => (isActive ? "fw-bold" : "")}>
-              Prescriptions
-            </NavLink>
-          </li>
-          <li className="mb-2">
-            <NavLink to="/billing" className={({ isActive }) => (isActive ? "fw-bold" : "")}>
-              Billing & Payments
-            </NavLink>
-          </li>
-          <li className="mb-2">
-            <NavLink to="/payment" className={({ isActive }) => (isActive ? "fw-bold" : "")}>
-              Payment Gateway
-            </NavLink>
-          </li>
-          <li className="mt-3">
-            <NavLink to="/profile" className={({ isActive }) => (isActive ? "fw-bold" : "")}>
-              Profile & Settings
-            </NavLink>
-          </li>
-        </ul>
-      </nav>
-    </aside>
+      <Divider />
+
+      <List sx={{ mt: 1 }}>
+        {menuItems.map((item) => (
+          <ListItem key={item.text} disablePadding>
+            <ListItemButton
+              component={NavLink}
+              to={item.link}
+              style={({ isActive }) => ({
+                backgroundColor: isActive ? "#e3f2fd" : "transparent",
+                borderLeft: isActive ? "4px solid #1976d2" : "4px solid transparent",
+              })}
+            >
+              <ListItemIcon sx={{ color: "#1976d2", minWidth: 40 }}>
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText
+                primary={item.text}
+                primaryTypographyProps={{
+                  fontWeight: 500,
+                  fontSize: 14.5,
+                  color: "text.primary",
+                }}
+              />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Drawer>
   );
 }
