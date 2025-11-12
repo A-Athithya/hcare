@@ -1,6 +1,9 @@
 import React, { Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
+import CalendarPage from "./containers/CalendarPage";
+import PatientDetailsPage from "./containers/PatientDetailsPage";
+import PatientManagementPage from "./containers/PatientManagementPage";
 import MuiProvider from "./mui/MaterialDesign";
 import { Spin } from "antd";
 
@@ -32,7 +35,10 @@ const AppWrapper = () => {
 
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/doctors" element={<DoctorsPage />} />
+            <Route path="/calendar" element={<CalendarPage />} />
             <Route path="/patients" element={<PatientsPage />} />
+            <Route path="/patients/:id" element={<PatientDetailsPage />} />
+             <Route path="/patients" element={<PatientManagementPage />} />
             <Route path="/appointments" element={<AppointmentsPage />} />
             <Route path="/prescriptions" element={<PrescriptionsPage />} />
             <Route path="/billing" element={<BillingPage />} />

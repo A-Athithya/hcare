@@ -1,0 +1,20 @@
+body {
+  background-color: #f8faff;
+}
+
+.MuiCard-root {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.MuiCard-root:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.MuiCardContent-root {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
