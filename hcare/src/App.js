@@ -3,6 +3,8 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 import MuiProvider from "./mui/MaterialDesign";
 import { Spin } from "antd";
+import StaffManagement from './components/StaffManagement';
+import InventoryManagement from './components/InventoryManagement';
 
 // Lazy load pages
 const HomePage = lazy(() => import("./containers/HomePage"));
@@ -37,7 +39,8 @@ const AppWrapper = () => {
             <Route path="/prescriptions" element={<PrescriptionsPage />} />
             <Route path="/billing" element={<BillingPage />} />
             <Route path="/payment" element={<PaymentPage />} />
-
+            <Route path="/staff" element={<StaffManagement />} />
+            <Route path="/inventory" element={<InventoryManagement />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>
