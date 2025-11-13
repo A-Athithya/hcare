@@ -6,6 +6,8 @@ import appointmentsReducer from "../features/appointments/appointmentsSlice";
 import prescriptionsReducer from "../features/prescriptions/prescriptionsSlice";
 import billingReducer from "../features/billing/billingSlice";
 import uiReducer from "../features/ui/uiSlice";
+import staffReducer from "../features/staff/staffSlice";
+import inventoryReducer from "../features/inventory/inventorySlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -15,6 +17,8 @@ const rootReducer = combineReducers({
   prescriptions: prescriptionsReducer,
   billing: billingReducer,
   ui: uiReducer,
+  staff: staffReducer, 
+  inventory: inventoryReducer,
 });
 
 export default rootReducer;
