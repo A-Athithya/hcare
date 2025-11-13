@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Table, Card, Tag, Typography, Button, Modal, Descriptions } from "antd";
 import { useNavigate } from "react-router-dom";
+import client from "../api/client";
 
 const { Title } = Typography;
 
@@ -12,8 +13,14 @@ export default function BillingPage() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState(null);
 
+  const [doctors, setDoctors] = useState([]);
+  const [patients, setPatients] = useState([]);
+
   useEffect(() => {
     dispatch({ type: "billing/fetchStart" });
+    // Fetch doctors and patients for details
+    client.get("/doctors").then((res) => setDoctors(res.data)).catch(() => setDoctors([]));
+    client.get("/patients").then((res) => setPatients(res.data)).catch(() => setPatients([]));
   }, [dispatch]);
 
   const handleViewDetails = (invoice) => {
@@ -29,6 +36,16 @@ export default function BillingPage() {
   const handleModalCancel = () => {
     setIsModalVisible(false);
     setSelectedInvoice(null);
+  };
+
+  const getDoctorName = (doctorId) => {
+    const doctor = doctors.find((d) => d.id == doctorId);
+    return doctor ? doctor.name : "Unknown Doctor";
+  };
+
+  const getPatientName = (patientId) => {
+    const patient = patients.find((p) => p.id == patientId);
+    return patient ? patient.name : "Unknown Patient";
   };
 
   const calculateDoctorFees = (services) => {
