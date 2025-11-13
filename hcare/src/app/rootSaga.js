@@ -5,6 +5,8 @@ import patientsSaga from "../features/patients/patientsSaga";
 import appointmentsSaga from "../features/appointments/appointmentsSaga";
 import prescriptionsSaga from "../features/prescriptions/prescriptionsSaga";
 import billingSaga from "../features/billing/billingSaga";
+import staffSaga from '../features/staff/staffSaga';
+import inventorySaga from "../features/inventory/inventorySaga";
 
 export default function* rootSaga() {
   yield all([
@@ -14,5 +16,7 @@ export default function* rootSaga() {
     appointmentsSaga(),
     prescriptionsSaga(),
     billingSaga(),
+    staffSaga(),
+    inventorySaga()
   ]);
 }

@@ -22,6 +22,9 @@ import PaymentIcon from "@mui/icons-material/Payment";
 import SettingsIcon from "@mui/icons-material/Settings";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import MenuIcon from "@mui/icons-material/Menu";
+import Managestaff from "@mui/icons-material/ManageAccounts"; // Staff Management
+import Inventory from "@mui/icons-material/Inventory2"; 
+
 
 export default function Sidebar() {
   const collapsed = useSelector((s) => s.ui?.sidebarCollapsed);
@@ -38,6 +41,8 @@ export default function Sidebar() {
     { text: "Billing", icon: <PaymentIcon />, link: "/billing" },
     { text: "Payment Gateway", icon: <PaymentIcon />, link: "/payment" },
     { text: "Settings", icon: <SettingsIcon />, link: "/settings" },
+    { text: "Manage Staffs", icon: <Managestaff/>, link: "/staff" },
+    { text: "Inventory", icon: <Inventory/>, link: "/inventory" },
   ];
 
   const settingsItem = { text: "Settings", icon: <SettingsIcon />, link: "/settings" };
