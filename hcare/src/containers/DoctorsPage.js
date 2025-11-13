@@ -1,5 +1,6 @@
 // src/containers/DoctorsPage.js
 import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Grid,
   Card,
@@ -32,14 +33,13 @@ import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import "./doctors.css";
 
-
 const { TextArea } = Input;
 
 export default function DoctorsPage() {
-  const [doctors, setDoctors] = useState([]);
+  const dispatch = useDispatch();
+  const { list: doctors, loading } = useSelector((state) => state.doctors);
   const [appointments, setAppointments] = useState([]);
   const [patients, setPatients] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [form] = Form.useForm();
@@ -47,24 +47,20 @@ export default function DoctorsPage() {
   const [expandedDoctor, setExpandedDoctor] = useState(null);
 
   useEffect(() => {
+    dispatch({ type: "doctors/fetchStart" });
     loadData();
-  }, []);
+  }, [dispatch]);
 
   const loadData = async () => {
     try {
-      setLoading(true);
-      const [docs, appts, pats] = await Promise.all([
-        getData("/doctors"),
+      const [appts, pats] = await Promise.all([
         getData("/appointments"),
         getData("/patients"),
       ]);
-      setDoctors(docs);
       setAppointments(appts);
       setPatients(pats);
     } catch (err) {
       message.error("Failed to load data");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -116,7 +112,7 @@ export default function DoctorsPage() {
     );
 
   const getPatientName = (id) =>
-    patients.find((p) => p.id === id)?.name || "Unknown";
+    patients.find((p) => p.id == id)?.name || "Unknown";
 
   if (loading)
     return (
@@ -169,17 +165,13 @@ export default function DoctorsPage() {
 
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Box display="flex" alignItems="center" gap={1} mb={1}>
-                    <MonetizationOnIcon color="primary" />
-                    <Typography>₹{doc.consultationFee}</Typography>
-                  </Box>
-                  <Box display="flex" alignItems="center" gap={1} mb={1}>
                     <LocalHospitalIcon color="secondary" />
                     <Typography>{doc.experience}</Typography>
                   </Box>
                   <Box display="flex" alignItems="center" gap={1} mb={1}>
                     <AccessTimeIcon color="action" />
                     <Typography fontSize={14}>
-                      {doc.availableDays.join(", ")} ({doc.availableTime})
+                      {doc.availableDays ? doc.availableDays.join(", ") : "N/A"} ({doc.availableTime || "N/A"})
                     </Typography>
                   </Box>
 
@@ -198,7 +190,7 @@ export default function DoctorsPage() {
                       textOverflow: "ellipsis",
                     }}
                   >
-                    {doc.bio}
+                    {doc.bio || "No bio available"}
                   </Typography>
                 </CardContent>
               </Box>

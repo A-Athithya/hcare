@@ -17,12 +17,12 @@ export default function PrescriptionsPage() {
   }, [dispatch]);
 
   const getDoctorName = (doctorId) => {
-    const doctor = doctors.find((d) => d.id === doctorId);
+    const doctor = doctors.find((d) => d.id == doctorId);
     return doctor ? doctor.name : "Unknown Doctor";
   };
 
   const getPatientName = (patientId) => {
-    const patient = patients.find((p) => p.id === patientId);
+    const patient = patients.find((p) => p.id == patientId);
     return patient ? patient.name : "Unknown Patient";
   };
 

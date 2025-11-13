@@ -60,8 +60,8 @@ export default function AppointmentsPage() {
     loadData();
   }, []);
 
-  const getDoctorName = (id) => doctors.find((d) => d.id === id)?.name || "—";
-  const getPatientName = (id) => patients.find((p) => p.id === id)?.name || "—";
+  const getDoctorName = (id) => doctors.find((d) => d.id == id)?.name || "—";
+  const getPatientName = (id) => patients.find((p) => p.id == id)?.name || "—";
 
   // 🟢 Schedule or Reschedule
   const handleSubmit = async (vals) => {
