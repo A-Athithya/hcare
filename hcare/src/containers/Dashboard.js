@@ -58,6 +58,37 @@ const Dashboard = () => {
         setLoading(false);
       } catch (error) {
         console.error("Error loading dashboard data:", error);
+        // Fallback to mock data if API fails
+        try {
+          const mockResponse = await fetch('/db.json');
+          if (mockResponse.ok) {
+            const mockData = await mockResponse.json();
+            const patients = mockData.patients || [];
+            const doctors = mockData.doctors || [];
+            const appointments = mockData.appointments || [];
+            const medicines = mockData.medicines || [];
+
+            setStats({
+              patients: patients.length,
+              doctors: doctors.length,
+              appointments: appointments.length,
+              medicines: medicines.length,
+            });
+
+            const sortedPatients = patients.sort(
+              (a, b) => new Date(b.registeredDate) - new Date(a.registeredDate)
+            );
+            setRecentPatients(sortedPatients.slice(0, 5));
+
+            const filtered = appointments.filter((a) => {
+              const date = new Date(a.appointmentDate);
+              return date >= new Date(startDate) && date <= new Date(endDate);
+            });
+            setFilteredAppointments(filtered);
+          }
+        } catch (mockError) {
+          console.error("Error loading mock data:", mockError);
+        }
         setLoading(false);
       }
     };
@@ -85,8 +116,8 @@ const Dashboard = () => {
   );
 
   return (
-    <div style={{ padding: "24px" }}>
-      <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold" }}>
+    <div style={{ padding: "32px", background: "#fafbfc", minHeight: "90vh" }}>
+      <Typography variant="h4" gutterBottom sx={{ fontWeight: 400, color: "#202124", marginBottom: "24px" }}>
         Dashboard & Reports
       </Typography>
 

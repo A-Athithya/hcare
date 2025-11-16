@@ -60,6 +60,26 @@ export default function AppointmentsPage() {
     loadData();
   }, []);
 
+  // Fallback to mock data if API fails
+  useEffect(() => {
+    if (appointments.length === 0 && patients.length === 0 && doctors.length === 0) {
+      const loadMockData = async () => {
+        try {
+          const response = await fetch('/db.json');
+          if (response.ok) {
+            const data = await response.json();
+            setAppointments(data.appointments || []);
+            setPatients(data.patients || []);
+            setDoctors(data.doctors || []);
+          }
+        } catch (error) {
+          console.error("Error loading mock appointments data:", error);
+        }
+      };
+      loadMockData();
+    }
+  }, [appointments.length, patients.length, doctors.length]);
+
   const getDoctorName = (id) => doctors.find((d) => d.id == id)?.name || "—";
   const getPatientName = (id) => patients.find((p) => p.id == id)?.name || "—";
 
@@ -239,8 +259,8 @@ export default function AppointmentsPage() {
   ];
 
   return (
-    <div style={{ padding: 24 }}>
-      <h2>
+    <div style={{ padding: 32, background: "#fafbfc", minHeight: "90vh" }}>
+      <h2 style={{ color: "#202124", fontWeight: 400, marginBottom: 24 }}>
         Appointments & Scheduling{" "}
         <Badge count={upcomingCount} offset={[10, 0]}>
           <Tag color="blue">Upcoming</Tag>

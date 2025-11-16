@@ -1,20 +1,39 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Table, Card, Input, Button } from "antd";
 import { useNavigate } from "react-router-dom";
 
 export default function PatientsPage() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { list, loading } = useSelector((s) => s.patients);
   const [filter, setFilter] = useState("");
+  const [patients, setPatients] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    dispatch({ type: "patients/fetchStart" });
-  }, [dispatch]);
+    // Load data directly from db.json
+    const loadPatients = async () => {
+      try {
+        const response = await fetch('/db.json');
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Loaded patients from db.json:", data.patients);
+          setPatients(data.patients || []);
+        } else {
+          console.error("Failed to load db.json");
+          setPatients([]);
+        }
+      } catch (error) {
+        console.error("Error loading patients:", error);
+        setPatients([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const filtered = list.filter((p) =>
-    p.name.toLowerCase().includes(filter.toLowerCase())
+    loadPatients();
+  }, []);
+
+  const filtered = patients.filter((p) =>
+    p.name && p.name.toLowerCase().includes(filter.toLowerCase())
   );
 
   const cols = [
@@ -46,9 +65,9 @@ export default function PatientsPage() {
         onChange={(e) => setFilter(e.target.value)}
       />
       <Card>
-        {!loading && list.length === 0 && (
-       <p style={{ textAlign: "center", color: "gray" }}>No patients found.</p>
-       )}
+        {!loading && patients.length === 0 && (
+          <p style={{ textAlign: "center", color: "gray" }}>No patients found.</p>
+        )}
 
         <Table
           dataSource={filtered}

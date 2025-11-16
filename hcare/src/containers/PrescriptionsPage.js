@@ -16,6 +16,28 @@ export default function PrescriptionsPage() {
     client.get("/patients").then((res) => setPatients(res.data)).catch(() => setPatients([]));
   }, [dispatch]);
 
+  // Fallback to mock data if Redux fails
+  useEffect(() => {
+    if (list.length === 0) {
+      const loadMockData = async () => {
+        try {
+          const response = await fetch('/db.json');
+          if (response.ok) {
+            const data = await response.json();
+            if (data.prescriptions) {
+              dispatch({ type: "prescriptions/fetchSuccess", payload: data.prescriptions });
+            }
+            setDoctors(data.doctors || []);
+            setPatients(data.patients || []);
+          }
+        } catch (error) {
+          console.error("Error loading mock prescriptions data:", error);
+        }
+      };
+      loadMockData();
+    }
+  }, [list.length, dispatch]);
+
   const getDoctorName = (doctorId) => {
     const doctor = doctors.find((d) => d.id == doctorId);
     return doctor ? doctor.name : "Unknown Doctor";

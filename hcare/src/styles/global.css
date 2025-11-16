@@ -1,7 +1,9 @@
 body {
   font-family: "Inter", "Roboto", sans-serif;
-  background-color: #f9fafc;
+  background-color: #fafbfc;
   margin: 0;
+  line-height: 1.6;
+  color: #202124;
 }
 .app-layout {
   display: flex;
@@ -10,7 +12,7 @@ body {
 .sidebar {
   width: 240px;
   background: white;
-  box-shadow: 2px 0 4px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
 }
 .main-content {
   flex: 1;
@@ -18,5 +20,86 @@ body {
   flex-direction: column;
 }
 .page-content {
-  padding: 24px;
+  padding: 32px;
+  background: #fafbfc;
+  min-height: calc(100vh - 70px);
 }
+
+/* Google-inspired card styles */
+.ant-card {
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  border: 1px solid #e8eaed;
+  transition: box-shadow 0.2s ease;
+}
+
+.ant-card:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+/* Enhanced button styles */
+.ant-btn {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.ant-btn-primary {
+  background: #1a73e8;
+  border-color: #1a73e8;
+}
+
+.ant-btn-primary:hover {
+  background: #1557b0;
+  border-color: #1557b0;
+}
+
+/* Typography improvements */
+h1, h2, h3, h4, h5, h6 {
+  color: #202124;
+  font-weight: 400;
+  margin-bottom: 16px;
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+
+/* Input styles */
+.ant-input, .ant-select-selector, .ant-picker {
+  border-radius: 8px;
+  border: 1px solid #dadce0;
+  transition: border-color 0.2s ease;
+}
+
+.ant-input:focus, .ant-select-selector:focus, .ant-picker:focus {
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.1);
+}
+
+/* Table styles */
+.ant-table {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.ant-table-thead > tr > th {
+  background: #f8f9fa;
+  font-weight: 500;
+  border-bottom: 1px solid #e8eaed;
+}
+
+/* Modal improvements */
+.ant-modal-content {
+  border-radius: 12px;
+}
+
+.ant-modal-header {
+  border-radius: 12px 12px 0 0;
+  border-bottom: 1px solid #e8eaed;
+}
+
+/* Spacing utilities */
+.mb-4 { margin-bottom: 24px; }
+.mt-4 { margin-top: 24px; }
+.p-4 { padding: 24px; }

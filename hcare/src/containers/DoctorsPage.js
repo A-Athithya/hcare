@@ -51,6 +51,26 @@ export default function DoctorsPage() {
     loadData();
   }, [dispatch]);
 
+  // Fallback to mock data if Redux fails
+  useEffect(() => {
+    if (!loading && doctors.length === 0) {
+      const loadMockData = async () => {
+        try {
+          const response = await fetch('/db.json');
+          if (response.ok) {
+            const data = await response.json();
+            if (data.doctors) {
+              dispatch({ type: "doctors/fetchSuccess", payload: data.doctors });
+            }
+          }
+        } catch (error) {
+          console.error("Error loading mock doctors data:", error);
+        }
+      };
+      loadMockData();
+    }
+  }, [loading, doctors.length, dispatch]);
+
   const loadData = async () => {
     try {
       const [appts, pats] = await Promise.all([
@@ -122,8 +142,8 @@ export default function DoctorsPage() {
     );
 
   return (
-    <Box sx={{ padding: 3 }}>
-      <Typography variant="h5" gutterBottom fontWeight="600">
+    <Box sx={{ padding: 4, background: "#fafbfc", minHeight: "90vh" }}>
+      <Typography variant="h5" gutterBottom fontWeight={400} sx={{ color: "#202124", marginBottom: 3 }}>
         Doctors Directory
       </Typography>
 

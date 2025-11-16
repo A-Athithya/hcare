@@ -1,25 +1,16 @@
 import React, { useState, useEffect } from "react";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import {
-  Card,
-  CardContent,
-  Typography,
-  Box,
-  TextField,
-  MenuItem,
-  Button,
-  Divider,
-  Fade,
-} from "@mui/material";
+import { Calendar, Card, Select, Button, Typography, Space, Badge, Divider } from "antd";
 import { getData } from "../api/client";
+import dayjs from "dayjs";
+
+const { Title } = Typography;
+const { Option } = Select;
 
 const CalendarPage = () => {
   const [appointments, setAppointments] = useState([]);
   const [filterDoctor, setFilterDoctor] = useState("all");
   const [doctors, setDoctors] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(dayjs());
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,20 +20,7 @@ const CalendarPage = () => {
           getData("/doctors"),
         ]);
 
-        setAppointments(
-          appointmentsRes.map((a) => ({
-            id: a.id,
-            title: `${a.patientName} (${a.status})`,
-            start: a.appointmentDate,
-            backgroundColor:
-              a.status === "Completed"
-                ? "#43a047"
-                : a.status === "Pending"
-                ? "#ffb300"
-                : "#e53935",
-            borderColor: "transparent",
-          }))
-        );
+        setAppointments(appointmentsRes);
         setDoctors(doctorsRes);
       } catch (error) {
         console.error("Error loading appointments:", error);
@@ -52,164 +30,163 @@ const CalendarPage = () => {
     fetchData();
   }, []);
 
-  const filteredEvents =
+  const filteredAppointments =
     filterDoctor === "all"
       ? appointments
       : appointments.filter((a) => a.doctorId === parseInt(filterDoctor));
 
-  const handleDateClick = (info) => {
-    alert(`📅 Selected Date: ${info.dateStr}`);
+  const getListData = (value) => {
+    const dateStr = value.format("YYYY-MM-DD");
+    return filteredAppointments.filter((a) => a.appointmentDate === dateStr);
+  };
+
+  const dateCellRender = (value) => {
+    const listData = getListData(value);
+    return (
+      <ul className="events" style={{ listStyle: "none", padding: 0, margin: 0 }}>
+        {listData.map((item) => (
+          <li key={item.id} style={{ marginBottom: 4 }}>
+            <Badge
+              status={
+                item.status === "Completed"
+                  ? "success"
+                  : item.status === "Pending"
+                  ? "warning"
+                  : "error"
+              }
+              text={
+                <span style={{ fontSize: 12, color: "#666" }}>
+                  {item.patientName}
+                </span>
+              }
+            />
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
+  const onSelect = (value) => {
+    setSelectedDate(value);
+  };
+
+  const onPanelChange = (value, mode) => {
+    console.log(value.format("YYYY-MM-DD"), mode);
+  };
+
+  const handleAddAppointment = () => {
+    // Placeholder for add appointment functionality
+    console.log("Add appointment clicked");
   };
 
   return (
-    <Fade in timeout={600}>
-      <Box
-        sx={{
-          p: 3,
-          minHeight: "90vh",
-          background: "linear-gradient(180deg, #f7f9fc 0%, #e9eef5 100%)",
+    <div style={{ padding: 24, background: "#fafbfc", minHeight: "90vh" }}>
+      {/* Page Header */}
+      <Title level={2} style={{ marginBottom: 24, color: "#202124" }}>
+        Appointment Calendar
+      </Title>
+
+      {/* Filter and Add Section */}
+      <Card
+        style={{
+          marginBottom: 24,
+          borderRadius: 12,
+          boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
         }}
       >
-        {/* Page Header */}
-        <Typography
-          variant="h4"
-          sx={{
-            fontWeight: 700,
-            mb: 3,
-            textShadow: "0 1px 3px rgba(0,0,0,0.1)",
-            color: "#1a237e",
-          }}
-        >
-          Appointment Calendar
-        </Typography>
-
-        {/* Filter + Add Section */}
-        <Card
-          sx={{
-            borderRadius: 3,
-            boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
-            mb: 3,
-            backdropFilter: "blur(6px)",
-            background: "rgba(255,255,255,0.9)",
-          }}
-        >
-          <CardContent>
-            <Box
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "space-between",
-                alignItems: "center",
-                gap: 2,
-              }}
+        <Space wrap style={{ justifyContent: "space-between", width: "100%" }}>
+          <div>
+            <span style={{ marginRight: 8, fontWeight: 500 }}>Filter by Doctor:</span>
+            <Select
+              value={filterDoctor}
+              onChange={setFilterDoctor}
+              style={{ width: 200 }}
             >
-              <TextField
-                select
-                label="Filter by Doctor"
-                value={filterDoctor}
-                onChange={(e) => setFilterDoctor(e.target.value)}
-                sx={{ minWidth: 220 }}
-                size="small"
-              >
-                <MenuItem value="all">All Doctors</MenuItem>
-                {doctors.map((d) => (
-                  <MenuItem key={d.id} value={d.id}>
-                    {d.name}
-                  </MenuItem>
-                ))}
-              </TextField>
+              <Option value="all">All Doctors</Option>
+              {doctors.map((d) => (
+                <Option key={d.id} value={d.id}>
+                  {d.name}
+                </Option>
+              ))}
+            </Select>
+          </div>
+          <Button
+            type="primary"
+            onClick={handleAddAppointment}
+            style={{ borderRadius: 8 }}
+          >
+            + Add Appointment
+          </Button>
+        </Space>
+      </Card>
 
-              <Button
-                variant="contained"
-                sx={{
-                  borderRadius: 2,
-                  background:
-                    "linear-gradient(90deg, #3949ab 0%, #1e88e5 100%)",
-                  boxShadow: "0 4px 12px rgba(33,150,243,0.3)",
-                  px: 3,
-                  py: 1,
-                  fontWeight: 600,
-                  textTransform: "none",
-                  "&:hover": {
-                    background:
-                      "linear-gradient(90deg, #303f9f 0%, #1976d2 100%)",
-                  },
-                }}
-                onClick={() => alert("🩺 Add Appointment (Coming soon)")}
-              >
-                + Add Appointment
-              </Button>
-            </Box>
-          </CardContent>
-        </Card>
+      <Divider style={{ margin: "24px 0" }} />
 
-        <Divider sx={{ mb: 3, opacity: 0.6 }} />
+      {/* Calendar */}
+      <Card
+        style={{
+          borderRadius: 12,
+          boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
+          overflow: "hidden",
+        }}
+      >
+        <Calendar
+          dateCellRender={dateCellRender}
+          onSelect={onSelect}
+          onPanelChange={onPanelChange}
+          style={{ borderRadius: 12 }}
+        />
+      </Card>
 
-        {/* Main Calendar */}
+      {/* Selected Date Details */}
+      {selectedDate && (
         <Card
-          sx={{
-            borderRadius: 3,
-            boxShadow: "0 6px 20px rgba(0,0,0,0.1)",
-            background: "#fff",
-            p: 2,
-            overflow: "hidden",
-            transition: "0.3s ease",
-            "&:hover": { boxShadow: "0 10px 30px rgba(0,0,0,0.15)" },
+          style={{
+            marginTop: 24,
+            borderRadius: 12,
+            boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
           }}
         >
-          <CardContent>
-            <FullCalendar
-              plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-              initialView="dayGridMonth"
-              height="75vh"
-              events={filteredEvents}
-              dateClick={handleDateClick}
-              headerToolbar={{
-                start: "prev,next today",
-                center: "title",
-                end: "dayGridMonth,timeGridWeek,timeGridDay",
-              }}
-              nowIndicator
-              dayMaxEventRows={3}
-              eventTextColor="#fff"
-              eventBorderColor="transparent"
-              selectable
-              eventDisplay="block"
-              eventContent={(info) => (
-                <Box
-                  sx={{
-                    px: 1,
-                    py: 0.5,
-                    borderRadius: 1,
-                    fontSize: 13,
-                    fontWeight: 600,
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                    backgroundColor: info.event.backgroundColor,
-                    color: "#fff",
-                    boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+          <Title level={4} style={{ marginBottom: 16 }}>
+            Appointments on {selectedDate.format("MMMM DD, YYYY")}
+          </Title>
+          {getListData(selectedDate).length === 0 ? (
+            <p style={{ color: "#666" }}>No appointments scheduled for this date.</p>
+          ) : (
+            <Space direction="vertical" style={{ width: "100%" }}>
+              {getListData(selectedDate).map((appointment) => (
+                <Card
+                  key={appointment.id}
+                  size="small"
+                  style={{
+                    borderRadius: 8,
+                    border: "1px solid #e8eaed",
                   }}
                 >
-                  {info.event.title}
-                </Box>
-              )}
-              eventMouseEnter={(info) => {
-                const el = info.el;
-                el.style.transform = "scale(1.05)";
-                el.style.transition = "0.2s ease";
-              }}
-              eventMouseLeave={(info) => {
-                const el = info.el;
-                el.style.transform = "scale(1)";
-              }}
-              dayHeaderClassNames="calendar-header"
-              dayCellClassNames="calendar-day"
-            />
-          </CardContent>
+                  <Space>
+                    <Badge
+                      status={
+                        appointment.status === "Completed"
+                          ? "success"
+                          : appointment.status === "Pending"
+                          ? "warning"
+                          : "error"
+                      }
+                    />
+                    <div>
+                      <div style={{ fontWeight: 500 }}>{appointment.patientName}</div>
+                      <div style={{ fontSize: 12, color: "#666" }}>
+                        {appointment.appointmentTime} • {appointment.reason}
+                      </div>
+                    </div>
+                  </Space>
+                </Card>
+              ))}
+            </Space>
+          )}
         </Card>
-      </Box>
-    </Fade>
+      )}
+    </div>
   );
 };
 

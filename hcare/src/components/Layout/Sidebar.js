@@ -29,7 +29,6 @@ import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import PaymentIcon from "@mui/icons-material/Payment";
-
 import SettingsIcon from "@mui/icons-material/Settings";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -41,7 +40,6 @@ import LogoutOutlined from "@ant-design/icons/LogoutOutlined";
 import Managestaff from "@mui/icons-material/ManageAccounts"; // Staff Management
 import Inventory from "@mui/icons-material/Inventory2";
 
-
 export default function Sidebar() {
   const collapsed = useSelector((s) => s.ui?.sidebarCollapsed);
   const auth = useSelector((s) => s.auth || {});
@@ -50,6 +48,7 @@ export default function Sidebar() {
   const toggleSidebar = () => dispatch({ type: "ui/toggleSidebar" });
 
   const [settingsExpanded, setSettingsExpanded] = useState(false);
+  const [profileExpanded, setProfileExpanded] = useState(false);
   const [profileModalVisible, setProfileModalVisible] = useState(false);
   const [passwordModalVisible, setPasswordModalVisible] = useState(false);
   const [profileForm] = Form.useForm();
@@ -180,17 +179,11 @@ export default function Sidebar() {
         </ListItem>
         <Collapse in={settingsExpanded} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItemButton sx={{ pl: 4 }} onClick={() => setProfileModalVisible(true)}>
+            <ListItemButton sx={{ pl: 4 }} component={NavLink} to="/settings">
               <ListItemIcon sx={{ color: "#1976d2", minWidth: 40 }}>
                 <UserOutlined />
               </ListItemIcon>
-              <ListItemText primary="Update Profile" />
-            </ListItemButton>
-            <ListItemButton sx={{ pl: 4 }} onClick={() => setPasswordModalVisible(true)}>
-              <ListItemIcon sx={{ color: "#1976d2", minWidth: 40 }}>
-                <LockOutlined />
-              </ListItemIcon>
-              <ListItemText primary="Change Password" />
+              <ListItemText primary="Profile" />
             </ListItemButton>
             <ListItemButton sx={{ pl: 4 }} onClick={handleLogout}>
               <ListItemIcon sx={{ color: "#1976d2", minWidth: 40 }}>
@@ -203,174 +196,7 @@ export default function Sidebar() {
       </List>
     </Drawer>
 
-    {/* Profile Update Modal */}
-    <Modal
-      title="Update Profile"
-      open={profileModalVisible}
-      onCancel={() => setProfileModalVisible(false)}
-      footer={null}
-      bodyStyle={{ maxHeight: '60vh', overflowY: 'auto' }}
-    >
-      <Form
-        form={profileForm}
-        layout="vertical"
-        onFinish={handleProfileUpdate}
-        initialValues={{
-          name: user.name,
-          email: user.email,
-          phone: user.phone || "",
-          address: user.address || "",
-          dateOfBirth: user.dateOfBirth || null,
-          gender: user.gender || "",
-          department: user.department || "",
-          specialization: user.specialization || "",
-          experience: user.experience || "",
-          qualification: user.qualification || "",
-        }}
-      >
-        <Form.Item
-          name="name"
-          label="Name"
-          rules={[{ required: true, message: "Please enter your name" }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="email"
-          label="Email"
-          rules={[
-            { required: true, message: "Please enter your email" },
-            { type: "email", message: "Please enter a valid email" },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="phone"
-          label="Phone Number"
-          rules={[{ required: true, message: "Please enter your phone number" }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="address"
-          label="Address"
-          rules={[{ required: true, message: "Please enter your address" }]}
-        >
-          <Input.TextArea />
-        </Form.Item>
-        <Form.Item
-          name="dateOfBirth"
-          label="Date of Birth"
-          rules={[{ required: true, message: "Please select your date of birth" }]}
-        >
-          <DatePicker />
-        </Form.Item>
-        <Form.Item
-          name="gender"
-          label="Gender"
-        >
-          <Select>
-            <Select.Option value="male">Male</Select.Option>
-            <Select.Option value="female">Female</Select.Option>
-            <Select.Option value="other">Other</Select.Option>
-          </Select>
-        </Form.Item>
-        <Form.Item
-          name="department"
-          label="Department"
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="specialization"
-          label="Specialization"
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="experience"
-          label="Experience"
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="qualification"
-          label="Qualification"
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item>
-          <Space>
-            <Button type="primary" htmlType="submit">
-              Update
-            </Button>
-            <Button onClick={() => setProfileModalVisible(false)}>
-              Cancel
-            </Button>
-          </Space>
-        </Form.Item>
-      </Form>
-    </Modal>
 
-    {/* Password Change Modal */}
-    <Modal
-      title="Change Password"
-      open={passwordModalVisible}
-      onCancel={() => setPasswordModalVisible(false)}
-      footer={null}
-    >
-      <Form
-        form={passwordForm}
-        layout="vertical"
-        onFinish={handlePasswordChange}
-      >
-        <Form.Item
-          name="currentPassword"
-          label="Current Password"
-          rules={[{ required: true, message: "Please enter your current password" }]}
-        >
-          <Input.Password />
-        </Form.Item>
-        <Form.Item
-          name="newPassword"
-          label="New Password"
-          rules={[
-            { required: true, message: "Please enter a new password" },
-            { min: 6, message: "Password must be at least 6 characters" },
-          ]}
-        >
-          <Input.Password />
-        </Form.Item>
-        <Form.Item
-          name="confirmPassword"
-          label="Confirm New Password"
-          rules={[
-            { required: true, message: "Please confirm your new password" },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue("newPassword") === value) {
-                  return Promise.resolve();
-                }
-                return Promise.reject(new Error("Passwords do not match!"));
-              },
-            }),
-          ]}
-        >
-          <Input.Password />
-        </Form.Item>
-        <Form.Item>
-          <Space>
-            <Button type="primary" htmlType="submit">
-              Change Password
-            </Button>
-            <Button onClick={() => setPasswordModalVisible(false)}>
-              Cancel
-            </Button>
-          </Space>
-        </Form.Item>
-      </Form>
-    </Modal>
     </>
   );
 }
