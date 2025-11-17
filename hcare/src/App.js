@@ -21,7 +21,7 @@ const PrescriptionsPage = lazy(() => import("./containers/PrescriptionsPage"));
 const BillingPage = lazy(() => import("./containers/BillingPage"));
 const PaymentPage = lazy(() => import("./containers/PaymentPage"));
 const SettingsPage = lazy(() => import("./containers/SettingsPage"));
-const StaffManagement = lazy(() => import("./components/admin/StaffManagement"));
+const StaffManagement = lazy(() => import("./components/admin/StaffsManagement"));
 const InventoryManagement = lazy(() => import("./components/admin/InventoryManagement"));
 const CommunicationPage = lazy(() => import('./components/communication/CommunicationPage'));
 
