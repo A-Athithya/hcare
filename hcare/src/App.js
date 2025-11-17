@@ -6,8 +6,8 @@ import PatientDetailsPage from "./containers/PatientDetailsPage";
 import PatientManagementPage from "./containers/PatientManagementPage";
 import MuiProvider from "./mui/MaterialDesign";
 import { Spin } from "antd";
-import AllCommunicationsPage from './components/communication/AllCommunicationsPage';
-import DoctorCommunications from './components/communication/DoctorCommunications';
+import AllCommunicationsPage from './components/communications/AllCommunicationsPage.jsx';
+import DoctorCommunications from './components/communications/DoctorCommunications.jsx';
 
 
 // Lazy load pages
@@ -23,7 +23,7 @@ const PaymentPage = lazy(() => import("./containers/PaymentPage"));
 const SettingsPage = lazy(() => import("./containers/SettingsPage"));
 const StaffManagement = lazy(() => import("./components/admin/StaffManagement"));
 const InventoryManagement = lazy(() => import("./components/admin/InventoryManagement"));
-const CommunicationPage = lazy(() => import('./components/communication/CommunicationPage'));
+const CommunicationPage = lazy(() => import('./components/communications/CommunicationPage'));
 
 
 // Removed ProtectedRoute - all routes are now public
