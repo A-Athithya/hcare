@@ -6,8 +6,9 @@ import PatientDetailsPage from "./containers/PatientDetailsPage";
 import PatientManagementPage from "./containers/PatientManagementPage";
 import MuiProvider from "./mui/MaterialDesign";
 import { Spin } from "antd";
-import StaffManagement from "./components/admin/StaffManagement";
-import InventoryManagement from './components/admin/InventoryManagement';
+import AllCommunicationsPage from './components/communication/AllCommunicationsPage';
+import DoctorCommunications from './components/communication/DoctorCommunications';
+
 
 // Lazy load pages
 const LoginForm = lazy(() => import("./components/Forms/LoginForm"));
@@ -20,6 +21,10 @@ const PrescriptionsPage = lazy(() => import("./containers/PrescriptionsPage"));
 const BillingPage = lazy(() => import("./containers/BillingPage"));
 const PaymentPage = lazy(() => import("./containers/PaymentPage"));
 const SettingsPage = lazy(() => import("./containers/SettingsPage"));
+const StaffManagement = lazy(() => import("./components/admin/StaffManagement"));
+const InventoryManagement = lazy(() => import("./components/admin/InventoryManagement"));
+const CommunicationPage = lazy(() => import('./components/communication/CommunicationPage'));
+
 
 // Removed ProtectedRoute - all routes are now public
 
@@ -48,6 +53,9 @@ const AppWrapper = () => {
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/staff" element={<StaffManagement />} />
             <Route path="/inventory" element={<InventoryManagement />} />
+            <Route path="CommunicationPage" element={<CommunicationPage/>} />
+            <Route path="all-communications" element={<AllCommunicationsPage/>} />
+            <Route path="doctor-communications/:doctorId" element={<DoctorCommunications/>} />
 
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
