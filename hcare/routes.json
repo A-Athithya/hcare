@@ -1,0 +1,9 @@
+{
+  "/auth/login": "/users",
+  "/auth/register": "/users",
+  "/api/doctors": "/doctors",
+  "/api/patients": "/patients",
+  "/api/appointments": "/appointments",
+  "/api/nurses": "/nurses",
+  "/api/medicines": "/medicines"
+}

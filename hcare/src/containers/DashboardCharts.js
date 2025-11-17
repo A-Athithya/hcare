@@ -1,215 +1,269 @@
-import React, { useEffect, useState } from "react";
-import { Grid, Card, CardContent, Typography, CircularProgress } from "@mui/material";
+// src/containers/DashboardCharts.js
+import React, { useEffect, useMemo, useState } from "react";
+import { Card, Typography, Box, CircularProgress, Grid } from "@mui/material";
 import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
+  ResponsiveContainer,
   LineChart,
   Line,
   XAxis,
   YAxis,
+  Tooltip,
   CartesianGrid,
   BarChart,
   Bar,
   Legend,
-  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
 } from "recharts";
-import { getData } from "../api/client";
 import dayjs from "dayjs";
+import { getData } from "../api/client";
 
-const COLORS = ["#4CAF50", "#FF9800", "#F44336", "#2196F3"];
+// Tooltip UI
+const RichTooltip = ({ active, payload, label }) => {
+  if (!active || !payload) return null;
+  return (
+    <Box
+      sx={{
+        background: "#fff",
+        p: 1.5,
+        borderRadius: 2,
+        boxShadow: "0 6px 18px rgba(0,0,0,0.18)",
+      }}
+    >
+      <Typography sx={{ fontWeight: 700, mb: 1 }}>{label}</Typography>
+      {payload.map((p, i) => (
+        <Typography key={i} sx={{ color: p.color, fontSize: 13 }}>
+          {p.name}: {p.value}
+        </Typography>
+      ))}
+    </Box>
+  );
+};
 
-const DashboardCharts = ({ role, startDate, endDate }) => {
-  const [appointments, setAppointments] = useState([]);
-  const [medicines, setMedicines] = useState([]);
+const COLORS = ["#1976d2", "#4caf50", "#ff9800", "#f44336", "#7b1fa2"];
+
+export default function DashboardCharts({ startDate, endDate }) {
+  const [appointments, setAppointments] = useState(null);
+  const [medicines, setMedicines] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const start = dayjs(startDate);
+  const end = dayjs(endDate);
+
+  // Load data
   useEffect(() => {
-    const fetchChartData = async () => {
+    const load = async () => {
+      setLoading(true);
       try {
-        const [appointmentsRes, medicinesRes] = await Promise.all([
+        const [a, m] = await Promise.all([
           getData("/appointments"),
           getData("/medicines"),
         ]);
 
-        const filteredAppointments = appointmentsRes.filter((a) => {
-          const date = new Date(a.appointmentDate);
-          return date >= new Date(startDate) && date <= new Date(endDate);
-        });
-
-        setAppointments(filteredAppointments);
-        setMedicines(medicinesRes);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching chart data:", error);
-        setLoading(false);
+        setAppointments(a || []);
+        setMedicines(m || []);
+      } catch (err) {
+        console.error(err);
       }
+      setLoading(false);
     };
 
-    fetchChartData();
-  }, [startDate, endDate]);
+    load();
+  }, []);
+
+  // Revenue Line Data
+  const revenueData = useMemo(() => {
+    if (!appointments) return [];
+
+    const map = new Map();
+    let d = start.clone();
+
+    while (d.isBefore(end) || d.isSame(end)) {
+      map.set(d.format("YYYY-MM-DD"), 0);
+      d = d.add(1, "day");
+    }
+
+    appointments.forEach((a) => {
+      const dt = dayjs(a.appointmentDate).format("YYYY-MM-DD");
+      if (!map.has(dt)) return;
+
+      const amt = Number(a.paymentAmount || 0);
+      map.set(dt, map.get(dt) + amt);
+    });
+
+    return Array.from(map.entries()).map(([date, revenue]) => ({
+      date,
+      revenue,
+    }));
+  }, [appointments, start, end]);
+
+  // Appointment Status
+  const apptStatus = useMemo(() => {
+    if (!appointments) return [];
+    return appointments.reduce(
+      (s, a) => {
+        const st = (a.status || "").toLowerCase();
+        if (st.includes("pending")) s.Pending++;
+        else if (st.includes("completed")) s.Completed++;
+        else if (st.includes("cancel")) s.Cancelled++;
+        else s.Other++;
+        return s;
+      },
+      { Pending: 0, Completed: 0, Cancelled: 0, Other: 0 }
+    );
+  }, [appointments]);
+
+  const apptStatusData = Object.keys(apptStatus).map((k) => ({
+    name: k,
+    value: apptStatus[k],
+  }));
+
+  // Stock Summary (names hidden)
+  const stockData = medicines?.map((m) => ({
+    name: m.medicineName,
+    stock: Number(m.stock || 0),
+  }));
 
   if (loading)
     return (
-      <div className="flex justify-center items-center h-[50vh]">
+      <Box sx={{ display: "flex", justifyContent: "center", py: 10 }}>
         <CircularProgress />
-      </div>
+      </Box>
     );
 
-  // ✅ Appointment Status Chart Data
-  const appointmentStatusData = [
-    {
-      name: "Completed",
-      value: appointments.filter((a) => a.status === "Completed").length,
-    },
-    {
-      name: "Pending",
-      value: appointments.filter((a) => a.status === "Pending").length,
-    },
-    {
-      name: "Cancelled",
-      value: appointments.filter((a) => a.status === "Cancelled").length,
-    },
-  ];
-
-  // ✅ Revenue Chart Data
-  const revenueData = appointments
-    .filter((a) => a.paymentStatus === "Paid")
-    .reduce((acc, cur) => {
-      const date = dayjs(cur.appointmentDate).format("MMM D");
-      const existing = acc.find((item) => item.date === date);
-      if (existing) {
-        existing.revenue += cur.fee || 500;
-      } else {
-        acc.push({ date, revenue: cur.fee || 500 });
-      }
-      return acc;
-    }, []);
-
-  // ✅ Medicine Stock Chart Data
-  const medicineStockData = medicines.map((m) => ({
-    name: m.name,
-    stock: m.stock || 0,
-  }));
-
-  // ✅ Alerts
-  const lowStock = medicines.filter((m) => m.stock < 5);
-  const upcomingAppointments = appointments.filter(
-    (a) => new Date(a.appointmentDate) > new Date() && a.status === "Pending"
+  const emptyBlock = (t) => (
+    <Typography sx={{ textAlign: "center", py: 4, opacity: 0.6 }}>{t}</Typography>
   );
 
   return (
-    <div style={{ marginTop: "30px" }}>
+    <Box sx={{ mt: 4 }}>
       <Grid container spacing={3}>
-        {/* Appointment Status */}
-        <Grid item xs={12} md={4}>
-          <Card sx={{ borderRadius: 3, boxShadow: 3 }}>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Appointment Status
-              </Typography>
-              <ResponsiveContainer width="100%" height={250}>
-                <PieChart>
-                  <Pie
-                    data={appointmentStatusData}
-                    dataKey="value"
-                    nameKey="name"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={80}
-                    label
-                  >
-                    {appointmentStatusData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </Grid>
+        {/* Revenue Line Chart */}
+        <Grid item xs={12} md={6}>
+          <Card
+            sx={{
+              p: 2,
+              borderRadius: 3,
+              boxShadow: "0 6px 20px rgba(0,0,0,0.10)",
+              transition: "0.3s",
+              "&:hover": { boxShadow: "0 10px 30px rgba(0,0,0,0.18)", transform: "translateY(-4px)" },
+            }}
+          >
+            <Typography variant="h6" sx={{ mb: 2, fontWeight: 700 }}>
+              Revenue Trend
+            </Typography>
 
-        {/* Revenue Chart */}
-        <Grid item xs={12} md={8}>
-          <Card sx={{ borderRadius: 3, boxShadow: 3 }}>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Revenue Over Time
-              </Typography>
-              <ResponsiveContainer width="100%" height={250}>
+            {!revenueData.length ? (
+              emptyBlock("No revenue data available")
+            ) : (
+              <ResponsiveContainer width="100%" height={260}>
                 <LineChart data={revenueData}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="date" />
                   <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="revenue" stroke="#4CAF50" strokeWidth={2} />
+                  <Tooltip content={<RichTooltip />} />
+                  <Line
+                    type="monotone"
+                    dataKey="revenue"
+                    stroke="#1976d2"
+                    strokeWidth={3}
+                    dot={{ r: 4 }}
+                    animationDuration={800}
+                  />
                 </LineChart>
               </ResponsiveContainer>
-            </CardContent>
+            )}
           </Card>
         </Grid>
 
-        {/* Medicine Stock */}
+        {/* Appointment Status Pie */}
         <Grid item xs={12} md={6}>
-          <Card sx={{ borderRadius: 3, boxShadow: 3 }}>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Medicine Stock Overview
-              </Typography>
-              <ResponsiveContainer width="100%" height={250}>
-                <BarChart data={medicineStockData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="stock" fill="#2196F3" />
-                </BarChart>
+          <Card
+            sx={{
+              p: 2,
+              borderRadius: 3,
+              boxShadow: "0 6px 20px rgba(0,0,0,0.10)",
+              transition: "0.3s",
+              "&:hover": { boxShadow: "0 10px 30px rgba(0,0,0,0.18)", transform: "translateY(-4px)" },
+            }}
+          >
+            <Typography variant="h6" sx={{ mb: 2, fontWeight: 700 }}>
+              Appointment Status
+            </Typography>
+
+            {!apptStatusData.length ? (
+              emptyBlock("No appointment data available")
+            ) : (
+              <ResponsiveContainer width="100%" height={260}>
+                <PieChart>
+                  <Pie
+                    data={apptStatusData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={90}
+                    label
+                  >
+                    {apptStatusData.map((e, i) => (
+                      <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip content={<RichTooltip />} />
+                </PieChart>
               </ResponsiveContainer>
-            </CardContent>
+            )}
           </Card>
         </Grid>
 
-        {/* Alerts Section */}
-        <Grid item xs={12} md={6}>
-          <Card sx={{ borderRadius: 3, boxShadow: 3, backgroundColor: "#FFF8E1" }}>
-            <CardContent>
-              <Typography variant="h6" gutterBottom color="error">
-                Alerts & Notifications
-              </Typography>
+        {/* Medical Stock (names hidden) */}
+        <Grid item xs={12}>
+        {/* ======== MEDICAL STOCK OVERVIEW (CLEAN HOVER ONLY) ======== */}
+        <Card sx={{ p: 2, mb: 3, borderRadius: 2 }}>
+          <Typography variant="h6" sx={{ mb: 1, fontWeight: 600 }}>
+            Medical Stock Overview
+          </Typography>
 
-              {/* Low Stock Alerts */}
-              {lowStock.length > 0 ? (
-                lowStock.map((m) => (
-                  <Typography key={m.id} variant="body2" color="error">
-                    ⚠️ {m.name} stock is low ({m.stock} left)
-                  </Typography>
-                ))
-              ) : (
-                <Typography variant="body2">✅ All medicines in stock</Typography>
-              )}
+          {!stockData || stockData.length === 0 ? (
+            <Box sx={{ py: 6, textAlign: "center", color: "gray" }}>No inventory data found.</Box>
+          ) : (
+            <ResponsiveContainer width="100%" height={360}>
+              <BarChart data={stockData} margin={{ left: 0, right: 20 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f6fb" />
 
-              {/* Upcoming Appointments */}
-              <Typography variant="subtitle1" sx={{ mt: 2 }}>
-                Upcoming Appointments:
-              </Typography>
-              {upcomingAppointments.length > 0 ? (
-                upcomingAppointments.slice(0, 5).map((a) => (
-                  <Typography key={a.id} variant="body2">
-                    📅 {a.patientName} — {dayjs(a.appointmentDate).format("MMM D, YYYY")}
-                  </Typography>
-                ))
-              ) : (
-                <Typography variant="body2">No upcoming appointments</Typography>
-              )}
-            </CardContent>
-          </Card>
+        {/* HIDE X-AXIS LABELS COMPLETELY */}
+        <XAxis dataKey="medicineName" tick={false} axisLine={false} />
+
+        <YAxis />
+
+        {/* CLEAN HOVER: ONLY medicineName + units */}
+        <Tooltip
+            formatter={(value, name, props) => {
+              const medName = props.payload.name || "Unknown";
+              return [`${value} units`, medName];
+            }}
+            labelFormatter={() => ""} 
+            contentStyle={{
+              borderRadius: "10px",
+              boxShadow: "0 0 12px rgba(0,0,0,0.1)",
+            }}
+        />
+
+
+        {/* Bars */}
+        <Bar
+          dataKey="stock"
+          fill="#1976d2"
+          radius={[8, 8, 0, 0]}
+          animationDuration={700}
+        />
+        </BarChart>
+        </ResponsiveContainer>
+          )}
+        </Card>
         </Grid>
       </Grid>
-    </div>
+    </Box>
   );
-};
-
-export default DashboardCharts;
+}
