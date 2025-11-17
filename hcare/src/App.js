@@ -10,12 +10,11 @@ import StaffManagement from "./components/admin/StaffManagement";
 import InventoryManagement from './components/admin/InventoryManagement';
 
 // Lazy load pages
-const HomePage = lazy(() => import("./containers/HomePage"));
 const LoginForm = lazy(() => import("./components/Forms/LoginForm"));
 const RegisterForm = lazy(() => import("./components/Forms/RegisterForm"));
-const Dashboard = lazy(() => import("./containers/Dashboard"));
+const Dashboard = lazy(() => import("./containers/Dashboard.js"));
 const DoctorsPage = lazy(() => import("./containers/DoctorsPage"));
-const PatientsPage = lazy(() => import("./containers/PatientsPage"));
+const PatientsPage = lazy(() => import("./containers/PatientsPageFinal"));
 const AppointmentsPage = lazy(() => import("./containers/AppointmentsPage"));
 const PrescriptionsPage = lazy(() => import("./containers/PrescriptionsPage"));
 const BillingPage = lazy(() => import("./containers/BillingPage"));
@@ -32,11 +31,11 @@ const AppWrapper = () => {
       <Layout>
         <Suspense fallback={<div style={{ textAlign: "center", padding: "80px" }}><Spin size="large" /></div>}>
           <Routes>
-            <Route path="/" element={<HomePage />} />
+           
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<RegisterForm />} />
 
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/" element={<Dashboard />} />
             <Route path="/doctors" element={<DoctorsPage />} />
             <Route path="/calendar" element={<CalendarPage />} />
             <Route path="/patients" element={<PatientsPage />} />

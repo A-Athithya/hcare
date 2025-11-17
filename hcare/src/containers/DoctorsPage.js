@@ -28,7 +28,6 @@ import {
   message,
   Spin,
 } from "antd";
-import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import "./doctors.css";
@@ -38,11 +37,14 @@ const { TextArea } = Input;
 export default function DoctorsPage() {
   const dispatch = useDispatch();
   const { list: doctors, loading } = useSelector((state) => state.doctors);
+
   const [appointments, setAppointments] = useState([]);
   const [patients, setPatients] = useState([]);
+
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [form] = Form.useForm();
+
   const [submitting, setSubmitting] = useState(false);
   const [expandedDoctor, setExpandedDoctor] = useState(null);
 
@@ -51,32 +53,14 @@ export default function DoctorsPage() {
     loadData();
   }, [dispatch]);
 
-  // Fallback to mock data if Redux fails
-  useEffect(() => {
-    if (!loading && doctors.length === 0) {
-      const loadMockData = async () => {
-        try {
-          const response = await fetch('/db.json');
-          if (response.ok) {
-            const data = await response.json();
-            if (data.doctors) {
-              dispatch({ type: "doctors/fetchSuccess", payload: data.doctors });
-            }
-          }
-        } catch (error) {
-          console.error("Error loading mock doctors data:", error);
-        }
-      };
-      loadMockData();
-    }
-  }, [loading, doctors.length, dispatch]);
-
+  // ⭐ Load additional data for appointments/patients
   const loadData = async () => {
     try {
       const [appts, pats] = await Promise.all([
         getData("/appointments"),
         getData("/patients"),
       ]);
+
       setAppointments(appts);
       setPatients(pats);
     } catch (err) {
@@ -84,15 +68,44 @@ export default function DoctorsPage() {
     }
   };
 
+  // ⭐ Mock fallback if Redux fails
+  useEffect(() => {
+    if (!loading && doctors.length === 0) {
+      const loadMock = async () => {
+        try {
+          const response = await fetch("/db.json");
+
+          if (response.ok) {
+            const data = await response.json();
+
+            if (data.doctors) {
+              dispatch({
+                type: "doctors/fetchSuccess",
+                payload: data.doctors,
+              });
+            }
+          }
+        } catch (error) {
+          console.error("Error loading mock doctors:", error);
+        }
+      };
+
+      loadMock();
+    }
+  }, [loading, doctors.length, dispatch]);
+
+  // ⭐ Select a doctor → open drawer
   const openBookingDrawer = (doctor) => {
     setSelectedDoctor(doctor);
     setDrawerOpen(true);
     form.resetFields();
   };
 
+  // ⭐ Submit new appointment request
   const handleBookingSubmit = async (vals) => {
     try {
       setSubmitting(true);
+
       const payload = {
         patientId: vals.patientId,
         doctorId: selectedDoctor.id,
@@ -102,7 +115,9 @@ export default function DoctorsPage() {
         status: "Pending",
         paymentStatus: "Pending",
       };
+
       const res = await postData("/appointments", payload);
+
       setAppointments((prev) => [res, ...prev]);
       message.success("Appointment request sent successfully");
       setDrawerOpen(false);
@@ -113,26 +128,30 @@ export default function DoctorsPage() {
     }
   };
 
-  const updateAppointmentStatus = async (appt, status, doctor) => {
+  // ⭐ Accept / Reject requests
+  const updateAppointmentStatus = async (appt, status) => {
     try {
       const updated = { ...appt, status };
+
       await putData(`/appointments/${appt.id}`, updated);
+
       setAppointments((prev) =>
         prev.map((a) => (a.id === appt.id ? updated : a))
       );
+
       message.success(`Appointment ${status}`);
-    } catch (err) {
+    } catch {
       message.error("Failed to update appointment");
     }
   };
+
+  const getPatientName = (id) =>
+    patients.find((p) => p.id === id)?.name || "Unknown";
 
   const pendingRequests = (doctorId) =>
     appointments.filter(
       (a) => a.doctorId === doctorId && a.status === "Pending"
     );
-
-  const getPatientName = (id) =>
-    patients.find((p) => p.id == id)?.name || "Unknown";
 
   if (loading)
     return (
@@ -143,19 +162,16 @@ export default function DoctorsPage() {
 
   return (
     <Box sx={{ padding: 4, background: "#fafbfc", minHeight: "90vh" }}>
-      <Typography variant="h5" gutterBottom fontWeight={400} sx={{ color: "#202124", marginBottom: 3 }}>
+      <Typography
+        variant="h5"
+        gutterBottom
+        fontWeight={400}
+        sx={{ color: "#202124", marginBottom: 3 }}
+      >
         Doctors Directory
       </Typography>
 
-      {/* ✅ Equal-height layout using flexbox grid */}
-      <Grid
-        container
-        spacing={3}
-        sx={{
-          display: "flex",
-          alignItems: "stretch",
-        }}
-      >
+      <Grid container spacing={3} sx={{ display: "flex", alignItems: "stretch" }}>
         {doctors.map((doc) => (
           <Grid item xs={12} sm={6} md={4} key={doc.id} display="flex">
             <Card
@@ -166,7 +182,7 @@ export default function DoctorsPage() {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
-                minHeight: 400, // ✅ Fixes equal height
+                minHeight: 400,
               }}
             >
               <Box>
@@ -188,10 +204,12 @@ export default function DoctorsPage() {
                     <LocalHospitalIcon color="secondary" />
                     <Typography>{doc.experience}</Typography>
                   </Box>
+
                   <Box display="flex" alignItems="center" gap={1} mb={1}>
                     <AccessTimeIcon color="action" />
                     <Typography fontSize={14}>
-                      {doc.availableDays ? doc.availableDays.join(", ") : "N/A"} ({doc.availableTime || "N/A"})
+                      {doc.availableDays?.join(", ") || "N/A"} (
+                      {doc.availableTime || "N/A"})
                     </Typography>
                   </Box>
 
@@ -201,6 +219,7 @@ export default function DoctorsPage() {
                     readOnly
                     sx={{ marginBottom: 1 }}
                   />
+
                   <Typography
                     variant="body2"
                     color="text.secondary"
@@ -215,6 +234,7 @@ export default function DoctorsPage() {
                 </CardContent>
               </Box>
 
+              {/* Actions */}
               <Box>
                 <Divider />
                 <CardActions
@@ -224,12 +244,10 @@ export default function DoctorsPage() {
                     padding: "12px 16px",
                   }}
                 >
-                  <Button
-                    variant="contained"
-                    onClick={() => openBookingDrawer(doc)}
-                  >
+                  <Button variant="contained" onClick={() => openBookingDrawer(doc)}>
                     Book
                   </Button>
+
                   <Button
                     variant="outlined"
                     onClick={() =>
@@ -244,6 +262,7 @@ export default function DoctorsPage() {
                   </Button>
                 </CardActions>
 
+                {/* Pending Requests */}
                 <Collapse in={expandedDoctor === doc.id}>
                   <Paper elevation={0} sx={{ p: 2, bgcolor: "#fafafa" }}>
                     {pendingRequests(doc.id).length === 0 ? (
@@ -258,26 +277,14 @@ export default function DoctorsPage() {
                             actions={[
                               <Button
                                 size="small"
-                                onClick={() =>
-                                  updateAppointmentStatus(
-                                    appt,
-                                    "Accepted",
-                                    doc
-                                  )
-                                }
+                                onClick={() => updateAppointmentStatus(appt, "Accepted")}
                               >
                                 Accept
                               </Button>,
                               <Button
                                 size="small"
-                                color="error"
-                                onClick={() =>
-                                  updateAppointmentStatus(
-                                    appt,
-                                    "Rejected",
-                                    doc
-                                  )
-                                }
+                                danger
+                                onClick={() => updateAppointmentStatus(appt, "Rejected")}
                               >
                                 Reject
                               </Button>,
@@ -299,7 +306,7 @@ export default function DoctorsPage() {
         ))}
       </Grid>
 
-      {/* Drawer for booking */}
+      {/* Drawer for Booking */}
       <Drawer
         title={`Book Appointment - ${selectedDoctor?.name || ""}`}
         open={drawerOpen}
@@ -311,7 +318,7 @@ export default function DoctorsPage() {
           <Form.Item
             name="patientId"
             label="Patient"
-            rules={[{ required: true, message: "Please select a patient" }]}
+            rules={[{ required: true, message: "Select patient" }]}
           >
             <Select placeholder="Select a patient">
               {patients.map((p) => (
@@ -321,30 +328,21 @@ export default function DoctorsPage() {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item
-            name="date"
-            label="Appointment Date"
-            rules={[{ required: true }]}
-          >
+
+          <Form.Item name="date" label="Appointment Date" rules={[{ required: true }]}>
             <DatePicker style={{ width: "100%" }} />
           </Form.Item>
-          <Form.Item
-            name="time"
-            label="Time"
-            rules={[{ required: true }]}
-          >
+
+          <Form.Item name="time" label="Time" rules={[{ required: true }]}>
             <TimePicker use12Hours format="hh:mm A" style={{ width: "100%" }} />
           </Form.Item>
+
           <Form.Item name="reason" label="Reason for Visit">
             <TextArea rows={3} />
           </Form.Item>
+
           <div style={{ textAlign: "right" }}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => form.submit()}
-              disabled={submitting}
-            >
+            <Button variant="contained" onClick={() => form.submit()} disabled={submitting}>
               {submitting ? "Submitting..." : "Book Now"}
             </Button>
           </div>
@@ -353,4 +351,3 @@ export default function DoctorsPage() {
     </Box>
   );
 }
-

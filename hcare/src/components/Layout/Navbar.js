@@ -91,23 +91,6 @@ export default function Navbar() {
               HealthTool
             </Link>
           </Box>
-
-          {/* Center Search Bar */}
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            <input
-              type="text"
-              placeholder="Search..."
-              style={{
-                padding: "8px 12px",
-                borderRadius: 8,
-                border: "none",
-                width: 220,
-                outline: "none",
-                fontSize: 14,
-              }}
-            />
-          </Box>
-
           {/* Right Section */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <IconButton color="inherit" onClick={handleNotificationClick}>

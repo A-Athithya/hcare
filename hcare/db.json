@@ -11,7 +11,11 @@
       "contact": "9876543210",
       "email": "asha.r@gmail.com",
       "address": "Trichy, Tamil Nadu",
-      "availableDays": ["Monday", "Wednesday", "Friday"],
+      "availableDays": [
+        "Monday",
+        "Wednesday",
+        "Friday"
+      ],
       "availableTime": "10:00 AM - 2:00 PM",
       "status": "Active",
       "department": "Cardiology",
@@ -31,7 +35,10 @@
       "contact": "9876543211",
       "email": "karthik.m@gmail.com",
       "address": "Chennai, Tamil Nadu",
-      "availableDays": ["Tuesday", "Thursday"],
+      "availableDays": [
+        "Tuesday",
+        "Thursday"
+      ],
       "availableTime": "9:00 AM - 1:00 PM",
       "status": "Active",
       "department": "Orthopedics",
@@ -138,7 +145,7 @@
       "weight": "500mg",
       "category": "Pain Relief",
       "manufacturer": "Cipla Ltd",
-      "price": 25,
+      "price": "30",
       "manufacturerPrice": 18,
       "stock": 120,
       "expireDate": "2026-04-12",
@@ -308,7 +315,10 @@
       "shift": "Morning (7AM–3PM)",
       "experience": 4,
       "status": "Active",
-      "assignedPatients": ["Aarav Kumar", "Ananya Patel"],
+      "assignedPatients": [
+        "Aarav Kumar",
+        "Ananya Patel"
+      ],
       "dateJoined": "2021-06-15"
     }
   ],
@@ -321,8 +331,14 @@
       "doctorName": "Dr. Asha R",
       "appointmentId": 101,
       "services": [
-        { "service": "Consultation", "amount": 500 },
-        { "service": "ECG", "amount": 200 }
+        {
+          "service": "Consultation",
+          "amount": 500
+        },
+        {
+          "service": "ECG",
+          "amount": 200
+        }
       ],
       "totalAmount": 700,
       "paidAmount": 700,
@@ -341,8 +357,14 @@
       "doctorName": "Dr. Karthik M",
       "appointmentId": 102,
       "services": [
-        { "service": "Consultation", "amount": 600 },
-        { "service": "X-Ray", "amount": 300 }
+        {
+          "service": "Consultation",
+          "amount": 600
+        },
+        {
+          "service": "X-Ray",
+          "amount": 300
+        }
       ],
       "totalAmount": 900,
       "paidAmount": 500,
@@ -361,8 +383,14 @@
       "doctorName": "Dr. Karthik M",
       "appointmentId": null,
       "services": [
-        { "service": "Consultation", "amount": 600 },
-        { "service": "MRI", "amount": 1500 }
+        {
+          "service": "Consultation",
+          "amount": 600
+        },
+        {
+          "service": "MRI",
+          "amount": 1500
+        }
       ],
       "totalAmount": 2100,
       "paidAmount": 0,
@@ -381,8 +409,14 @@
       "doctorName": "Dr. Asha R",
       "appointmentId": null,
       "services": [
-        { "service": "Consultation", "amount": 500 },
-        { "service": "Blood Test", "amount": 150 }
+        {
+          "service": "Consultation",
+          "amount": 500
+        },
+        {
+          "service": "Blood Test",
+          "amount": 150
+        }
       ],
       "totalAmount": 650,
       "paidAmount": 650,
@@ -482,48 +516,47 @@
       "status": "Active"
     }
   ],
-    
-    "pharmacists": [
-      {
-        "id": "1",
-        "name": "Dr. Sameer",
-        "licenseNo": "PH1234",
-        "email": "sameer.pharma@example.com",
-        "contact": "9876501234",
-        "experience": "5 years"
-      },
-      {
-        "id": "2",
-        "name": "Dr. Nisha",
-        "licenseNo": "PH1235",
-        "email": "nisha.pharma@example.com",
-        "contact": "9876501235",
-        "experience": "4 years"
-      },
-      {
-        "id": "3",
-        "name": "Dr. Rajat",
-        "licenseNo": "PH1236",
-        "email": "rajat.pharma@example.com",
-        "contact": "9876501236",
-        "experience": "6 years"
-      },
-      {
-        "id": "4",
-        "name": "Dr. Ayesha",
-        "licenseNo": "PH1237",
-        "email": "ayesha.pharma@example.com",
-        "contact": "9876501237",
-        "experience": "3 years"
-      },
-      {
-        "id": "5",
-        "name": "Dr. Vikram",
-        "licenseNo": "PH1238",
-        "email": "vikram.pharma@example.com",
-        "contact": "9876501238",
-        "experience": "7 years"
-      }
+  "pharmacists": [
+    {
+      "id": "1",
+      "name": "Dr. Sameer",
+      "licenseNo": "PH1234",
+      "email": "sameer.pharma@example.com",
+      "contact": "9876501234",
+      "experience": "5 years"
+    },
+    {
+      "id": "2",
+      "name": "Dr. Nisha",
+      "licenseNo": "PH1235",
+      "email": "nisha.pharma@example.com",
+      "contact": "9876501235",
+      "experience": "4 years"
+    },
+    {
+      "id": "3",
+      "name": "Dr. Rajat",
+      "licenseNo": "PH1236",
+      "email": "rajat.pharma@example.com",
+      "contact": "9876501236",
+      "experience": "6 years"
+    },
+    {
+      "id": "4",
+      "name": "Dr. Ayesha",
+      "licenseNo": "PH1237",
+      "email": "ayesha.pharma@example.com",
+      "contact": "9876501237",
+      "experience": "3 years"
+    },
+    {
+      "id": "5",
+      "name": "Dr. Vikram",
+      "licenseNo": "PH1238",
+      "email": "vikram.pharma@example.com",
+      "contact": "9876501238",
+      "experience": "7 years"
+    }
   ],
   "receptionists": [
     {
