@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Form,
   Input,
@@ -6,127 +6,197 @@ import {
   Select,
   DatePicker,
   TimePicker,
+  Divider,
   message,
+  Row,
+  Col,
 } from "antd";
 import dayjs from "dayjs";
-import { useDispatch } from "react-redux";
 import { getData, postData, putData } from "../../api/client";
 
-export default function AppointmentForm({ initial = null, onSaved = () => {} }) {
+export default function AppointmentForm({
+  initial = null,
+  onSaved = () => {},
+  autoFocusPatientId = null,
+}) {
   const [form] = Form.useForm();
-  const dispatch = useDispatch();
-  const [patients, setPatients] = React.useState([]);
-  const [doctors, setDoctors] = React.useState([]);
+  const [patients, setPatients] = useState([]);
+  const [doctors, setDoctors] = useState([]);
 
+  /** ------- Load Patients + Doctors ------- **/
   useEffect(() => {
-    const fetchData = async () => {
-      const [p, d] = await Promise.all([getData("/patients"), getData("/doctors")]);
-      setPatients(p);
-      setDoctors(d);
-    };
-    fetchData();
+    let mounted = true;
+    async function load() {
+      try {
+        const [p, d] = await Promise.all([
+          getData("/patients"),
+          getData("/doctors"),
+        ]);
+        if (!mounted) return;
+        setPatients(p || []);
+        setDoctors(d || []);
+      } catch (err) {
+        console.error("Load error", err);
+      }
+    }
+    load();
+    return () => (mounted = false);
+  }, []);
 
+  /** ------- Prefill when editing ------- **/
+  useEffect(() => {
     if (initial) {
-      const copy = { ...initial };
-      copy.date = dayjs(initial.appointmentDate);
-      copy.time = dayjs(initial.appointmentTime, "hh:mm A");
-      form.setFieldsValue(copy);
+      const values = {
+        patientId: initial.patientId,
+        doctorId: initial.doctorId,
+        date: dayjs(initial.appointmentDate),
+        time: initial.appointmentTime
+          ? dayjs(initial.appointmentTime, "hh:mm A")
+          : undefined,
+        reason: initial.reason || "",
+        remarks: initial.remarks || "",
+        status: initial.status || "Pending",
+      };
+      form.setFieldsValue(values);
     } else {
       form.resetFields();
+      if (autoFocusPatientId)
+        form.setFieldsValue({ patientId: autoFocusPatientId });
     }
-  }, [initial, form]);
+  }, [initial, autoFocusPatientId, form]);
 
+  /** ------- Submit Handler ------- **/
   const onFinish = async (vals) => {
-    const payload = {
-      patientId: vals.patientId,
-      doctorId: vals.doctorId,
-      appointmentDate: vals.date.format("YYYY-MM-DD"),
-      appointmentTime: vals.time.format("hh:mm A"),
-      reason: vals.reason,
-      status: initial ? vals.status : "Pending",
-      paymentStatus: initial?.paymentStatus || "Pending",
-      remarks: vals.remarks || "",
-    };
-
     try {
+      const payload = {
+        patientId: vals.patientId,
+        doctorId: vals.doctorId,
+        appointmentDate: vals.date.format("YYYY-MM-DD"),
+        appointmentTime: vals.time.format("hh:mm A"),
+        reason: vals.reason,
+        remarks: vals.remarks || "",
+        status: vals.status || initial?.status || "Pending",
+        paymentStatus: initial?.paymentStatus || "Pending",
+      };
+
       if (initial?.id) {
-        await putData(`/appointments/${initial.id}`, payload);
-        dispatch({ type: "appointments/updateSuccess", payload });
+        await putData(`/appointments/${initial.id}`, {
+          ...initial,
+          ...payload,
+        });
         message.success("Appointment updated");
       } else {
-        const created = await postData("/appointments", payload);
-        dispatch({ type: "appointments/createSuccess", payload: created });
-        message.success("Appointment booked successfully");
+        await postData("/appointments", payload);
+        message.success("Appointment scheduled");
       }
+
       onSaved();
     } catch (err) {
+      console.error(err);
       message.error("Failed to save appointment");
     }
   };
 
   return (
-    <Form layout="vertical" form={form} onFinish={onFinish}>
-      <Form.Item
-        name="patientId"
-        label="Select Patient"
-        rules={[{ required: true, message: "Please select a patient" }]}
-      >
-        <Select placeholder="Select Patient">
-          {patients.map((p) => (
-            <Select.Option key={p.id} value={p.id}>
-              {p.name}
-            </Select.Option>
-          ))}
-        </Select>
-      </Form.Item>
+    <Form
+      layout="vertical"
+      form={form}
+      onFinish={onFinish}
+      style={{ paddingRight: 6 }}
+    >
+      <Divider orientation="left">Patient & Doctor</Divider>
+
+      <Row gutter={16}>
+        <Col span={12}>
+          <Form.Item
+            name="patientId"
+            label="Patient"
+            rules={[{ required: true, message: "Select patient" }]}
+          >
+            <Select
+              placeholder="Select patient"
+              showSearch
+              optionFilterProp="children"
+            >
+              {patients.map((p) => (
+                <Select.Option key={p.id} value={p.id}>
+                  {p.name} {p.age ? `• ${p.age}` : ""}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Col>
+
+        <Col span={12}>
+          <Form.Item
+            name="doctorId"
+            label="Doctor"
+            rules={[{ required: true, message: "Select doctor" }]}
+          >
+            <Select placeholder="Select doctor">
+              {doctors.map((d) => (
+                <Select.Option key={d.id} value={d.id}>
+                  {d.name} {d.specialization ? `• ${d.specialization}` : ""}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Divider orientation="left">Schedule</Divider>
+
+      <Row gutter={16}>
+        <Col span={12}>
+          <Form.Item
+            name="date"
+            label="Date"
+            rules={[{ required: true, message: "Select date" }]}
+          >
+            <DatePicker style={{ width: "100%" }} />
+          </Form.Item>
+        </Col>
+
+        <Col span={12}>
+          <Form.Item
+            name="time"
+            label="Time"
+            rules={[{ required: true, message: "Select time" }]}
+          >
+            <TimePicker
+              style={{ width: "100%" }}
+              use12Hours
+              format="hh:mm A"
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Divider orientation="left">Reason & Notes</Divider>
 
       <Form.Item
-        name="doctorId"
-        label="Select Doctor"
-        rules={[{ required: true, message: "Please select a doctor" }]}
+        name="reason"
+        label="Reason"
+        rules={[{ required: true, message: "Enter reason" }]}
       >
-        <Select placeholder="Select Doctor">
-          {doctors.map((d) => (
-            <Select.Option key={d.id} value={d.id}>
-              {d.name} ({d.specialization})
-            </Select.Option>
-          ))}
-        </Select>
-      </Form.Item>
-
-      <Form.Item name="date" label="Date" rules={[{ required: true }]}>
-        <DatePicker style={{ width: "100%" }} />
-      </Form.Item>
-
-      <Form.Item name="time" label="Time" rules={[{ required: true }]}>
-        <TimePicker format="hh:mm A" style={{ width: "100%" }} />
-      </Form.Item>
-
-      <Form.Item name="reason" label="Reason" rules={[{ required: true }]}>
         <Input placeholder="Reason for appointment" />
       </Form.Item>
 
-      {initial && (
-        <Form.Item name="status" label="Status">
-          <Select>
-            <Select.Option value="Pending">Pending</Select.Option>
-            <Select.Option value="Accepted">Accepted</Select.Option>
-            <Select.Option value="Completed">Completed</Select.Option>
-            <Select.Option value="Cancelled">Cancelled</Select.Option>
-          </Select>
-        </Form.Item>
-      )}
-
       <Form.Item name="remarks" label="Remarks">
-        <Input.TextArea rows={3} />
+        <Input.TextArea rows={3} placeholder="Optional notes" />
       </Form.Item>
 
-      <div style={{ textAlign: "right" }}>
-        <Button onClick={() => form.resetFields()} style={{ marginRight: 8 }}>
-          Reset
-        </Button>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          marginTop: 12,
+          gap: 10,
+        }}
+      >
+        <Button onClick={() => form.resetFields()}>Reset</Button>
         <Button type="primary" htmlType="submit">
-          {initial ? "Update Appointment" : "Book Appointment"}
+          {initial ? "Update Appointment" : "Schedule Appointment"}
         </Button>
       </div>
     </Form>

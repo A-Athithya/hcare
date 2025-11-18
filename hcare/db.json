@@ -71,21 +71,19 @@
       "registeredDate": "2025-11-01"
     },
     {
-      "id": 2,
-      "name": "Ananya Raj",
+      "name": "Ananya ",
       "age": 27,
       "gender": "Female",
-      "bloodGroup": "O+",
       "contact": "9876543211",
       "email": "ananya.raj@gmail.com",
-      "password": "Ananya@2024",
-      "role": "patient",
+      "bloodGroup": "O+",
       "address": "45 MG Street, Trichy",
+      "registeredDate": "2025-11-02",
       "medicalHistory": "Asthma",
       "allergies": "Dust",
       "emergencyContact": "Aarav (Brother) - 9876543210",
       "status": "Active",
-      "registeredDate": "2025-11-02"
+      "id": 2
     },
     {
       "id": 3,
@@ -123,6 +121,17 @@
       "status": "Rejected",
       "paymentStatus": "Pending",
       "remarks": ""
+    },
+    {
+      "patientId": 2,
+      "doctorId": 1,
+      "appointmentDate": "2025-11-20",
+      "appointmentTime": "05:00 PM",
+      "reason": "-",
+      "remarks": "-",
+      "status": "Pending",
+      "paymentStatus": "Pending",
+      "id": 103
     }
   ],
   "users": [

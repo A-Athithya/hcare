@@ -1,70 +1,39 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import {
+  Box,
+  Grid,
   Card,
   CardContent,
   Typography,
   TextField,
   Button,
-  Box,
-  Alert,
-  Select,
-  MenuItem,
+  Avatar,
+  Paper,
   FormControl,
   InputLabel,
-  Tabs,
-  Tab,
-  Avatar,
-  Grid,
-  Paper,
+  Select,
+  MenuItem,
+  Alert,
 } from "@mui/material";
-import {
-  LocalHospital as HospitalIcon,
-  Person as PersonIcon,
-  Lock as LockIcon,
-  Email as EmailIcon,
-} from "@mui/icons-material";
+import { Lock as LockIcon, Email as EmailIcon } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
 import { loginStart } from "../../features/auth/authSlice";
+import { useNavigate, Link } from "react-router-dom";
 
-const LoginPage = () => {
-  const [tabValue, setTabValue] = useState(0);
+export default function LoginPage() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user, loading, error } = useSelector((s) => s.auth || {});
+
   const [loginForm, setLoginForm] = useState({
     email: "",
     password: "",
     role: "admin",
   });
-  const [registerForm, setRegisterForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-    role: "admin",
-  });
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { loading, error, user } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (user) {
-      navigate("/dashboard");
-    }
+    if (user) navigate("/dashboard");
   }, [user, navigate]);
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    dispatch(loginStart(loginForm));
-  };
-
-  const handleRegister = (e) => {
-    e.preventDefault();
-    // For now, just show a message - registration logic can be implemented later
-    alert("Registration functionality will be implemented soon!");
-  };
-
-  const handleTabChange = (event, newValue) => {
-    setTabValue(newValue);
-  };
 
   const roles = [
     { value: "admin", label: "Admin", icon: "🏥" },
@@ -75,479 +44,209 @@ const LoginPage = () => {
     { value: "patient", label: "Patient", icon: "👤" },
   ];
 
+  const handleLogin = (e) => {
+    e.preventDefault();
+    dispatch(loginStart(loginForm));
+  };
+
   return (
     <Box
       sx={{
         minHeight: "100vh",
-        background: "linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%)",
+        background: "linear-gradient(135deg,#F6FAFF,#EEF2FF)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         p: 2,
       }}
     >
-      <Grid container spacing={0} sx={{ maxWidth: 1200, width: "100%" }}>
-        {/* Left Side - Welcome Section */}
-        <Grid item xs={12} md={6}>
-          <Box
+      <Grid
+        container
+        spacing={3}
+        sx={{
+          width: "100%",
+          maxWidth: 1100,
+          alignItems: "stretch",
+        }}
+      >
+        {/* LEFT SECTION - DEMO INFO */}
+        <Grid
+          item
+          xs={12}
+          md={5}
+          sx={{
+            display: { xs: "none", md: "flex" },
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Paper
+            elevation={1}
             sx={{
-              display: { xs: "none", md: "flex" },
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "100%",
               p: 4,
-              color: "white",
+              width: "100%",
+              borderRadius: 3,
+              bgcolor: "white",
+              boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
             }}
           >
-            <Avatar
-              sx={{
-                width: 80,
-                height: 80,
-                bgcolor: "rgba(255, 255, 255, 0.2)",
-                mb: 3,
-              }}
-            >
-              <HospitalIcon sx={{ fontSize: 40 }} />
-            </Avatar>
-            <Typography variant="h3" component="h1" gutterBottom fontWeight="bold">
-              Healthcare Management System
-            </Typography>
-            <Typography variant="h6" sx={{ opacity: 0.9, textAlign: "center", mb: 4 }}>
-              Streamlining healthcare operations with modern technology
-            </Typography>
-            <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", justifyContent: "center" }}>
-              {roles.map((role) => (
-                <Paper
-                  key={role.value}
-                  sx={{
-                    p: 2,
-                    borderRadius: 2,
-                    bgcolor: "rgba(255, 255, 255, 0.1)",
-                    border: "1px solid rgba(255, 255, 255, 0.2)",
-                    minWidth: 120,
-                    textAlign: "center",
-                  }}
-                >
-                  <Typography variant="h4" sx={{ mb: 1 }}>
-                    {role.icon}
-                  </Typography>
-                  <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                    {role.label}
-                  </Typography>
-                </Paper>
-              ))}
+            <Box sx={{ textAlign: "center" }}>
+              <Avatar
+                sx={{
+                  width: 80,
+                  height: 80,
+                  bgcolor: "#1976d2",
+                  mx: "auto",
+                  mb: 2,
+                }}
+              >
+                <LockIcon sx={{ fontSize: 40 }} />
+              </Avatar>
+
+              <Typography variant="h4" fontWeight={700} sx={{ mb: 1 }}>
+                Welcome to HealthTool
+              </Typography>
+
+              <Typography variant="body2" sx={{ color: "gray", mb: 3 }}>
+                Manage appointments, patients, staff & inventory seamlessly.
+              </Typography>
+
+              <Paper
+                elevation={0}
+                sx={{
+                  p: 2,
+                  borderRadius: 2,
+                  bgcolor: "#F9FBFF",
+                  border: "1px solid rgba(25,118,210,0.15)",
+                  textAlign: "left",
+                }}
+              >
+                <Typography variant="subtitle1" fontWeight={700} sx={{ mb: 1 }}>
+                  Demo Credentials
+                </Typography>
+
+                <Typography variant="body2"><strong>Admin:</strong> admin@hospital.com / admin123</Typography>
+                <Typography variant="body2"><strong>Doctor:</strong> asha.r@gmail.com / Asha@2024</Typography>
+                <Typography variant="body2"><strong>Nurse:</strong> priya.raj@gmail.com / nurse123</Typography>
+                <Typography variant="body2"><strong>Pharmacist:</strong> sameer.pharma@example.com / pharma123</Typography>
+                <Typography variant="body2"><strong>Receptionist:</strong> riya.sharma@example.com / recep123</Typography>
+                <Typography variant="body2"><strong>Patient:</strong> aarav.kumar@gmail.com / Aarav@2024</Typography>
+              </Paper>
             </Box>
-          </Box>
+          </Paper>
         </Grid>
 
-        {/* Right Side - Login Form */}
-        <Grid item xs={12} md={6}>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              minHeight: { xs: "auto", md: "100%" },
-            }}
-          >
-            <Card
-              className="healthcare-card"
-              sx={{
-                maxWidth: 450,
-                width: "100%",
-                mx: 2,
-                boxShadow: "var(--shadow-heavy)",
-                border: "1px solid var(--gray-200)",
-              }}
-            >
-              <CardContent sx={{ p: 4 }}>
-                <Box sx={{ textAlign: "center", mb: 3 }}>
-                  <Avatar
-                    sx={{
-                      width: 60,
-                      height: 60,
-                      bgcolor: "var(--primary-blue)",
-                      mx: "auto",
-                      mb: 2,
-                    }}
-                  >
-                    <LockIcon sx={{ fontSize: 30 }} />
-                  </Avatar>
-                  <Typography variant="h4" component="h1" gutterBottom fontWeight="bold">
-                    Welcome Back
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Sign in to access your healthcare dashboard
-                  </Typography>
-                </Box>
-
-                <Tabs
-                  value={tabValue}
-                  onChange={handleTabChange}
+        {/* RIGHT SECTION - LOGIN FORM */}
+        <Grid item xs={12} md={7}>
+          <Card sx={{ borderRadius: 3, boxShadow: 3 }}>
+            <CardContent sx={{ p: { xs: 3, md: 5 } }}>
+              <Box sx={{ textAlign: "center", mb: 3 }}>
+                <Avatar
                   sx={{
-                    mb: 3,
-                    "& .MuiTabs-indicator": {
-                      backgroundColor: "var(--primary-blue)",
-                    },
-                    "& .MuiTab-root": {
-                      color: "var(--gray-600)",
-                      "&.Mui-selected": {
-                        color: "var(--primary-blue)",
-                        fontWeight: "bold",
-                      },
-                    },
+                    width: 60,
+                    height: 60,
+                    bgcolor: "#1976d2",
+                    mx: "auto",
+                    mb: 1,
                   }}
                 >
-                  <Tab label="Login" />
-                  <Tab label="Register" />
-                </Tabs>
+                  <LockIcon />
+                </Avatar>
 
-                {tabValue === 0 && (
-                  <Box component="form" onSubmit={handleLogin}>
-                    <FormControl fullWidth sx={{ mb: 3 }}>
-                      <InputLabel sx={{ color: "var(--gray-600)" }}>Select Role</InputLabel>
-                      <Select
-                        value={loginForm.role}
-                        label="Select Role"
-                        onChange={(e) =>
-                          setLoginForm({ ...loginForm, role: e.target.value })
-                        }
-                        sx={{
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "var(--gray-300)",
-                          },
-                          "&:hover .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "var(--primary-blue)",
-                          },
-                          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "var(--primary-blue)",
-                          },
-                        }}
-                      >
-                        {roles.map((role) => (
-                          <MenuItem key={role.value} value={role.value}>
-                            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                              <span>{role.icon}</span>
-                              <span>{role.label}</span>
-                            </Box>
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
+                <Typography variant="h5" fontWeight={700}>
+                  Sign In
+                </Typography>
 
-                    <TextField
-                      fullWidth
-                      label="Email Address"
-                      type="email"
-                      value={loginForm.email}
-                      onChange={(e) =>
-                        setLoginForm({ ...loginForm, email: e.target.value })
-                      }
-                      sx={{
-                        mb: 2,
-                        "& .MuiOutlinedInput-root": {
-                          "& fieldset": {
-                            borderColor: "var(--gray-300)",
-                          },
-                          "&:hover fieldset": {
-                            borderColor: "var(--primary-blue)",
-                          },
-                          "&.Mui-focused fieldset": {
-                            borderColor: "var(--primary-blue)",
-                          },
-                        },
-                        "& .MuiInputLabel-root": {
-                          color: "var(--gray-600)",
-                          "&.Mui-focused": {
-                            color: "var(--primary-blue)",
-                          },
-                        },
-                      }}
-                      InputProps={{
-                        startAdornment: (
-                          <EmailIcon sx={{ color: "var(--gray-400)", mr: 1 }} />
-                        ),
-                      }}
-                      required
-                    />
+                <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                  Enter your role & credentials
+                </Typography>
+              </Box>
 
-                    <TextField
-                      fullWidth
-                      label="Password"
-                      type="password"
-                      value={loginForm.password}
-                      onChange={(e) =>
-                        setLoginForm({ ...loginForm, password: e.target.value })
-                      }
-                      sx={{
-                        mb: 3,
-                        "& .MuiOutlinedInput-root": {
-                          "& fieldset": {
-                            borderColor: "var(--gray-300)",
-                          },
-                          "&:hover fieldset": {
-                            borderColor: "var(--primary-blue)",
-                          },
-                          "&.Mui-focused fieldset": {
-                            borderColor: "var(--primary-blue)",
-                          },
-                        },
-                        "& .MuiInputLabel-root": {
-                          color: "var(--gray-600)",
-                          "&.Mui-focused": {
-                            color: "var(--primary-blue)",
-                          },
-                        },
-                      }}
-                      InputProps={{
-                        startAdornment: (
-                          <LockIcon sx={{ color: "var(--gray-400)", mr: 1 }} />
-                        ),
-                      }}
-                      required
-                    />
+              <Box
+                component="form"
+                onSubmit={handleLogin}
+                sx={{ display: "grid", gap: 2 }}
+              >
+                <FormControl fullWidth>
+                  <InputLabel>Role</InputLabel>
+                  <Select
+                    value={loginForm.role}
+                    label="Role"
+                    onChange={(e) =>
+                      setLoginForm({ ...loginForm, role: e.target.value })
+                    }
+                  >
+                    {roles.map((r) => (
+                      <MenuItem key={r.value} value={r.value}>
+                        {r.icon} &nbsp; {r.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
 
-                    {error && (
-                      <Alert
-                        severity="error"
-                        sx={{
-                          mb: 3,
-                          borderRadius: "var(--border-radius)",
-                          border: "1px solid var(--error-red)",
-                        }}
-                      >
-                        {error}
-                      </Alert>
-                    )}
+                <TextField
+                  fullWidth
+                  label="Email"
+                  value={loginForm.email}
+                  onChange={(e) =>
+                    setLoginForm({ ...loginForm, email: e.target.value })
+                  }
+                  InputProps={{
+                    startAdornment: (
+                      <EmailIcon
+                        sx={{ mr: 1, color: "rgba(0,0,0,0.45)" }}
+                      />
+                    ),
+                  }}
+                />
 
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      fullWidth
-                      disabled={loading}
-                      sx={{
-                        mb: 3,
-                        py: 1.5,
-                        borderRadius: "var(--border-radius)",
-                        background: "linear-gradient(135deg, var(--primary-blue), var(--secondary-blue))",
-                        boxShadow: "var(--shadow-medium)",
-                        "&:hover": {
-                          background: "linear-gradient(135deg, var(--secondary-blue), var(--primary-blue))",
-                          boxShadow: "var(--shadow-heavy)",
-                          transform: "translateY(-1px)",
-                        },
-                        "&:disabled": {
-                          background: "var(--gray-400)",
-                        },
-                      }}
-                    >
-                      {loading ? "Signing In..." : "Sign In"}
-                    </Button>
+                <TextField
+                  fullWidth
+                  label="Password"
+                  type="password"
+                  value={loginForm.password}
+                  onChange={(e) =>
+                    setLoginForm({ ...loginForm, password: e.target.value })
+                  }
+                />
 
-                    <Paper
-                      sx={{
-                        p: 2,
-                        bgcolor: "var(--gray-50)",
-                        border: "1px solid var(--gray-200)",
-                        borderRadius: "var(--border-radius)",
-                      }}
-                    >
-                      <Typography variant="body2" color="text.secondary" align="center" fontWeight="bold" sx={{ mb: 1 }}>
-                        Demo Credentials
-                      </Typography>
-                      <Typography variant="caption" color="text.secondary" align="center" component="div">
-                        <strong>Admin:</strong> admin@hospital.com / admin123<br />
-                        <strong>Doctor:</strong> asha.r@gmail.com / Asha@2024<br />
-                        <strong>Nurse:</strong> priya.raj@gmail.com / nurse123<br />
-                        <strong>Pharmacist:</strong> sameer.pharma@example.com / pharma123<br />
-                        <strong>Receptionist:</strong> riya.sharma@example.com / recep123<br />
-                        <strong>Patient:</strong> aarav.kumar@gmail.com / Aarav@2024
-                      </Typography>
-                    </Paper>
-                  </Box>
-                )}
+                {error && <Alert severity="error">{error}</Alert>}
 
-                {tabValue === 1 && (
-                  <Box component="form" onSubmit={handleRegister}>
-                    <Typography variant="h5" gutterBottom fontWeight="bold">
-                      Create New Account
-                    </Typography>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  disabled={loading}
+                  sx={{
+                    py: 1.3,
+                    mt: 1,
+                    fontWeight: 600,
+                    borderRadius: 2,
+                    background: "linear-gradient(90deg,#1976d2,#1e88e5)",
+                  }}
+                >
+                  {loading ? "Signing in..." : "Sign In"}
+                </Button>
 
-                    <FormControl fullWidth sx={{ mb: 2 }}>
-                      <InputLabel sx={{ color: "var(--gray-600)" }}>Select Role</InputLabel>
-                      <Select
-                        value={registerForm.role}
-                        label="Select Role"
-                        onChange={(e) =>
-                          setRegisterForm({ ...registerForm, role: e.target.value })
-                        }
-                        sx={{
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "var(--gray-300)",
-                          },
-                          "&:hover .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "var(--primary-blue)",
-                          },
-                          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "var(--primary-blue)",
-                          },
-                        }}
-                      >
-                        {roles.map((role) => (
-                          <MenuItem key={role.value} value={role.value}>
-                            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                              <span>{role.icon}</span>
-                              <span>{role.label}</span>
-                            </Box>
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
+                <Box
+                  sx={{
+                    mt: 2,
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography variant="body2">New user?</Typography>
 
-                    <TextField
-                      fullWidth
-                      label="Full Name"
-                      value={registerForm.name}
-                      onChange={(e) =>
-                        setRegisterForm({ ...registerForm, name: e.target.value })
-                      }
-                      sx={{
-                        mb: 2,
-                        "& .MuiOutlinedInput-root": {
-                          "& fieldset": {
-                            borderColor: "var(--gray-300)",
-                          },
-                          "&:hover fieldset": {
-                            borderColor: "var(--primary-blue)",
-                          },
-                          "&.Mui-focused fieldset": {
-                            borderColor: "var(--primary-blue)",
-                          },
-                        },
-                        "& .MuiInputLabel-root": {
-                          color: "var(--gray-600)",
-                          "&.Mui-focused": {
-                            color: "var(--primary-blue)",
-                          },
-                        },
-                      }}
-                      InputProps={{
-                        startAdornment: (
-                          <PersonIcon sx={{ color: "var(--gray-400)", mr: 1 }} />
-                        ),
-                      }}
-                      required
-                    />
-
-                    <TextField
-                      fullWidth
-                      label="Email Address"
-                      type="email"
-                      value={registerForm.email}
-                      onChange={(e) =>
-                        setRegisterForm({ ...registerForm, email: e.target.value })
-                      }
-                      sx={{
-                        mb: 2,
-                        "& .MuiOutlinedInput-root": {
-                          "& fieldset": {
-                            borderColor: "var(--gray-300)",
-                          },
-                          "&:hover fieldset": {
-                            borderColor: "var(--primary-blue)",
-                          },
-                          "&.Mui-focused fieldset": {
-                            borderColor: "var(--primary-blue)",
-                          },
-                        },
-                        "& .MuiInputLabel-root": {
-                          color: "var(--gray-600)",
-                          "&.Mui-focused": {
-                            color: "var(--primary-blue)",
-                          },
-                        },
-                      }}
-                      InputProps={{
-                        startAdornment: (
-                          <EmailIcon sx={{ color: "var(--gray-400)", mr: 1 }} />
-                        ),
-                      }}
-                      required
-                    />
-
-                    <TextField
-                      fullWidth
-                      label="Password"
-                      type="password"
-                      value={registerForm.password}
-                      onChange={(e) =>
-                        setRegisterForm({ ...registerForm, password: e.target.value })
-                      }
-                      sx={{
-                        mb: 3,
-                        "& .MuiOutlinedInput-root": {
-                          "& fieldset": {
-                            borderColor: "var(--gray-300)",
-                          },
-                          "&:hover fieldset": {
-                            borderColor: "var(--primary-blue)",
-                          },
-                          "&.Mui-focused fieldset": {
-                            borderColor: "var(--primary-blue)",
-                          },
-                        },
-                        "& .MuiInputLabel-root": {
-                          color: "var(--gray-600)",
-                          "&.Mui-focused": {
-                            color: "var(--primary-blue)",
-                          },
-                        },
-                      }}
-                      InputProps={{
-                        startAdornment: (
-                          <LockIcon sx={{ color: "var(--gray-400)", mr: 1 }} />
-                        ),
-                      }}
-                      required
-                    />
-
-                    <Alert
-                      severity="info"
-                      sx={{
-                        mb: 3,
-                        borderRadius: "var(--border-radius)",
-                        border: "1px solid var(--warning-yellow)",
-                      }}
-                    >
-                      Registration functionality is coming soon. For now, use the demo accounts to login.
-                    </Alert>
-
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      fullWidth
-                      disabled
-                      sx={{
-                        py: 1.5,
-                        borderRadius: "var(--border-radius)",
-                        background: "var(--gray-400)",
-                        "&:hover": {
-                          background: "var(--gray-500)",
-                        },
-                      }}
-                    >
-                      Register (Coming Soon)
-                    </Button>
-                  </Box>
-                )}
-              </CardContent>
-            </Card>
-          </Box>
+                  <Link to="/register" style={{ textDecoration: "none" }}>
+                    <Button size="small">Create Account</Button>
+                  </Link>
+                </Box>
+              </Box>
+            </CardContent>
+          </Card>
         </Grid>
       </Grid>
     </Box>
   );
-};
-
-export default LoginPage;
+}

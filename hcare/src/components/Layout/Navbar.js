@@ -1,3 +1,4 @@
+// src/components/Layout/Navbar.js
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,6 +13,7 @@ import {
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import { getData } from "../../api/client";
 import { logout } from "../../features/auth/authSlice";
 
@@ -20,7 +22,6 @@ export default function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [pendingCount, setPendingCount] = useState(0);
-
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -33,16 +34,15 @@ export default function Navbar() {
       }
     };
     fetchAppointments();
+
     const interval = setInterval(fetchAppointments, 10000);
     return () => clearInterval(interval);
   }, []);
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/");
+    navigate("/login");
   };
-
-  const handleNotificationClick = () => navigate("/appointments");
 
   const toggleSidebar = () => dispatch({ type: "ui/toggleSidebar" });
 
@@ -51,23 +51,23 @@ export default function Navbar() {
       <AppBar
         position="fixed"
         sx={{
-          background: "linear-gradient(90deg, #3949ab 0%, #1e88e5 100%)",
-          zIndex: (theme) => theme.zIndex.drawer + 1,
-          boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
-          paddingBottom: "6px", // 🔽 Added gutter bottom
+          background: "linear-gradient(90deg,#1e88e5,#3949ab)",
+          zIndex: (t) => t.zIndex.drawer + 1,
+          boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+          paddingBottom: "6px",
         }}
       >
         <Toolbar
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            minHeight: "70px", // 🔽 Slightly taller for breathing room
+            minHeight: "70px",
             px: 2,
           }}
         >
-          {/* Left Section */}
+          {/* LEFT SIDE */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <IconButton color="inherit" edge="start" onClick={toggleSidebar}>
+            <IconButton color="inherit" onClick={toggleSidebar}>
               <MenuIcon />
             </IconButton>
 
@@ -78,12 +78,13 @@ export default function Navbar() {
               height="38"
               style={{ borderRadius: "50%" }}
             />
+
             <Link
-              to="/"
+              to="/dashboard"
               style={{
                 color: "white",
                 textDecoration: "none",
-                fontWeight: "bold",
+                fontWeight: 700,
                 fontSize: 18,
                 letterSpacing: 0.5,
               }}
@@ -91,48 +92,58 @@ export default function Navbar() {
               HealthTool
             </Link>
           </Box>
-          {/* Right Section */}
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <IconButton color="inherit" onClick={handleNotificationClick}>
+
+          {/* RIGHT SIDE */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            {/* Add Patient Shortcut */}
+            <IconButton
+              color="inherit"
+              onClick={() => navigate("/patient/add")}
+              sx={{
+                borderRadius: 2,
+                "&:hover": { bgcolor: "rgba(255,255,255,0.25)" },
+              }}
+            >
+              <PersonAddAlt1Icon />
+            </IconButton>
+
+            {/* Notifications */}
+            <IconButton
+              color="inherit"
+              onClick={() => navigate("/appointments")}
+              sx={{
+                borderRadius: 2,
+                "&:hover": { bgcolor: "rgba(255,255,255,0.25)" },
+              }}
+            >
               <Badge badgeContent={pendingCount} color="error">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
 
+            {/* USER MENU */}
             {user ? (
               <div className="dropdown">
                 <Button
                   variant="contained"
-                  color="secondary"
                   startIcon={<AccountCircle />}
                   data-bs-toggle="dropdown"
                   sx={{
                     textTransform: "none",
                     borderRadius: 3,
-                    background: "#fff",
+                    bgcolor: "#fff",
                     color: "#1976d2",
-                    "&:hover": { background: "#e6e6e6" },
+                    "&:hover": { bgcolor: "#f0f0f0" },
                   }}
                 >
                   {user.name}
                 </Button>
 
                 <ul className="dropdown-menu dropdown-menu-end shadow-sm">
+                  <li><Link className="dropdown-item" to="/profile">My Profile</Link></li>
+                  <li><Link className="dropdown-item" to="/appointments">Appointments</Link></li>
                   <li>
-                    <Link className="dropdown-item" to="/profile">
-                      My Profile
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/appointments">
-                      Appointments
-                    </Link>
-                  </li>
-                  <li>
-                    <button
-                      className="dropdown-item text-danger"
-                      onClick={handleLogout}
-                    >
+                    <button className="dropdown-item text-danger" onClick={handleLogout}>
                       Logout
                     </button>
                   </li>
@@ -143,12 +154,7 @@ export default function Navbar() {
                 <Button
                   color="inherit"
                   onClick={() => navigate("/login")}
-                  sx={{
-                    textTransform: "none",
-                    borderRadius: 2,
-                    border: "1px solid white",
-                    "&:hover": { background: "rgba(255,255,255,0.1)" },
-                  }}
+                  sx={{ textTransform: "none", borderRadius: 2 }}
                 >
                   Login
                 </Button>
@@ -160,7 +166,7 @@ export default function Navbar() {
                     borderRadius: 2,
                     background: "white",
                     color: "#1976d2",
-                    "&:hover": { background: "#f2f2f2" },
+                    "&:hover": { background: "#e6e6e6" },
                   }}
                 >
                   Register
@@ -171,7 +177,7 @@ export default function Navbar() {
         </Toolbar>
       </AppBar>
 
-      {/* ✅ Adds space below Navbar to prevent overlap */}
+      {/* Spacing to avoid overlap */}
       <Box sx={{ mt: "70px" }} />
     </>
   );
