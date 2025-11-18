@@ -1,35 +1,44 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Table, Card, Input, Button } from "antd";
 import { useNavigate } from "react-router-dom";
 
 export default function PatientsPage() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { list, loading } = useSelector((s) => s.patients);
+  const [patients, setPatients] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
-    dispatch({ type: "patients/fetchStart" });
-  }, [dispatch]);
+    const load = async () => {
+      try {
+        const res = await fetch("/db.json");
+        if (res.ok) {
+          const data = await res.json();
+          setPatients(data.patients || []);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+      setLoading(false);
+    };
+    load();
+  }, []);
 
-  const filtered = list.filter((p) =>
-    p.name.toLowerCase().includes(filter.toLowerCase())
+  const filtered = patients.filter((p) =>
+    p.name?.toLowerCase().includes(filter.toLowerCase())
   );
 
   const cols = [
-    { title: "Name", dataIndex: "name", key: "name" },
-    { title: "Age", dataIndex: "age", key: "age" },
-    { title: "Gender", dataIndex: "gender", key: "gender" },
-    { title: "Contact", dataIndex: "contact", key: "contact" },
-    { title: "Address", dataIndex: "address", key: "address" },
+    { title: "Name", dataIndex: "name" },
+    { title: "Age", dataIndex: "age" },
+    { title: "Gender", dataIndex: "gender" },
+    { title: "Contact", dataIndex: "contact" },
+    { title: "Address", dataIndex: "address" },
+
     {
       title: "Action",
       render: (_, rec) => (
-        <Button
-          type="link"
-          onClick={() => navigate(`/patients/${rec.id}`)}
-        >
+        <Button type="link" onClick={() => navigate(`/patients/${rec.id}`)}>
           View Details
         </Button>
       ),
@@ -38,18 +47,28 @@ export default function PatientsPage() {
 
   return (
     <div style={{ padding: 24 }}>
-      <h2>Patients</h2>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginBottom: 12,
+        }}
+      >
+        <h2 style={{ margin: 0 }}>Patients</h2>
+
+        <Button type="primary" onClick={() => navigate("/patient/add")}>
+          + Add Patient
+        </Button>
+      </div>
+
       <Input
-        placeholder="Search patient..."
+        placeholder="Search patient…"
         style={{ width: 260, marginBottom: 12 }}
         value={filter}
         onChange={(e) => setFilter(e.target.value)}
       />
-      <Card>
-        {!loading && list.length === 0 && (
-       <p style={{ textAlign: "center", color: "gray" }}>No patients found.</p>
-       )}
 
+      <Card>
         <Table
           dataSource={filtered}
           columns={cols}

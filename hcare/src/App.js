@@ -1,68 +1,237 @@
+// src/App.js
 import React, { Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+import MuiProvider from "./mui/MaterialDesign";
 import Layout from "./components/Layout/Layout";
+import { Spin } from "antd";
+
+// Direct imports
 import CalendarPage from "./containers/CalendarPage";
 import PatientDetailsPage from "./containers/PatientDetailsPage";
-import PatientManagementPage from "./containers/PatientManagementPage";
-import MuiProvider from "./mui/MaterialDesign";
-import { Spin } from "antd";
-import AllCommunicationsPage from './components/communication/AllCommunicationsPage.jsx';
-import DoctorCommunications from './components/communication/DoctorCommunications.jsx';
+import PatientFormPage from "./containers/PatientFormPage";
 
+// Auth Pages (NEW)
+const LoginPage = lazy(() => import("./components/Auth/LoginPage"));
+const RegisterPage = lazy(() => import("./components/Auth/RegisterPage")); // ✅ FIXED
 
-// Lazy load pages
-const LoginForm = lazy(() => import("./components/Forms/LoginForm"));
-const RegisterForm = lazy(() => import("./components/Forms/RegisterForm"));
-const Dashboard = lazy(() => import("./containers/Dashboard.js"));
+// Lazy pages
+const Dashboard = lazy(() => import("./containers/Dashboard"));
 const DoctorsPage = lazy(() => import("./containers/DoctorsPage"));
-const PatientsPage = lazy(() => import("./containers/PatientsPageFinal"));
+const PatientsPage = lazy(() => import("./containers/PatientsPage"));
 const AppointmentsPage = lazy(() => import("./containers/AppointmentsPage"));
 const PrescriptionsPage = lazy(() => import("./containers/PrescriptionsPage"));
 const BillingPage = lazy(() => import("./containers/BillingPage"));
 const PaymentPage = lazy(() => import("./containers/PaymentPage"));
 const SettingsPage = lazy(() => import("./containers/SettingsPage"));
-const StaffManagement = lazy(() => import("./components/admin/StaffsManagement"));
-const InventoryManagement = lazy(() => import("./components/admin/InventoryManagement"));
-const CommunicationPage = lazy(() => import('./components/communication/CommunicationPage'));
+const StaffManagement = lazy(() =>
+  import("./components/admin/StaffsManagement")
+);
+const InventoryManagement = lazy(() =>
+  import("./components/admin/InventoryManagement")
+);
 
+// -------------------------------------------
+// PROTECTED ROUTE
+// -------------------------------------------
+const ProtectedRoute = ({ children }) => {
+  const { user } = useSelector((s) => s.auth);
 
-// Removed ProtectedRoute - all routes are now public
-
-const AppWrapper = () => {
-  // Removed auth persistence logic - no login required
-
-  return (
-    <MuiProvider>
-      <Layout>
-        <Suspense fallback={<div style={{ textAlign: "center", padding: "80px" }}><Spin size="large" /></div>}>
-          <Routes>
-           
-            <Route path="/login" element={<LoginForm />} />
-            <Route path="/register" element={<RegisterForm />} />
-
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/doctors" element={<DoctorsPage />} />
-            <Route path="/calendar" element={<CalendarPage />} />
-            <Route path="/patients" element={<PatientsPage />} />
-            <Route path="/patients/:id" element={<PatientDetailsPage />} />
-             <Route path="/patients" element={<PatientManagementPage />} />
-            <Route path="/appointments" element={<AppointmentsPage />} />
-            <Route path="/prescriptions" element={<PrescriptionsPage />} />
-            <Route path="/billing" element={<BillingPage />} />
-            <Route path="/payment" element={<PaymentPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/staff" element={<StaffManagement />} />
-            <Route path="/inventory" element={<InventoryManagement />} />
-            <Route path="CommunicationPage" element={<CommunicationPage/>} />
-            <Route path="all-communications" element={<AllCommunicationsPage/>} />
-            <Route path="doctor-communications/:doctorId" element={<DoctorCommunications/>} />
-
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Suspense>
-      </Layout>
-    </MuiProvider>
-  );
+  if (!user) return <Navigate to="/login" replace />;
+  return children;
 };
 
-export default AppWrapper;
+// -------------------------------------------
+// MAIN APP
+// -------------------------------------------
+export default function App() {
+  return (
+    <MuiProvider>
+      <Suspense
+        fallback={
+          <div style={{ textAlign: "center", padding: "80px" }}>
+            <Spin size="large" />
+          </div>
+        }
+      >
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} /> {/* ✅ FIXED */}
+
+          {/* Dashboard */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <Dashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Doctors */}
+          <Route
+            path="/doctors"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <DoctorsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Patients List */}
+          <Route
+            path="/patients"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <PatientsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Patient Details */}
+          <Route
+            path="/patients/:id"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <PatientDetailsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Add / Edit Patients */}
+          <Route
+            path="/patient/add"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <PatientFormPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/patient/edit/:id"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <PatientFormPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Appointments */}
+          <Route
+            path="/appointments"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <AppointmentsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Calendar */}
+          <Route
+            path="/calendar"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <CalendarPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Prescriptions */}
+          <Route
+            path="/prescriptions"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <PrescriptionsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Billing */}
+          <Route
+            path="/billing"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <BillingPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Payment */}
+          <Route
+            path="/payment"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <PaymentPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Settings */}
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <SettingsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Staff */}
+          <Route
+            path="/staff"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <StaffManagement />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Inventory */}
+          <Route
+            path="/inventory"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <InventoryManagement />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Default fallback */}
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
+      </Suspense>
+    </MuiProvider>
+  );
+}
