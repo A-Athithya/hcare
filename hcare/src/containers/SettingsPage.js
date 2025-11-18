@@ -27,27 +27,22 @@ const { Option } = Select;
 
 export default function SettingsPage() {
   const auth = useSelector((s) => s.auth || {});
-
-  // Default user fallback
-  const user = auth.user || {
-    name: "Admin User",
-    email: "admin@hospital.com",
-    role: "admin",
-    phone: "+91 9876543210",
-    address: "123 Hospital Street, Trichy, Tamil Nadu",
-    dateOfBirth: "1985-05-15",
-    gender: "Male",
-    department: "Administration",
-    specialization: "Healthcare Management",
-    experience: "15 years",
-    qualification: "MBA in Healthcare",
-  };
+  const user = auth.user;
 
   const [currentView, setCurrentView] = useState("profile");
   const [passwordModalVisible, setPasswordModalVisible] = useState(false);
 
   const [updateProfileForm] = Form.useForm();
   const [passwordForm] = Form.useForm();
+
+  // If no user is logged in, show a message
+  if (!user) {
+    return (
+      <div style={{ padding: 24, textAlign: "center" }}>
+        <Title level={2}>Please log in to view your profile</Title>
+      </div>
+    );
+  }
 
   const handleProfileUpdate = (values) => {
     message.success("Profile updated successfully!");
@@ -89,7 +84,7 @@ export default function SettingsPage() {
             initialValues={{
               name: user.name,
               email: user.email,
-              phone: user.phone,
+              phone: user.phone || user.contact,
               address: user.address,
               dateOfBirth: user.dateOfBirth
                 ? moment(user.dateOfBirth)
@@ -99,6 +94,12 @@ export default function SettingsPage() {
               specialization: user.specialization,
               experience: user.experience,
               qualification: user.qualification,
+              bloodGroup: user.bloodGroup,
+              medicalHistory: user.medicalHistory,
+              allergies: user.allergies,
+              emergencyContact: user.emergencyContact,
+              licenseNo: user.licenseNo,
+              shift: user.shift,
             }}
           >
             <div
@@ -142,6 +143,82 @@ export default function SettingsPage() {
               >
                 <Input.TextArea rows={2} />
               </Form.Item>
+
+              {/* Role-specific fields */}
+              {user.role === 'patient' && (
+                <>
+                  <Form.Item
+                    name="bloodGroup"
+                    label="Blood Group"
+                    rules={[{ required: true }]}
+                  >
+                    <Select>
+                      <Option value="A+">A+</Option>
+                      <Option value="A-">A-</Option>
+                      <Option value="B+">B+</Option>
+                      <Option value="B-">B-</Option>
+                      <Option value="AB+">AB+</Option>
+                      <Option value="AB-">AB-</Option>
+                      <Option value="O+">O+</Option>
+                      <Option value="O-">O-</Option>
+                    </Select>
+                  </Form.Item>
+
+                  <Form.Item
+                    name="medicalHistory"
+                    label="Medical History"
+                  >
+                    <Input.TextArea rows={2} />
+                  </Form.Item>
+
+                  <Form.Item
+                    name="allergies"
+                    label="Allergies"
+                  >
+                    <Input.TextArea rows={2} />
+                  </Form.Item>
+
+                  <Form.Item
+                    name="emergencyContact"
+                    label="Emergency Contact"
+                    rules={[{ required: true }]}
+                  >
+                    <Input />
+                  </Form.Item>
+                </>
+              )}
+
+              {(user.role === 'nurse' || user.role === 'pharmacist' || user.role === 'receptionist') && (
+                <>
+                  <Form.Item
+                    name="licenseNo"
+                    label="License Number"
+                    rules={[{ required: true }]}
+                  >
+                    <Input />
+                  </Form.Item>
+
+                  <Form.Item
+                    name="experience"
+                    label="Experience"
+                    rules={[{ required: true }]}
+                  >
+                    <Input />
+                  </Form.Item>
+
+                  <Form.Item
+                    name="shift"
+                    label="Shift"
+                    rules={[{ required: true }]}
+                  >
+                    <Select>
+                      <Option value="Morning">Morning</Option>
+                      <Option value="Evening">Evening</Option>
+                      <Option value="Night">Night</Option>
+                    </Select>
+                  </Form.Item>
+                </>
+              )}
 
               <Form.Item
                 name="dateOfBirth"
@@ -254,7 +331,7 @@ export default function SettingsPage() {
           }}
         >
           <div>
-            <Text strong>Phone: </Text> {user.phone}
+            <Text strong>Phone: </Text> {user.phone || user.contact}
           </div>
           <div>
             <Text strong>Address: </Text> {user.address}
@@ -265,18 +342,61 @@ export default function SettingsPage() {
           <div>
             <Text strong>Gender: </Text> {user.gender}
           </div>
-          <div>
-            <Text strong>Department: </Text> {user.department}
-          </div>
-          <div>
-            <Text strong>Specialization: </Text> {user.specialization}
-          </div>
-          <div>
-            <Text strong>Experience: </Text> {user.experience}
-          </div>
-          <div>
-            <Text strong>Qualification: </Text> {user.qualification}
-          </div>
+          {/* Show role-specific fields */}
+          {user.role === 'doctor' && (
+            <>
+              <div>
+                <Text strong>Department: </Text> {user.department}
+              </div>
+              <div>
+                <Text strong>Specialization: </Text> {user.specialization}
+              </div>
+              <div>
+                <Text strong>Experience: </Text> {user.experience}
+              </div>
+              <div>
+                <Text strong>Qualification: </Text> {user.qualification}
+              </div>
+              <div>
+                <Text strong>License Number: </Text> {user.licenseNumber}
+              </div>
+              <div>
+                <Text strong>Consultation Fee: </Text> ₹{user.consultationFee}
+              </div>
+            </>
+          )}
+          {user.role === 'patient' && (
+            <>
+              <div>
+                <Text strong>Blood Group: </Text> {user.bloodGroup}
+              </div>
+              <div>
+                <Text strong>Medical History: </Text> {user.medicalHistory}
+              </div>
+              <div>
+                <Text strong>Allergies: </Text> {user.allergies}
+              </div>
+              <div>
+                <Text strong>Emergency Contact: </Text> {user.emergencyContact}
+              </div>
+              <div>
+                <Text strong>Registered Date: </Text> {user.registeredDate}
+              </div>
+            </>
+          )}
+          {(user.role === 'nurse' || user.role === 'pharmacist' || user.role === 'receptionist') && (
+            <>
+              <div>
+                <Text strong>License Number: </Text> {user.licenseNo}
+              </div>
+              <div>
+                <Text strong>Experience: </Text> {user.experience}
+              </div>
+              <div>
+                <Text strong>Shift: </Text> {user.shift}
+              </div>
+            </>
+          )}
         </div>
 
         <Divider />

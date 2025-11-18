@@ -39,11 +39,13 @@ const RichTooltip = ({ active, payload, label }) => {
       ))}
     </Box>
   );
-};
+}
+
+export default DashboardCharts;
 
 const COLORS = ["#1976d2", "#4caf50", "#ff9800", "#f44336", "#7b1fa2"];
 
-export default function DashboardCharts({ startDate, endDate }) {
+function DashboardCharts({ startDate, endDate }) {
   const [appointments, setAppointments] = useState(null);
   const [medicines, setMedicines] = useState(null);
   const [loading, setLoading] = useState(true);

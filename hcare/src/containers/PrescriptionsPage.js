@@ -7,6 +7,7 @@ import client from "../api/client";
 export default function PrescriptionsPage() {
   const dispatch = useDispatch();
   const { list } = useSelector((s) => s.prescriptions);
+  const { user, role } = useSelector((state) => state.auth);
 
   const [doctors, setDoctors] = useState([]);
   const [patients, setPatients] = useState([]);
@@ -26,7 +27,7 @@ export default function PrescriptionsPage() {
       .catch(() => setPatients([]));
   }, [dispatch]);
 
-  // ⭐ Fallback to db.json
+  // ⭐ Fallback to db.json with role-based filtering
   useEffect(() => {
     if (list.length === 0) {
       const loadMock = async () => {
@@ -36,10 +37,20 @@ export default function PrescriptionsPage() {
           if (response.ok) {
             const data = await response.json();
 
-            if (data.prescriptions) {
+            let prescriptions = data.prescriptions || [];
+
+            // Filter prescriptions based on user role
+            if (role === 'doctor') {
+              prescriptions = prescriptions.filter(p => p.doctorId == user.id);
+            } else if (role === 'patient') {
+              prescriptions = prescriptions.filter(p => p.patientId == user.id);
+            }
+            // Admin sees all prescriptions
+
+            if (prescriptions.length > 0) {
               dispatch({
                 type: "prescriptions/fetchSuccess",
-                payload: data.prescriptions,
+                payload: prescriptions,
               });
             }
 
@@ -53,15 +64,15 @@ export default function PrescriptionsPage() {
 
       loadMock();
     }
-  }, [list.length, dispatch]);
+  }, [list.length, dispatch, role, user.id]);
 
   const getDoctorName = (doctorId) => {
-    const doc = doctors.find((d) => d.id === doctorId);
+    const doc = doctors.find((d) => d.id == doctorId);
     return doc ? doc.name : "Unknown Doctor";
   };
 
   const getPatientName = (patientId) => {
-    const pat = patients.find((p) => p.id === patientId);
+    const pat = patients.find((p) => p.id == patientId);
     return pat ? pat.name : "Unknown Patient";
   };
 

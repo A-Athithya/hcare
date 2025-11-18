@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   Card,
   Table,
@@ -21,6 +22,8 @@ import dayjs from "dayjs";
 import { getData, postData, putData } from "../api/client";
 
 export default function AppointmentsPage() {
+  const { user, role } = useSelector((state) => state.auth);
+
   const [appointments, setAppointments] = useState([]);
   const [patients, setPatients] = useState([]);
   const [doctors, setDoctors] = useState([]);
@@ -39,11 +42,42 @@ export default function AppointmentsPage() {
   const loadData = async () => {
     try {
       setLoading(true);
-      const [apptData, doctorData, patientData] = await Promise.all([
-        getData("/appointments"),
-        getData("/doctors"),
-        getData("/patients"),
-      ]);
+      let apptData, doctorData, patientData;
+
+      // Fetch data based on user role
+      if (role === 'doctor') {
+        // Doctors see only their appointments
+        [apptData, patientData] = await Promise.all([
+          getData("/appointments"),
+          getData("/patients"),
+        ]);
+        doctorData = [user]; // Only current doctor
+
+        // Filter appointments for this doctor
+        apptData = apptData.filter(apt => apt.doctorId === user.id);
+        // Filter patients who have appointments with this doctor
+        const doctorPatientIds = [...new Set(apptData.map(apt => apt.patientId))];
+        patientData = patientData.filter(p => doctorPatientIds.includes(p.id));
+
+      } else if (role === 'patient') {
+        // Patients see only their appointments
+        [apptData, doctorData] = await Promise.all([
+          getData("/appointments"),
+          getData("/doctors"),
+        ]);
+        patientData = [user]; // Only current patient
+
+        // Filter appointments for this patient
+        apptData = apptData.filter(apt => apt.patientId == user.id);
+
+      } else {
+        // Admin sees all data
+        [apptData, doctorData, patientData] = await Promise.all([
+          getData("/appointments"),
+          getData("/doctors"),
+          getData("/patients"),
+        ]);
+      }
 
       setAppointments(apptData);
       setDoctors(doctorData);
@@ -59,7 +93,7 @@ export default function AppointmentsPage() {
     loadData();
   }, []);
 
-  // Fallback to mock db.json
+  // Fallback to mock db.json with role-based filtering
   useEffect(() => {
     if (appointments.length === 0 && patients.length === 0 && doctors.length === 0) {
       const loadMock = async () => {
@@ -67,9 +101,36 @@ export default function AppointmentsPage() {
           const res = await fetch("/db.json");
           if (res.ok) {
             const data = await res.json();
-            setAppointments(data.appointments || []);
-            setPatients(data.patients || []);
-            setDoctors(data.doctors || []);
+
+            let apptData = data.appointments || [];
+            let patientData = data.patients || [];
+            let doctorData = data.doctors || [];
+
+            // Apply same role-based filtering as in loadData
+            if (role === 'doctor') {
+              // Doctors see only their appointments
+              doctorData = [user]; // Only current doctor
+
+              // Filter appointments for this doctor
+              apptData = apptData.filter(apt => apt.doctorId === user.id);
+              // Filter patients who have appointments with this doctor
+              const doctorPatientIds = [...new Set(apptData.map(apt => apt.patientId))];
+              patientData = patientData.filter(p => doctorPatientIds.includes(p.id));
+
+            } else if (role === 'patient') {
+              // Patients see only their appointments
+              patientData = [user]; // Only current patient
+
+              // Filter appointments for this patient
+              apptData = apptData.filter(apt => apt.patientId == user.id);
+
+            } else {
+              // Admin sees all data - no filtering needed
+            }
+
+            setAppointments(apptData);
+            setPatients(patientData);
+            setDoctors(doctorData);
           }
         } catch {
           console.error("Mock load error");
@@ -77,13 +138,13 @@ export default function AppointmentsPage() {
       };
       loadMock();
     }
-  }, [appointments.length, patients.length, doctors.length]);
+  }, [appointments.length, patients.length, doctors.length, role, user.id]);
 
   const getDoctorName = (id) =>
-    doctors.find((d) => d.id === id)?.name || "—";
+    doctors.find((d) => d.id == id)?.name || "—";
 
   const getPatientName = (id) =>
-    patients.find((p) => p.id === id)?.name || "—";
+    patients.find((p) => p.id == id)?.name || "—";
 
   // CREATE / EDIT appointment
   const handleSubmit = async (vals) => {
@@ -160,6 +221,11 @@ export default function AppointmentsPage() {
   };
 
   const openNewModal = () => {
+    // Only allow scheduling if user has permission
+    if (role === 'patient') {
+      message.warning("Patients cannot schedule appointments directly. Please contact reception.");
+      return;
+    }
     setEditMode("new");
     setModalOpen(true);
     form.resetFields();
@@ -276,11 +342,11 @@ export default function AppointmentsPage() {
       <Card
         title={
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Segmented
-              options={["Upcoming", "Today", "Past"]}
-              value={filter}
-              onChange={setFilter}
-            />
+            <Select value={filter} onChange={setFilter} style={{ width: 120 }}>
+              <Select.Option value="Upcoming">Upcoming</Select.Option>
+              <Select.Option value="Today">Today</Select.Option>
+              <Select.Option value="Past">Past</Select.Option>
+            </Select>
             <Button type="primary" onClick={openNewModal}>
               Schedule Appointment
             </Button>

@@ -19,6 +19,7 @@ export default function BillingPage() {
   const navigate = useNavigate();
 
   const { invoices } = useSelector((s) => s.billing);
+  const { user, role } = useSelector((state) => state.auth);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState(null);
@@ -39,6 +40,44 @@ export default function BillingPage() {
       .then((res) => setPatients(res.data))
       .catch(() => setPatients([]));
   }, [dispatch]);
+
+  // Fallback to db.json if no invoices loaded
+  useEffect(() => {
+    if (invoices.length === 0) {
+      const loadMock = async () => {
+        try {
+          const response = await fetch("/db.json");
+          if (response.ok) {
+            const data = await response.json();
+
+            let invoicesData = data.invoices || [];
+
+            // Apply role-based filtering
+            if (role === 'doctor') {
+              invoicesData = invoicesData.filter(invoice => invoice.doctorId == user.id);
+            } else if (role === 'patient') {
+              invoicesData = invoicesData.filter(invoice => invoice.patientId == user.id);
+            }
+            // Admin sees all invoices
+
+            if (invoicesData.length > 0) {
+              dispatch({
+                type: "billing/fetchSuccess",
+                payload: invoicesData,
+              });
+            }
+
+            setDoctors(data.doctors || []);
+            setPatients(data.patients || []);
+          }
+        } catch (error) {
+          console.error("Mock load error:", error);
+        }
+      };
+
+      loadMock();
+    }
+  }, [invoices.length, dispatch, role, user.id]);
 
   const handleViewDetails = (invoice) => {
     setSelectedInvoice(invoice);

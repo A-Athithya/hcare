@@ -43,18 +43,70 @@ export default function Sidebar() {
     dispatch({ type: "auth/logout" });
   };
 
-  const menuItems = [
-    { text: "Dashboard", icon: <DashboardIcon />, link: "/dashboard" },
-    { text: "Calendar", icon: <CalendarMonthIcon />, link: "/calendar" },
-    { text: "Patients", icon: <PeopleIcon />, link: "/patients" },
-    { text: "Appointments", icon: <EventAvailableIcon />, link: "/appointments" },
-    { text: "Doctors", icon: <LocalHospitalIcon />, link: "/doctors" },
-    { text: "Prescriptions", icon: <ReceiptLongIcon />, link: "/prescriptions" },
-    { text: "Billing", icon: <PaymentIcon />, link: "/billing" },
-    { text: "Payment Gateway", icon: <PaymentIcon />, link: "/payment" },
-    { text: "Manage Staffs", icon: <Managestaff />, link: "/staff" },
-    { text: "Inventory", icon: <Inventory />, link: "/inventory" },
-  ];
+  // Role-based menu items
+  const getMenuItems = () => {
+    const baseItems = [
+      { text: "Dashboard", icon: <DashboardIcon />, link: "/dashboard" },
+    ];
+
+    if (user.role === 'admin') {
+      return [
+        ...baseItems,
+        { text: "Calendar", icon: <CalendarMonthIcon />, link: "/calendar" },
+        { text: "Patients", icon: <PeopleIcon />, link: "/patients" },
+        { text: "Appointments", icon: <EventAvailableIcon />, link: "/appointments" },
+        { text: "Doctors", icon: <LocalHospitalIcon />, link: "/doctors" },
+        { text: "Prescriptions", icon: <ReceiptLongIcon />, link: "/prescriptions" },
+        { text: "Billing", icon: <PaymentIcon />, link: "/billing" },
+        { text: "Payment Gateway", icon: <PaymentIcon />, link: "/payment" },
+        { text: "Manage Staffs", icon: <Managestaff />, link: "/staff" },
+        { text: "Inventory", icon: <Inventory />, link: "/inventory" },
+      ];
+    } else if (user.role === 'doctor') {
+      return [
+        ...baseItems,
+        { text: "My Appointments", icon: <EventAvailableIcon />, link: "/appointments" },
+        { text: "My Patients", icon: <PeopleIcon />, link: "/patients" },
+        { text: "Prescriptions", icon: <ReceiptLongIcon />, link: "/prescriptions" },
+        { text: "Billing", icon: <PaymentIcon />, link: "/billing" },
+        { text: "Inventory", icon: <Inventory />, link: "/inventory" },
+      ];
+    } else if (user.role === 'patient') {
+      return [
+        { text: "My Appointments", icon: <EventAvailableIcon />, link: "/appointments" },
+        { text: "My Prescriptions", icon: <ReceiptLongIcon />, link: "/prescriptions" },
+        { text: "My Bills", icon: <PaymentIcon />, link: "/billing" },
+      ];
+    } else if (user.role === 'nurse') {
+      return [
+        ...baseItems,
+        { text: "Patients", icon: <PeopleIcon />, link: "/patients" },
+        { text: "Appointments", icon: <EventAvailableIcon />, link: "/appointments" },
+        { text: "Prescriptions", icon: <ReceiptLongIcon />, link: "/prescriptions" },
+        { text: "Inventory", icon: <Inventory />, link: "/inventory" },
+      ];
+    } else if (user.role === 'pharmacist') {
+      return [
+        ...baseItems,
+        { text: "Prescriptions", icon: <ReceiptLongIcon />, link: "/prescriptions" },
+        { text: "Inventory", icon: <Inventory />, link: "/inventory" },
+        { text: "Patients", icon: <PeopleIcon />, link: "/patients" },
+      ];
+    } else if (user.role === 'receptionist') {
+      return [
+        ...baseItems,
+        { text: "Calendar", icon: <CalendarMonthIcon />, link: "/calendar" },
+        { text: "Appointments", icon: <EventAvailableIcon />, link: "/appointments" },
+        { text: "Patients", icon: <PeopleIcon />, link: "/patients" },
+        { text: "Billing", icon: <PaymentIcon />, link: "/billing" },
+      ];
+    }
+
+    // Default fallback
+    return baseItems;
+  };
+
+  const menuItems = getMenuItems();
 
   return (
     <>

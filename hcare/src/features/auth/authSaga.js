@@ -2,8 +2,31 @@ import { call, put, takeLatest } from "redux-saga/effects";
 import client from "../../api/client";
 import { generateToken } from "../../utils/tokenHelper";
 
-function loginApi(email, password) {
-  return client.get(`/users?email=${email}&password=${password}`).then((r) => r.data);
+function loginApi(email, password, role) {
+  let endpoint = '';
+  switch (role) {
+    case 'admin':
+      endpoint = '/users';
+      break;
+    case 'doctor':
+      endpoint = '/doctors';
+      break;
+    case 'nurse':
+      endpoint = '/nurses';
+      break;
+    case 'pharmacist':
+      endpoint = '/pharmacists';
+      break;
+    case 'receptionist':
+      endpoint = '/receptionists';
+      break;
+    case 'patient':
+      endpoint = '/patients';
+      break;
+    default:
+      return Promise.reject(new Error('Invalid role'));
+  }
+  return client.get(`${endpoint}?email=${email}&password=${password}`).then((r) => r.data);
 }
 function registerApi(payload) {
   return client.post("/users", payload).then((r) => r.data);
@@ -11,8 +34,8 @@ function registerApi(payload) {
 
 function* login(action) {
   try {
-    const { email, password } = action.payload;
-    const users = yield call(loginApi, email, password);
+    const { email, password, role } = action.payload;
+    const users = yield call(loginApi, email, password, role);
     if (users.length === 1) {
       const token = generateToken();
       yield put({ type: "auth/loginSuccess", payload: { user: users[0], token } });
