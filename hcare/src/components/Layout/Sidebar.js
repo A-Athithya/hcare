@@ -28,6 +28,7 @@ import UserOutlined from "@ant-design/icons/UserOutlined";
 import LogoutOutlined from "@ant-design/icons/LogoutOutlined";
 import Managestaff from "@mui/icons-material/ManageAccounts";
 import Inventory from "@mui/icons-material/Inventory2";
+import Communication from "@mui/icons-material/Message";
 
 export default function Sidebar() {
   const collapsed = useSelector((s) => s.ui?.sidebarCollapsed);

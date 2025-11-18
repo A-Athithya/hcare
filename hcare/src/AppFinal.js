@@ -4,10 +4,9 @@ import { useSelector } from "react-redux";
 import Layout from "./components/Layout/Layout";
 import CalendarPage from "./containers/CalendarPage";
 import PatientDetailsPage from "./containers/PatientDetailsPage";
-import PatientManagementPage from "./containers/PatientManagementPage";
 import MuiProvider from "./mui/MaterialDesign";
 import { Spin } from "antd";
-import StaffManagement from "./components/admin/StaffManagement";
+import StaffManagement from "./components/admin/StaffsManagement";
 import InventoryManagement from './components/admin/InventoryManagement';
 
 // Lazy load pages

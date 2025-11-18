@@ -615,5 +615,16 @@
       "contact": "9876543214",
       "status": "Active"
     }
+  ],
+  "communications": [
+    {
+      "id": "1",
+      "patientId": 2,
+      "doctorId": 2,
+      "query": "Dose unclear — morning or night?",
+      "reply": "morning",
+      "status": "replied",
+      "timestamp": "2025-11-16T11:17:46.829Z"
+    }
   ]
 }
