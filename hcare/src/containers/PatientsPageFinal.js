@@ -1,22 +1,45 @@
 import React, { useEffect, useState } from "react";
 import { Table, Card, Input, Button } from "antd";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function PatientsPage() {
   const navigate = useNavigate();
+  const { user, role } = useSelector((state) => state.auth);
   const [filter, setFilter] = useState("");
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Load data directly from db.json
+    // Load data directly from db.json with role-based filtering
     const loadPatients = async () => {
       try {
         const response = await fetch('/db.json');
         if (response.ok) {
           const data = await response.json();
           console.log("Loaded patients from db.json:", data.patients);
-          setPatients(data.patients || []);
+
+          let patientData = data.patients || [];
+
+          // Apply role-based filtering
+          if (role === 'doctor') {
+            // Doctors see patients they have appointments with OR have prescribed medication for
+            const doctorAppointments = data.appointments?.filter(apt => apt.doctorId == user.id) || [];
+            const doctorPrescriptions = data.prescriptions?.filter(pres => pres.doctorId == user.id) || [];
+
+            const appointmentPatientIds = doctorAppointments.map(apt => apt.patientId);
+            const prescriptionPatientIds = doctorPrescriptions.map(pres => pres.patientId);
+
+            const doctorPatientIds = [...new Set([...appointmentPatientIds, ...prescriptionPatientIds])];
+            patientData = patientData.filter(p => doctorPatientIds.includes(p.id));
+          } else if (role === 'patient') {
+            // Patients can only see their own profile
+            patientData = [user];
+          } else {
+            // Admin sees all patients - no filtering needed
+          }
+
+          setPatients(patientData);
         } else {
           console.error("Failed to load db.json");
           setPatients([]);
@@ -30,7 +53,7 @@ export default function PatientsPage() {
     };
 
     loadPatients();
-  }, []);
+  }, [role, user.id]);
 
   const filtered = patients.filter((p) =>
     p.name && p.name.toLowerCase().includes(filter.toLowerCase())

@@ -4,6 +4,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
   Grid,
   Card,
@@ -24,6 +25,7 @@ import dayjs from "dayjs";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { user, role } = useSelector((state) => state.auth);
 
   const [stats, setStats] = useState({
     patients: 0,
@@ -34,11 +36,11 @@ const Dashboard = () => {
 
   const [recentPatients, setRecentPatients] = useState([]);
   const [recentAppointments, setRecentAppointments] = useState([]);
-  const [role] = useState("admin");
 
   const [startDate, setStartDate] = useState(dayjs().subtract(7, "day"));
   const [endDate, setEndDate] = useState(dayjs());
   const [filteredAppointments, setFilteredAppointments] = useState([]);
+  const [filteredInvoices, setFilteredInvoices] = useState([]);
 
   const [loading, setLoading] = useState(true);
 
@@ -49,12 +51,82 @@ const Dashboard = () => {
     const loadStats = async () => {
       setLoading(true);
       try {
-        const [patients, doctors, appointments, medicines] = await Promise.all([
-          getData("/patients"),
-          getData("/doctors"),
-          getData("/appointments"),
-          getData("/medicines"),
-        ]);
+        let patients, doctors, appointments, medicines, invoices;
+
+        // Try API first, fallback to db.json
+        try {
+          // Fetch data based on user role
+          if (role === 'doctor') {
+            // For doctors, only fetch their related data
+            [patients, appointments, medicines, invoices] = await Promise.all([
+              getData("/patients"),
+              getData("/appointments"),
+              getData("/medicines"),
+              getData("/invoices"),
+            ]);
+            doctors = [user]; // Only current doctor
+
+            // Filter appointments for this doctor
+            appointments = appointments.filter(apt => apt.doctorId == user.id);
+            // Filter invoices for this doctor's patients
+            invoices = invoices.filter(inv => inv.doctorId == user.id);
+            // Filter patients who have appointments with this doctor
+            const doctorPatientIds = [...new Set(appointments.map(apt => apt.patientId))];
+            patients = patients.filter(p => doctorPatientIds.includes(p.id));
+
+          } else if (role === 'patient') {
+            // For patients, only fetch their own data
+            [appointments, medicines, invoices] = await Promise.all([
+              getData("/appointments"),
+              getData("/medicines"),
+              getData("/invoices"),
+            ]);
+            patients = [user]; // Only current patient
+            doctors = await getData("/doctors"); // All doctors for reference
+
+            // Filter appointments for this patient
+            appointments = appointments.filter(apt => apt.patientId == user.id);
+            // Filter invoices for this patient
+            invoices = invoices.filter(inv => inv.patientId == user.id);
+
+          } else {
+            // Admin gets all data
+            [patients, doctors, appointments, medicines, invoices] = await Promise.all([
+              getData("/patients"),
+              getData("/doctors"),
+              getData("/appointments"),
+              getData("/medicines"),
+              getData("/invoices"),
+            ]);
+          }
+        } catch (apiError) {
+          // Fallback to db.json
+          console.log("API failed, using db.json fallback:", apiError);
+          const response = await fetch('/db.json');
+          if (response.ok) {
+            const data = await response.json();
+
+            patients = data.patients || [];
+            doctors = data.doctors || [];
+            appointments = data.appointments || [];
+            medicines = data.medicines || [];
+            invoices = data.invoices || [];
+
+            // Apply role-based filtering
+            if (role === 'doctor') {
+              appointments = appointments.filter(apt => apt.doctorId == user.id);
+              invoices = invoices.filter(inv => inv.doctorId == user.id);
+              const doctorPatientIds = [...new Set(appointments.map(apt => apt.patientId))];
+              patients = patients.filter(p => doctorPatientIds.includes(p.id));
+              doctors = [user];
+            } else if (role === 'patient') {
+              appointments = appointments.filter(apt => apt.patientId == user.id);
+              invoices = invoices.filter(inv => inv.patientId == user.id);
+              patients = [user];
+            }
+            // Admin sees all
+          }
+        }
 
         if (!mounted) return;
 
@@ -87,6 +159,13 @@ const Dashboard = () => {
             return d.isAfter(startDate) && d.isBefore(endDate.add(1, "day"));
           })
         );
+
+        setFilteredInvoices(
+          invoices.filter((invoice) => {
+            const d = dayjs(invoice.invoiceDate);
+            return d.isAfter(startDate) && d.isBefore(endDate.add(1, "day"));
+          })
+        );
       } catch (err) {
         console.log("Dashboard load error:", err);
       } finally {
@@ -96,7 +175,7 @@ const Dashboard = () => {
 
     loadStats();
     return () => (mounted = false);
-  }, [startDate, endDate]);
+  }, [startDate, endDate, role, user]);
 
   // LOADER
   if (loading) {
@@ -107,18 +186,53 @@ const Dashboard = () => {
     );
   }
 
-  const totalRevenue = filteredAppointments.reduce(
-    (sum, a) => sum + (a.paymentAmount || 0),
+  const totalRevenue = filteredInvoices.reduce(
+    (sum, invoice) => sum + (invoice.paidAmount || 0),
     0
   );
 
-  const statCards = [
-    { title: "Total Patients", value: stats.patients, route: "/patients" },
-    { title: "Active Doctors", value: stats.doctors, route: "/doctors" },
-    { title: "Today's Appointments", value: stats.appointments, route: "/appointments" },
-    { title: "Medicines in Stock", value: stats.medicines, route: "/inventory" },
-    { title: "Total Revenue", value: `₹${totalRevenue}`, route: "/billing" },
-  ];
+  // Dynamic stat cards based on role
+  const getStatCards = () => {
+    if (role === 'doctor') {
+      return [
+        { title: "My Patients", value: stats.patients, route: "/patients" },
+        { title: "My Appointments", value: stats.appointments, route: "/appointments" },
+        { title: "Medicines in Stock", value: stats.medicines, route: "/inventory" },
+        { title: "My Revenue", value: `₹${totalRevenue}`, route: "/billing" },
+      ];
+    } else if (role === 'patient') {
+      return [
+        { title: "My Appointments", value: stats.appointments, route: "/appointments" },
+        { title: "Medicines in Stock", value: stats.medicines, route: "/inventory" },
+        { title: "My Bills", value: `₹${totalRevenue}`, route: "/billing" },
+      ];
+    } else if (role === 'nurse') {
+      return [
+        { title: "Total Patients", value: stats.patients, route: "/patients" },
+        { title: "Active Doctors", value: stats.doctors, route: "/doctors" },
+        { title: "Today's Appointments", value: stats.appointments, route: "/appointments" },
+        { title: "Medicines in Stock", value: stats.medicines, route: "/inventory" },
+      ];
+    } else if (role === 'pharmacist') {
+      return [
+        { title: "Total Patients", value: stats.patients, route: "/patients" },
+        { title: "Active Doctors", value: stats.doctors, route: "/doctors" },
+        { title: "Today's Appointments", value: stats.appointments, route: "/appointments" },
+        { title: "Medicines in Stock", value: stats.medicines, route: "/inventory" },
+      ];
+    } else {
+      // Admin
+      return [
+        { title: "Total Patients", value: stats.patients, route: "/patients" },
+        { title: "Active Doctors", value: stats.doctors, route: "/doctors" },
+        { title: "Today's Appointments", value: stats.appointments, route: "/appointments" },
+        { title: "Medicines in Stock", value: stats.medicines, route: "/inventory" },
+        { title: "Total Revenue", value: `₹${totalRevenue}`, route: "/billing" },
+      ];
+    }
+  };
+
+  const statCards = getStatCards();
 
   const DefaultIcon = () => (
     <Avatar
@@ -265,10 +379,14 @@ const Dashboard = () => {
         {/* NEW PATIENTS */}
         <Grid item xs={12} lg={5}>
           <Card sx={{ borderRadius: 4, p: 3, background: "white", boxShadow: "0 4px 12px rgba(0,0,0,0.08)" }}>
-            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2 }}>New Patients</Typography>
+            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2 }}>
+              {role === 'doctor' ? 'My Patients' : role === 'patient' ? 'My Profile' : 'New Patients'}
+            </Typography>
 
             {recentPatients.length === 0 ? (
-              <Typography sx={{ color: "gray" }}>No recent patients</Typography>
+              <Typography sx={{ color: "gray" }}>
+                {role === 'doctor' ? 'No patients assigned' : role === 'patient' ? 'Profile information' : 'No recent patients'}
+              </Typography>
             ) : (
               recentPatients.map((p, i) => (
                 <Box
@@ -289,7 +407,9 @@ const Dashboard = () => {
 
                   <Box sx={{ flex: 1 }}>
                     <Typography sx={{ fontWeight: 600 }}>{p.name || "Unnamed"}</Typography>
-                    <Typography sx={{ opacity: 0.7 }}>{p.registeredDate}</Typography>
+                    <Typography sx={{ opacity: 0.7 }}>
+                      {role === 'patient' ? `ID: ${p.id}` : p.registeredDate}
+                    </Typography>
                   </Box>
                 </Box>
               ))

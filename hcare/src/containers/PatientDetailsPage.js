@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, Table, Button, Row, Col, Tag } from "antd";
+import { useSelector } from "react-redux";
 import { getData } from "../api/client";
 import Modal from "antd/lib/modal/Modal";
 import PatientForm from "../components/Forms/PatientForm";
@@ -10,21 +11,75 @@ import PatientForm from "../components/Forms/PatientForm";
 export default function PatientDetailsPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user, role } = useSelector((state) => state.auth);
   const [patient, setPatient] = useState(null);
   const [appointments, setAppointments] = useState([]);
   const [editVisible, setEditVisible] = useState(false);
 
   const load = async () => {
-    const p = await getData(`/patients/${id}`);
-    const appts = await getData(`/appointments?patientId=${id}&_sort=appointmentDate&_order=desc`);
-    setPatient(p);
-    setAppointments(appts);
+    try {
+      // Try API first
+      const p = await getData(`/patients/${id}`);
+      const appts = await getData(`/appointments?patientId=${id}&_sort=appointmentDate&_order=desc`);
+      setPatient(p);
+      setAppointments(appts);
+    } catch (error) {
+      // Fallback to db.json with role-based filtering
+      try {
+        const response = await fetch('/db.json');
+        if (response.ok) {
+          const data = await response.json();
+
+          // Find the specific patient
+          let patientData = data.patients?.find(p => p.id == id);
+
+          if (!patientData) {
+            setPatient(null);
+            return;
+          }
+
+          // Check if user has permission to view this patient
+          if (role === 'patient' && user.id != id) {
+            // Patients can only view their own details
+            setPatient(null);
+            return;
+          } else if (role === 'doctor') {
+            // Doctors can only view patients they have appointments with
+            const doctorAppointments = data.appointments?.filter(apt => apt.doctorId === user.id) || [];
+            const doctorPatientIds = [...new Set(doctorAppointments.map(apt => apt.patientId))];
+            if (!doctorPatientIds.includes(parseInt(id))) {
+              setPatient(null);
+              return;
+            }
+          }
+          // Admins can view all patients
+
+          // Filter appointments for this patient
+          let apptData = data.appointments?.filter(apt => apt.patientId == id) || [];
+
+          // Apply role-based filtering to appointments
+          if (role === 'doctor') {
+            apptData = apptData.filter(apt => apt.doctorId === user.id);
+          } else if (role === 'patient') {
+            // Patients can see all their appointments
+          }
+          // Admins see all
+
+          setPatient(patientData);
+          setAppointments(apptData);
+        }
+      } catch (fallbackError) {
+        console.error("Error loading patient details:", fallbackError);
+        setPatient(null);
+        setAppointments([]);
+      }
+    }
   };
 
   useEffect(() => {
     load();
     // eslint-disable-next-line
-  }, [id]);
+  }, [id, role, user.id]);
 
   const cols = [
     { title: "Doctor", dataIndex: "doctorId", key: "doctorId", render: (d) => `Dr. ${d}` },
@@ -38,6 +93,7 @@ export default function PatientDetailsPage() {
     },
   ];
 
+  if (patient === null) return <div style={{ padding: 24, textAlign: "center" }}>Patient not found or access denied.</div>;
   if (!patient) return <div style={{ padding: 24 }}>Loading patient...</div>;
 
   return (
