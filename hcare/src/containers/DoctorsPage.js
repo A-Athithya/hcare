@@ -30,13 +30,32 @@ import {
 } from "antd";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import "./doctors.css";
 
 const { TextArea } = Input;
 
+// ⭐ TAG CHIP UI COMPONENT
+const TagChip = ({ label, color = "#e3f2fd" }) => (
+  <Box
+    sx={{
+      display: "inline-block",
+      px: 1.2,
+      py: 0.4,
+      fontSize: "11.5px",
+      borderRadius: "8px",
+      background: color,
+      color: "#0d47a1",
+      fontWeight: 500,
+      mr: 1,
+      mb: 1,
+    }}
+  >
+    {label}
+  </Box>
+);
+
 export default function DoctorsPage() {
   const dispatch = useDispatch();
-  const { list: doctors, loading } = useSelector((state) => state.doctors);
+  const { list: doctors, loading } = useSelector((s) => s.doctors);
 
   const [appointments, setAppointments] = useState([]);
   const [patients, setPatients] = useState([]);
@@ -44,65 +63,39 @@ export default function DoctorsPage() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [form] = Form.useForm();
-
   const [submitting, setSubmitting] = useState(false);
+
   const [expandedDoctor, setExpandedDoctor] = useState(null);
+
+  // Filters
+  const [search, setSearch] = useState("");
+  const [deptFilter, setDeptFilter] = useState(null);
 
   useEffect(() => {
     dispatch({ type: "doctors/fetchStart" });
-    loadData();
-  }, [dispatch]);
+    loadExtraData();
+  }, []);
 
-  // ⭐ Load additional data for appointments/patients
-  const loadData = async () => {
+  const loadExtraData = async () => {
     try {
       const [appts, pats] = await Promise.all([
         getData("/appointments"),
         getData("/patients"),
       ]);
-
       setAppointments(appts);
       setPatients(pats);
-    } catch (err) {
+    } catch {
       message.error("Failed to load data");
     }
   };
 
-  // ⭐ Mock fallback if Redux fails
-  useEffect(() => {
-    if (!loading && doctors.length === 0) {
-      const loadMock = async () => {
-        try {
-          const response = await fetch("/db.json");
-
-          if (response.ok) {
-            const data = await response.json();
-
-            if (data.doctors) {
-              dispatch({
-                type: "doctors/fetchSuccess",
-                payload: data.doctors,
-              });
-            }
-          }
-        } catch (error) {
-          console.error("Error loading mock doctors:", error);
-        }
-      };
-
-      loadMock();
-    }
-  }, [loading, doctors.length, dispatch]);
-
-  // ⭐ Select a doctor → open drawer
-  const openBookingDrawer = (doctor) => {
-    setSelectedDoctor(doctor);
+  const openBooking = (doc) => {
+    setSelectedDoctor(doc);
     setDrawerOpen(true);
     form.resetFields();
   };
 
-  // ⭐ Submit new appointment request
-  const handleBookingSubmit = async (vals) => {
+  const submitBooking = async (vals) => {
     try {
       setSubmitting(true);
 
@@ -111,28 +104,27 @@ export default function DoctorsPage() {
         doctorId: selectedDoctor.id,
         appointmentDate: vals.date.format("YYYY-MM-DD"),
         appointmentTime: vals.time.format("hh:mm A"),
-        reason: vals.reason || "Consultation",
+        reason: vals.reason,
+        remarks: vals.remarks || "",
         status: "Pending",
         paymentStatus: "Pending",
       };
 
       const res = await postData("/appointments", payload);
+      setAppointments((p) => [res, ...p]);
 
-      setAppointments((prev) => [res, ...prev]);
-      message.success("Appointment request sent successfully");
+      message.success("Appointment booked successfully");
       setDrawerOpen(false);
-    } catch (err) {
-      message.error("Failed to send request");
+    } catch {
+      message.error("Failed to book appointment");
     } finally {
       setSubmitting(false);
     }
   };
 
-  // ⭐ Accept / Reject requests
-  const updateAppointmentStatus = async (appt, status) => {
+  const updateStatus = async (appt, status) => {
     try {
       const updated = { ...appt, status };
-
       await putData(`/appointments/${appt.id}`, updated);
 
       setAppointments((prev) =>
@@ -141,18 +133,19 @@ export default function DoctorsPage() {
 
       message.success(`Appointment ${status}`);
     } catch {
-      message.error("Failed to update appointment");
+      message.error("Failed to update");
     }
   };
 
   const getPatientName = (id) =>
     patients.find((p) => p.id === id)?.name || "Unknown";
 
-  const pendingRequests = (doctorId) =>
+  const pendingForDoctor = (docId) =>
     appointments.filter(
-      (a) => a.doctorId === doctorId && a.status === "Pending"
+      (a) => a.doctorId === docId && a.status === "Pending"
     );
 
+  // LOADING PAGE
   if (loading)
     return (
       <div style={{ padding: 40, textAlign: "center" }}>
@@ -161,94 +154,161 @@ export default function DoctorsPage() {
     );
 
   return (
-    <Box sx={{ padding: 4, background: "#fafbfc", minHeight: "90vh" }}>
-      <Typography
-        variant="h5"
-        gutterBottom
-        fontWeight={400}
-        sx={{ color: "#202124", marginBottom: 3 }}
-      >
+    <Box sx={{ padding: 4, background: "#fafbfc", minHeight: "100vh" }}>
+      <Typography variant="h5" sx={{ mb: 3 }}>
         Doctors Directory
       </Typography>
 
-      <Grid container spacing={3} sx={{ display: "flex", alignItems: "stretch" }}>
-        {doctors.map((doc) => (
-          <Grid item xs={12} sm={6} md={4} key={doc.id} display="flex">
-            <Card
-              sx={{
-                borderRadius: 3,
-                boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
-                flexGrow: 1,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                minHeight: 400,
-              }}
-            >
-              <Box>
-                <CardHeader
-                  avatar={
-                    <Avatar
-                      sx={{ width: 60, height: 60 }}
-                      src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
-                        doc.name
-                      )}`}
-                    />
-                  }
-                  title={<Typography variant="h6">{doc.name}</Typography>}
-                  subheader={doc.specialization}
-                />
+      {/* FILTER BAR */}
+      <Box sx={{ display: "flex", gap: 2, mb: 3 }}>
+        <Input
+          placeholder="Search doctor..."
+          style={{ width: 240 }}
+          onChange={(e) => setSearch(e.target.value.toLowerCase())}
+        />
 
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Box display="flex" alignItems="center" gap={1} mb={1}>
-                    <LocalHospitalIcon color="secondary" />
-                    <Typography>{doc.experience}</Typography>
-                  </Box>
+        <Select
+          placeholder="Filter by Department"
+          allowClear
+          style={{ width: 200 }}
+          onChange={(v) => setDeptFilter(v)}
+        >
+          {[...new Set(doctors.map((d) => d.department))].map((dep) => (
+            <Select.Option key={dep} value={dep}>
+              {dep}
+            </Select.Option>
+          ))}
+        </Select>
+      </Box>
 
-                  <Box display="flex" alignItems="center" gap={1} mb={1}>
-                    <AccessTimeIcon color="action" />
-                    <Typography fontSize={14}>
-                      {doc.availableDays?.join(", ") || "N/A"} (
-                      {doc.availableTime || "N/A"})
-                    </Typography>
-                  </Box>
+      {/* DOCTORS GRID */}
+      <Grid container spacing={3}>
+        {doctors
+          .filter((d) =>
+            search
+              ? d.name.toLowerCase().includes(search) ||
+                d.specialization.toLowerCase().includes(search)
+              : true
+          )
+          .filter((d) =>
+            deptFilter ? d.department === deptFilter : true
+          )
+          .map((doc) => (
+            <Grid item xs={12} sm={6} md={4} key={doc.id} display="flex">
+              <Card
+                sx={{
+                  borderRadius: 3,
+                  boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
+                  display: "flex",
+                  flexDirection: "column",
+                  flexGrow: 1,
+                }}
+              >
+                <Box sx={{ flexGrow: 1 }}>
+                  <CardHeader
+                    avatar={
+                      <Avatar
+                        sx={{ width: 54, height: 54 }}
+                        src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
+                          doc.name
+                        )}`}
+                      />
+                    }
+                    title={
+                      <>
+                        <Typography variant="h6">{doc.name}</Typography>
 
-                  <Rating
-                    value={doc.rating || 0}
-                    precision={0.1}
-                    readOnly
-                    sx={{ marginBottom: 1 }}
+                        {/* TAGS */}
+                        <Box sx={{ mt: 1 }}>
+                          {doc.specialization && (
+                            <TagChip
+                              label={doc.specialization}
+                              color="#e8f5e9"
+                            />
+                          )}
+                          {doc.department && (
+                            <TagChip
+                              label={doc.department}
+                              color="#e3f2fd"
+                            />
+                          )}
+                          {doc.experience && (
+                            <TagChip
+                              label={`${parseInt(doc.experience)} yrs`}
+                              color="#fff3e0"
+                            />
+                          )}
+                        </Box>
+                      </>
+                    }
                   />
 
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{
-                      minHeight: 60,
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                    }}
-                  >
-                    {doc.bio || "No bio available"}
-                  </Typography>
-                </CardContent>
-              </Box>
+                  <CardContent sx={{ px: 2, pb: 1 }}>
+                    <Box display="flex" gap={1} alignItems="center">
+                      <LocalHospitalIcon fontSize="small" />
+                      <Typography fontSize={14}>
+                        {doc.experience}
+                      </Typography>
+                    </Box>
 
-              {/* Actions */}
-              <Box>
-                <Divider />
+                    <Box
+                      mt={1}
+                      display="flex"
+                      gap={1}
+                      alignItems="center"
+                    >
+                      <AccessTimeIcon fontSize="small" />
+                      <Typography fontSize={13}>
+                        {doc.availableDays?.join(", ")} (
+                        {doc.availableTime || "N/A"})
+                      </Typography>
+                    </Box>
+
+                    <Rating
+                      value={doc.rating}
+                      precision={0.1}
+                      readOnly
+                      size="small"
+                      sx={{ mt: 1 }}
+                    />
+
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        mt: 1,
+                        overflow: "hidden",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: "vertical",
+                      }}
+                    >
+                      {doc.bio}
+                    </Typography>
+                  </CardContent>
+                </Box>
+
+                {/* BOTTOM - LINE + BUTTONS */}
+                <Divider sx={{ m: 0 }} />
+
                 <CardActions
                   sx={{
                     display: "flex",
                     justifyContent: "space-between",
-                    padding: "12px 16px",
+                    px: 2,
+                    py: 1,
                   }}
                 >
-                  <Button variant="contained" onClick={() => openBookingDrawer(doc)}>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    onClick={() => openBooking(doc)}
+                  >
                     Book
                   </Button>
 
                   <Button
+                    size="small"
                     variant="outlined"
                     onClick={() =>
                       setExpandedDoctor(
@@ -262,29 +322,30 @@ export default function DoctorsPage() {
                   </Button>
                 </CardActions>
 
-                {/* Pending Requests */}
                 <Collapse in={expandedDoctor === doc.id}>
-                  <Paper elevation={0} sx={{ p: 2, bgcolor: "#fafafa" }}>
-                    {pendingRequests(doc.id).length === 0 ? (
-                      <Typography variant="body2" color="text.secondary">
-                        No pending requests
-                      </Typography>
+                  <Paper sx={{ p: 2, bgcolor: "#fafafa" }}>
+                    {pendingForDoctor(doc.id).length === 0 ? (
+                      <Typography>No pending requests</Typography>
                     ) : (
                       <List
-                        dataSource={pendingRequests(doc.id)}
+                        dataSource={pendingForDoctor(doc.id)}
                         renderItem={(appt) => (
                           <List.Item
                             actions={[
                               <Button
                                 size="small"
-                                onClick={() => updateAppointmentStatus(appt, "Accepted")}
+                                onClick={() =>
+                                  updateStatus(appt, "Accepted")
+                                }
                               >
                                 Accept
                               </Button>,
                               <Button
                                 size="small"
                                 danger
-                                onClick={() => updateAppointmentStatus(appt, "Rejected")}
+                                onClick={() =>
+                                  updateStatus(appt, "Rejected")
+                                }
                               >
                                 Reject
                               </Button>,
@@ -300,52 +361,93 @@ export default function DoctorsPage() {
                     )}
                   </Paper>
                 </Collapse>
-              </Box>
-            </Card>
-          </Grid>
-        ))}
+              </Card>
+            </Grid>
+          ))}
       </Grid>
 
-      {/* Drawer for Booking */}
+      {/* ⭐ FINAL UPDATED BOOKING DRAWER - LIKE APPOINTMENTS PAGE */}
       <Drawer
-        title={`Book Appointment - ${selectedDoctor?.name || ""}`}
+        title={`Book Appointment - Dr. ${selectedDoctor?.name || ""}`}
         open={drawerOpen}
-        width={400}
         onClose={() => setDrawerOpen(false)}
+        width={480}
         destroyOnClose
+        styles={{ body: { padding: "20px" } }}
       >
-        <Form layout="vertical" form={form} onFinish={handleBookingSubmit}>
+        <Form layout="vertical" form={form} onFinish={submitBooking}>
+          {/* PATIENT */}
           <Form.Item
             name="patientId"
-            label="Patient"
-            rules={[{ required: true, message: "Select patient" }]}
+            label="Select Patient"
+            rules={[{ required: true }]}
           >
-            <Select placeholder="Select a patient">
+            <Select placeholder="Select patient">
               {patients.map((p) => (
                 <Select.Option key={p.id} value={p.id}>
-                  {p.name}
+                  {p.name} • Age {p.age}
                 </Select.Option>
               ))}
             </Select>
           </Form.Item>
 
-          <Form.Item name="date" label="Appointment Date" rules={[{ required: true }]}>
-            <DatePicker style={{ width: "100%" }} />
+          {/* DOCTOR */}
+          <Form.Item label="Doctor">
+            <Input value={selectedDoctor?.name} disabled />
           </Form.Item>
 
-          <Form.Item name="time" label="Time" rules={[{ required: true }]}>
-            <TimePicker use12Hours format="hh:mm A" style={{ width: "100%" }} />
-          </Form.Item>
+          {/* DATE & TIME */}
+          <div style={{ display: "flex", gap: 12 }}>
+            <Form.Item
+              name="date"
+              label="Appointment Date"
+              rules={[{ required: true }]}
+              style={{ flex: 1 }}
+            >
+              <DatePicker style={{ width: "100%" }} />
+            </Form.Item>
 
-          <Form.Item name="reason" label="Reason for Visit">
-            <TextArea rows={3} />
-          </Form.Item>
-
-          <div style={{ textAlign: "right" }}>
-            <Button variant="contained" onClick={() => form.submit()} disabled={submitting}>
-              {submitting ? "Submitting..." : "Book Now"}
-            </Button>
+            <Form.Item
+              name="time"
+              label="Appointment Time"
+              rules={[{ required: true }]}
+              style={{ flex: 1 }}
+            >
+              <TimePicker
+                use12Hours
+                format="hh:mm A"
+                style={{ width: "100%" }}
+              />
+            </Form.Item>
           </div>
+
+          {/* REASON */}
+          <Form.Item
+            name="reason"
+            label="Reason for Visit"
+            rules={[{ required: true }]}
+          >
+            <TextArea rows={3} placeholder="Describe issue" />
+          </Form.Item>
+
+          {/* REMARKS */}
+          <Form.Item
+            name="remarks"
+            label="Additional Notes"
+          >
+            <TextArea rows={3} placeholder="Optional notes" />
+          </Form.Item>
+
+          {/* SUBMIT */}
+          <Button
+            type="primary"
+            block
+            size="large"
+            loading={submitting}
+            onClick={() => form.submit()}
+          >
+            Book Appointment
+          </Button>
         </Form>
       </Drawer>
     </Box>

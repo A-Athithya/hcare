@@ -1,20 +1,17 @@
 body {
-  background-color: #f8faff;
+  background-color: #f5f7fa !important;
 }
 
 .MuiCard-root {
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  display: flex;
-  flex-direction: column;
+  transition: transform .25s ease, box-shadow .25s ease;
 }
 
 .MuiCard-root:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.12);
 }
 
+/* Ensures uniform card height */
 .MuiCardContent-root {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  min-height: 150px;
 }

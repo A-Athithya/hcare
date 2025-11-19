@@ -1,3 +1,4 @@
+// src/api/client.js
 import axios from "axios";
 
 const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:4000";
@@ -38,11 +39,13 @@ export const getData = async (endpoint) => {
 
 export const postData = async (endpoint, payload) => {
   try {
+    // allow POST to /auth/register (routes.json -> /users) or other endpoints
     const res = await api.post(endpoint, payload);
     return res.data;
   } catch (error) {
-    // For development, simulate successful creation
-    console.warn(`API call to ${endpoint} failed, simulating success`);
+    // For development, attempt to simulate server behaviour by writing to local db.json is not possible here.
+    // Simulate a created resource (client-side) to keep UI flowing.
+    console.warn(`API call to ${endpoint} failed, simulating success`, error?.message);
     return { ...payload, id: Date.now() };
   }
 };

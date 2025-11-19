@@ -1,3 +1,4 @@
+// src/components/Auth/RegisterPage.jsx
 import React, { useState } from "react";
 import {
   Box,
@@ -7,268 +8,436 @@ import {
   Typography,
   TextField,
   Button,
-  Avatar,
   IconButton,
   Select,
   MenuItem,
   FormControl,
   InputLabel,
-  Paper,
+  Chip,
 } from "@mui/material";
-import {
-  ArrowBack,
-  Person as PersonIcon,
-  Email as EmailIcon,
-  Lock as LockIcon,
-} from "@mui/icons-material";
+import { ArrowBack } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 import { postData } from "../../api/client";
+import dayjs from "dayjs";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
 
-  const [role, setRole] = useState("");
-  const [form, setForm] = useState({});
+  const [role, setRole] = useState("patient");
   const [submitting, setSubmitting] = useState(false);
+
+  const [form, setForm] = useState({
+    name: "",
+    gender: "Male",
+    age: "",
+    contact: "",
+    email: "",
+    password: "",
+    address: "",
+    bloodGroup: "",
+    registeredDate: dayjs().format("YYYY-MM-DD"),
+    medicalHistory: "",
+    allergies: "",
+    emergencyContact: "",
+    specialization: "",
+    qualification: "",
+    experience: "",
+    department: "",
+    licenseNumber: "",
+    rating: 0,
+    consultationFee: 0,
+    bio: "",
+    availableDays: [],
+    availableTime: "",
+    phone: "",
+    shift: "",
+    licenseNo: "",
+    status: "",
+  });
 
   const handleField = (k) => (e) =>
     setForm((s) => ({ ...s, [k]: e.target.value }));
 
+  const toggleAvailableDay = (d) => {
+    setForm((s) => {
+      const arr = s.availableDays || [];
+      return {
+        ...s,
+        availableDays: arr.includes(d)
+          ? arr.filter((x) => x !== d)
+          : [...arr, d],
+      };
+    });
+  };
+
+  const sectionForRole = (r) => {
+    if (r === "doctor") return "doctors";
+    if (r === "nurse") return "nurses";
+    if (r === "pharmacist") return "pharmacists";
+    if (r === "receptionist") return "receptionists";
+    if (r === "admin") return "users";
+    return "patients";
+  };
+
+  const validateBasic = () => {
+    if (!form.name) return message.warning("Name required");
+    if (!form.email) return message.warning("Email required");
+    if (!form.password) return message.warning("Password required");
+    return true;
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (!role) return message.warning("Choose a role");
+    if (!validateBasic()) return;
 
+    setSubmitting(true);
     try {
-      setSubmitting(true);
+      const section = sectionForRole(role);
 
-      const section =
-        role === "doctor"
-          ? "doctors"
-          : role === "nurse"
-          ? "nurses"
-          : role === "pharmacist"
-          ? "pharmacists"
-          : role === "receptionist"
-          ? "receptionists"
-          : "patients";
+      let rolePayload = { ...form, role };
 
-      await postData(`/${section}`, { ...form, role });
-      message.success("Registered Successfully!");
+      if (role === "doctor") {
+        rolePayload = {
+          name: form.name,
+          gender: form.gender,
+          age: Number(form.age) || "",
+          specialization: form.specialization,
+          qualification: form.qualification,
+          experience: form.experience,
+          contact: form.contact,
+          email: form.email,
+          password: form.password,
+          role: "doctor",
+          address: form.address,
+          availableDays: form.availableDays,
+          availableTime: form.availableTime,
+          status: "Active",
+          department: form.department,
+          licenseNumber: form.licenseNumber,
+          rating: Number(form.rating) || 0,
+          consultationFee: Number(form.consultationFee) || 0,
+          bio: form.bio,
+        };
+      }
+
+      if (role === "patient") {
+        rolePayload = {
+          name: form.name,
+          age: Number(form.age) || "",
+          gender: form.gender,
+          contact: form.contact,
+          email: form.email,
+          password: form.password,
+          role: "patient",
+          address: form.address,
+          bloodGroup: form.bloodGroup,
+          registeredDate: form.registeredDate,
+          medicalHistory: form.medicalHistory,
+          allergies: form.allergies,
+          emergencyContact: form.emergencyContact,
+          status: "Active",
+        };
+      }
+
+      if (role === "nurse") {
+        rolePayload = {
+          name: form.name,
+          age: Number(form.age) || "",
+          gender: form.gender,
+          email: form.email,
+          password: form.password,
+          role: "nurse",
+          phone: form.phone || form.contact,
+          department: form.department,
+          shift: form.shift,
+          experience: form.experience,
+          status: "Active",
+          dateJoined: dayjs().format("YYYY-MM-DD"),
+        };
+      }
+
+      if (role === "pharmacist") {
+        rolePayload = {
+          name: form.name,
+          licenseNo: form.licenseNo,
+          email: form.email,
+          password: form.password,
+          role: "pharmacist",
+          contact: form.contact,
+          experience: form.experience,
+        };
+      }
+
+      if (role === "receptionist") {
+        rolePayload = {
+          name: form.name,
+          shift: form.shift,
+          email: form.email,
+          password: form.password,
+          role: "receptionist",
+          contact: form.contact,
+          status: "Active",
+        };
+      }
+
+      if (role === "admin") {
+        rolePayload = {
+          name: form.name,
+          email: form.email,
+          password: form.password,
+          role: "admin",
+        };
+      }
+
+      // Save to role section
+      const created = await postData(`/${section}`, rolePayload);
+
+      // Save credentials to /users
+      await postData("/users", {
+        name: created.name,
+        email: created.email,
+        password: created.password,
+        role: created.role,
+      });
+
+      message.success("Registered successfully! Please login.");
       navigate("/login");
+
     } catch (err) {
-      message.error("Registration Failed");
+      console.error(err);
+      message.error("Registration failed!");
     } finally {
       setSubmitting(false);
     }
   };
 
+  const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
   return (
-    <Box
-      sx={{
-        height: "100vh",
-        overflow: "hidden",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "linear-gradient(135deg,#f3f6ff,#ffffff)",
-        p: 2,
-      }}
-    >
-      <Card
-        sx={{
-          width: "100%",
-          maxWidth: 1100,
-          borderRadius: 3,
-          boxShadow: "0 8px 25px rgba(0,0,0,0.08)",
-          height: "90vh",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <CardContent sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
-          {/* BACK BUTTON */}
-          <IconButton onClick={() => navigate("/login")}>
-            <ArrowBack />
-          </IconButton>
+    <Box sx={{ minHeight: "100vh", p: 3, background: "#f3f6ff" }}>
+      <Card sx={{ maxWidth: 1050, mx: "auto", borderRadius: 3, boxShadow: 3 }}>
+        <CardContent sx={{ p: 3 }}>
+          <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+            <IconButton onClick={() => navigate("/login")}>
+              <ArrowBack />
+            </IconButton>
+            <Typography variant="h5" sx={{ ml: 1, fontWeight: 700 }}>
+              Create Account
+            </Typography>
+          </Box>
 
-          <Grid container sx={{ flexGrow: 1 }}>
+          {/* FORM */}
+          <Box component="form" onSubmit={onSubmit}>
+            <Grid container spacing={2}>
 
-            {/* LEFT SECTION FIXED */}
-            <Grid
-              item
-              xs={12}
-              md={4}
-              sx={{
-                borderRight: { md: "1px solid #eee" },
-                p: 3,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-              }}
-            >
-              <Box sx={{ textAlign: "center", mb: 3 }}>
-                <Avatar
-                  sx={{
-                    bgcolor: "#1976d2",
-                    width: 70,
-                    height: 70,
-                    mx: "auto",
-                    mb: 2,
-                  }}
+              {/* ROLE FIRST */}
+              <Grid item xs={12} sm={6} md={4}>
+                <FormControl fullWidth>
+                  <InputLabel>Role</InputLabel>
+                  <Select
+                    value={role}
+                    label="Role"
+                    onChange={(e) => setRole(e.target.value)}
+                  >
+                    <MenuItem value="patient">Patient</MenuItem>
+                    <MenuItem value="doctor">Doctor</MenuItem>
+                    <MenuItem value="nurse">Nurse</MenuItem>
+                    <MenuItem value="pharmacist">Pharmacist</MenuItem>
+                    <MenuItem value="receptionist">Receptionist</MenuItem>
+                    <MenuItem value="admin">Admin</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              {/* BASIC */}
+              {[
+                ["Full Name", "name"],
+                ["Email", "email"],
+                ["Password", "password", "password"],
+                ["Contact", "contact"],
+                ["Address", "address"],
+                ["Age", "age", "number"],
+              ].map(([label, key, type]) => (
+                <Grid item xs={12} sm={6} md={4} key={key}>
+                  <TextField
+                    label={label}
+                    type={type || "text"}
+                    fullWidth
+                    required={["name", "email", "password"].includes(key)}
+                    value={form[key]}
+                    onChange={handleField(key)}
+                  />
+                </Grid>
+              ))}
+
+              {/* GENDER */}
+              <Grid item xs={12} sm={6} md={4}>
+                <FormControl fullWidth>
+                  <InputLabel>Gender</InputLabel>
+                  <Select
+                    value={form.gender}
+                    label="Gender"
+                    onChange={handleField("gender")}
+                  >
+                    <MenuItem value="Male">Male</MenuItem>
+                    <MenuItem value="Female">Female</MenuItem>
+                    <MenuItem value="Other">Other</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              {/* PATIENT */}
+              {role === "patient" && (
+                <>
+                  {[
+                    ["Blood Group", "bloodGroup"],
+                    ["Registered Date", "registeredDate"],
+                    ["Medical History", "medicalHistory"],
+                    ["Allergies", "allergies"],
+                    ["Emergency Contact", "emergencyContact"],
+                  ].map(([label, key]) => (
+                    <Grid item xs={12} sm={6} md={4} key={key}>
+                      <TextField
+                        label={label}
+                        fullWidth
+                        value={form[key]}
+                        onChange={handleField(key)}
+                      />
+                    </Grid>
+                  ))}
+                </>
+              )}
+
+              {/* DOCTOR */}
+              {role === "doctor" && (
+                <>
+                  {[
+                    ["Specialization", "specialization"],
+                    ["Qualification", "qualification"],
+                    ["Experience", "experience"],
+                    ["Department", "department"],
+                    ["License Number", "licenseNumber"],
+                    ["Consultation Fee", "consultationFee", "number"],
+                  ].map(([label, key, type]) => (
+                    <Grid item xs={12} sm={6} md={4} key={key}>
+                      <TextField
+                        label={label}
+                        type={type || "text"}
+                        fullWidth
+                        value={form[key]}
+                        onChange={handleField(key)}
+                      />
+                    </Grid>
+                  ))}
+
+                  {/* Available Days */}
+                  <Grid item xs={12}>
+                    <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+                      {weekDays.map((d) => (
+                        <Chip
+                          key={d}
+                          label={d}
+                          clickable
+                          color={
+                            form.availableDays.includes(d)
+                              ? "primary"
+                              : "default"
+                          }
+                          onClick={() => toggleAvailableDay(d)}
+                        />
+                      ))}
+                    </Box>
+                  </Grid>
+
+                  {/* Available Time */}
+                  <Grid item xs={12} sm={6} md={4}>
+                    <TextField
+                      label="Available Time"
+                      fullWidth
+                      value={form.availableTime}
+                      onChange={handleField("availableTime")}
+                    />
+                  </Grid>
+                </>
+              )}
+
+              {/* NURSE */}
+              {role === "nurse" && (
+                <>
+                  {[
+                    ["Department", "department"],
+                    ["Shift", "shift"],
+                    ["Phone", "phone"],
+                  ].map(([label, key]) => (
+                    <Grid item xs={12} sm={6} md={4} key={key}>
+                      <TextField
+                        label={label}
+                        fullWidth
+                        value={form[key]}
+                        onChange={handleField(key)}
+                      />
+                    </Grid>
+                  ))}
+                </>
+              )}
+
+              {/* PHARMACIST */}
+              {role === "pharmacist" && (
+                <>
+                  {[
+                    ["License No", "licenseNo"],
+                    ["Experience", "experience"],
+                  ].map(([label, key]) => (
+                    <Grid item xs={12} sm={6} md={4} key={key}>
+                      <TextField
+                        label={label}
+                        fullWidth
+                        value={form[key]}
+                        onChange={handleField(key)}
+                      />
+                    </Grid>
+                  ))}
+                </>
+              )}
+
+              {/* RECEPTIONIST */}
+              {role === "receptionist" && (
+                <>
+                  {[
+                    ["Shift", "shift"],
+                    ["Status", "status"],
+                  ].map(([label, key]) => (
+                    <Grid item xs={12} sm={6} md={4} key={key}>
+                      <TextField
+                        label={label}
+                        fullWidth
+                        value={form[key]}
+                        onChange={handleField(key)}
+                      />
+                    </Grid>
+                  ))}
+                </>
+              )}
+
+              {/* BUTTONS */}
+              <Grid item xs={12}>
+                <Box
+                  sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}
                 >
-                  <PersonIcon />
-                </Avatar>
-
-                <Typography variant="h5" fontWeight={700}>
-                  Create Account
-                </Typography>
-
-                <Typography variant="body2" sx={{ color: "text.secondary", mt: 1 }}>
-                  Choose a role & enter details.
-                </Typography>
-              </Box>
-
-              <FormControl fullWidth>
-                <InputLabel>Role</InputLabel>
-                <Select
-                  value={role}
-                  label="Role"
-                  onChange={(e) => setRole(e.target.value)}
-                >
-                  <MenuItem value="patient">Patient</MenuItem>
-                  <MenuItem value="doctor">Provider (Doctor)</MenuItem>
-                  <MenuItem value="nurse">Nurse</MenuItem>
-                  <MenuItem value="pharmacist">Pharmacist</MenuItem>
-                  <MenuItem value="receptionist">Receptionist</MenuItem>
-                  <MenuItem value="admin">Admin</MenuItem>
-                </Select>
-              </FormControl>
-
-              <Paper
-                elevation={0}
-                sx={{
-                  mt: 4,
-                  p: 2,
-                  background: "#f7f9ff",
-                  borderRadius: 2,
-                }}
-              >
-                <Typography variant="subtitle2" sx={{ mb: 1 }}>
-                  Quick Tip
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  Use the demo accounts on Login page to test instantly.
-                </Typography>
-              </Paper>
+                  <Button
+                    variant="outlined"
+                    onClick={() => navigate("/login")}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit" variant="contained" disabled={submitting}>
+                    {submitting ? "Registering..." : "Register"}
+                  </Button>
+                </Box>
+              </Grid>
             </Grid>
-
-            {/* RIGHT FORM AREA (STATIC HEIGHT) */}
-            <Grid
-              item
-              xs={12}
-              md={8}
-              sx={{
-                p: 3,
-                overflow: "hidden",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-              }}
-            >
-              <Box
-                component="form"
-                onSubmit={onSubmit}
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: 2,
-                }}
-              >
-                {/* COMMON FIELDS */}
-                <TextField
-                  label="Full Name"
-                  onChange={handleField("name")}
-                  required
-                />
-                <TextField
-                  label="Email"
-                  onChange={handleField("email")}
-                  required
-                />
-
-                <TextField
-                  label="Password"
-                  type="password"
-                  onChange={handleField("password")}
-                  required
-                />
-                <TextField label="Contact" onChange={handleField("contact")} />
-
-                {/* DOCTOR */}
-                {role === "doctor" && (
-                  <>
-                    <TextField label="Specialization" onChange={handleField("specialization")} />
-                    <TextField label="License Number" onChange={handleField("licenseNumber")} />
-                  </>
-                )}
-
-                {/* PATIENT */}
-                {role === "patient" && (
-                  <>
-                    <TextField label="Age" onChange={handleField("age")} />
-                    <TextField label="Blood Group" onChange={handleField("bloodGroup")} />
-                  </>
-                )}
-
-                {/* NURSE */}
-                {role === "nurse" && (
-                  <>
-                    <TextField label="Department" onChange={handleField("department")} />
-                    <TextField label="Shift" onChange={handleField("shift")} />
-                  </>
-                )}
-
-                {/* PHARMACIST */}
-                {role === "pharmacist" && (
-                  <>
-                    <TextField label="License No" onChange={handleField("licenseNo")} />
-                    <TextField label="Experience (Years)" onChange={handleField("experience")} />
-                  </>
-                )}
-
-                {/* RECEPTIONIST */}
-                {role === "receptionist" && (
-                  <TextField label="Shift" onChange={handleField("shift")} />
-                )}
-              </Box>
-
-              {/* BUTTON ROW */}
-              <Box
-                sx={{
-                  mt: 3,
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  gap: 2,
-                }}
-              >
-                <Button
-                  variant="outlined"
-                  onClick={() => navigate("/login")}
-                  startIcon={<ArrowBack />}
-                />
-
-                <Button
-                  type="submit"
-                  variant="contained"
-                  disabled={submitting}
-                  sx={{ minWidth: 160 }}
-                >
-                  {submitting ? "Registering…" : "Register"}
-                </Button>
-              </Box>
-            </Grid>
-          </Grid>
+          </Box>
         </CardContent>
       </Card>
     </Box>

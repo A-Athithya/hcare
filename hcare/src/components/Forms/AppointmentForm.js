@@ -8,6 +8,7 @@ import {
   TimePicker,
   Divider,
   message,
+  Collapse,
   Row,
   Col,
 } from "antd";
@@ -104,101 +105,89 @@ export default function AppointmentForm({
       onFinish={onFinish}
       style={{ paddingRight: 6 }}
     >
-      <Divider orientation="left">Patient & Doctor</Divider>
+      <Collapse defaultActiveKey={["1", "2", "3"]} style={{ marginBottom: 12 }}>
+        
+        {/* SECTION 1 - PATIENT & DOCTOR */}
+        <Collapse.Panel header="Patient & Doctor" key="1">
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="patientId"
+                label="Patient"
+                rules={[{ required: true, message: "Select patient" }]}
+              >
+                <Select placeholder="Select patient" showSearch optionFilterProp="children">
+                  {patients.map((p) => (
+                    <Select.Option key={p.id} value={p.id}>
+                      {p.name} {p.age ? `• ${p.age}` : ""}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
 
-      <Row gutter={16}>
-        <Col span={12}>
+            <Col span={12}>
+              <Form.Item
+                name="doctorId"
+                label="Doctor"
+                rules={[{ required: true, message: "Select doctor" }]}
+              >
+                <Select placeholder="Select doctor">
+                  {doctors.map((d) => (
+                    <Select.Option key={d.id} value={d.id}>
+                      {d.name} {d.specialization ? `• ${d.specialization}` : ""}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Collapse.Panel>
+
+        {/* SECTION 2 - SCHEDULE */}
+        <Collapse.Panel header="Schedule" key="2">
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="date"
+                label="Date"
+                rules={[{ required: true, message: "Select date" }]}
+              >
+                <DatePicker style={{ width: "100%" }} />
+              </Form.Item>
+            </Col>
+
+            <Col span={12}>
+              <Form.Item
+                name="time"
+                label="Time"
+                rules={[{ required: true, message: "Select time" }]}
+              >
+                <TimePicker
+                  style={{ width: "100%" }}
+                  use12Hours
+                  format="hh:mm A"
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        </Collapse.Panel>
+
+        {/* SECTION 3 - REASON & NOTES */}
+        <Collapse.Panel header="Reason & Notes" key="3">
           <Form.Item
-            name="patientId"
-            label="Patient"
-            rules={[{ required: true, message: "Select patient" }]}
+            name="reason"
+            label="Reason"
+            rules={[{ required: true, message: "Enter reason" }]}
           >
-            <Select
-              placeholder="Select patient"
-              showSearch
-              optionFilterProp="children"
-            >
-              {patients.map((p) => (
-                <Select.Option key={p.id} value={p.id}>
-                  {p.name} {p.age ? `• ${p.age}` : ""}
-                </Select.Option>
-              ))}
-            </Select>
+            <Input placeholder="Reason for appointment" />
           </Form.Item>
-        </Col>
 
-        <Col span={12}>
-          <Form.Item
-            name="doctorId"
-            label="Doctor"
-            rules={[{ required: true, message: "Select doctor" }]}
-          >
-            <Select placeholder="Select doctor">
-              {doctors.map((d) => (
-                <Select.Option key={d.id} value={d.id}>
-                  {d.name} {d.specialization ? `• ${d.specialization}` : ""}
-                </Select.Option>
-              ))}
-            </Select>
+          <Form.Item name="remarks" label="Remarks">
+            <Input.TextArea rows={3} placeholder="Optional notes" />
           </Form.Item>
-        </Col>
-      </Row>
-
-      <Divider orientation="left">Schedule</Divider>
-
-      <Row gutter={16}>
-        <Col span={12}>
-          <Form.Item
-            name="date"
-            label="Date"
-            rules={[{ required: true, message: "Select date" }]}
-          >
-            <DatePicker style={{ width: "100%" }} />
-          </Form.Item>
-        </Col>
-
-        <Col span={12}>
-          <Form.Item
-            name="time"
-            label="Time"
-            rules={[{ required: true, message: "Select time" }]}
-          >
-            <TimePicker
-              style={{ width: "100%" }}
-              use12Hours
-              format="hh:mm A"
-            />
-          </Form.Item>
-        </Col>
-      </Row>
-
-      <Divider orientation="left">Reason & Notes</Divider>
-
-      <Form.Item
-        name="reason"
-        label="Reason"
-        rules={[{ required: true, message: "Enter reason" }]}
-      >
-        <Input placeholder="Reason for appointment" />
-      </Form.Item>
-
-      <Form.Item name="remarks" label="Remarks">
-        <Input.TextArea rows={3} placeholder="Optional notes" />
-      </Form.Item>
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          marginTop: 12,
-          gap: 10,
-        }}
-      >
-        <Button onClick={() => form.resetFields()}>Reset</Button>
-        <Button type="primary" htmlType="submit">
-          {initial ? "Update Appointment" : "Schedule Appointment"}
-        </Button>
-      </div>
+        </Collapse.Panel>
+      </Collapse>
     </Form>
   );
 }

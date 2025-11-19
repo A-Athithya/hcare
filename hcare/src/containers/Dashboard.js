@@ -1,8 +1,8 @@
-/* ----------------------------------------------------------
-   Dashboard.js – Clean, Professional, Warning-Free Version
------------------------------------------------------------ */
+/* src/containers/Dashboard.js
+   Updated: resolve patient names in recent activity + auto-refresh
+*/
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
@@ -25,7 +25,7 @@ import dayjs from "dayjs";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { user, role } = useSelector((state) => state.auth);
+  const { user, role } = useSelector((state) => state.auth || {});
 
   const [stats, setStats] = useState({
     patients: 0,
@@ -44,143 +44,195 @@ const Dashboard = () => {
 
   const [loading, setLoading] = useState(true);
 
-  // LOAD DATA
-  useEffect(() => {
-    let mounted = true;
+  // polling ref so we can clean up
+  const pollRef = useRef(null);
 
-    const loadStats = async () => {
-      setLoading(true);
+  // central loader (fetches patients, doctors, appointments, medicines, invoices)
+  const loadStats = async () => {
+    setLoading(true);
+    try {
+      let patients = [];
+      let doctors = [];
+      let appointments = [];
+      let medicines = [];
+      let invoices = [];
+
+      // Try API first; on failure fallback to db.json (like previous logic)
       try {
-        let patients, doctors, appointments, medicines, invoices;
-
-        // Try API first, fallback to db.json
-        try {
-          // Fetch data based on user role
-          if (role === 'doctor') {
-            // For doctors, only fetch their related data
-            [patients, appointments, medicines, invoices] = await Promise.all([
-              getData("/patients"),
-              getData("/appointments"),
-              getData("/medicines"),
-              getData("/invoices"),
-            ]);
-            doctors = [user]; // Only current doctor
-
-            // Filter appointments for this doctor
-            appointments = appointments.filter(apt => apt.doctorId == user.id);
-            // Filter invoices for this doctor's patients
-            invoices = invoices.filter(inv => inv.doctorId == user.id);
-            // Filter patients who have appointments with this doctor
-            const doctorPatientIds = [...new Set(appointments.map(apt => apt.patientId))];
-            patients = patients.filter(p => doctorPatientIds.includes(p.id));
-
-          } else if (role === 'patient') {
-            // For patients, only fetch their own data
-            [appointments, medicines, invoices] = await Promise.all([
-              getData("/appointments"),
-              getData("/medicines"),
-              getData("/invoices"),
-            ]);
-            patients = [user]; // Only current patient
-            doctors = await getData("/doctors"); // All doctors for reference
-
-            // Filter appointments for this patient
-            appointments = appointments.filter(apt => apt.patientId == user.id);
-            // Filter invoices for this patient
-            invoices = invoices.filter(inv => inv.patientId == user.id);
-
-          } else {
-            // Admin gets all data
-            [patients, doctors, appointments, medicines, invoices] = await Promise.all([
+        if (role === "doctor") {
+          [patients, appointments, medicines, invoices] = await Promise.all([
+            getData("/patients"),
+            getData("/appointments"),
+            getData("/medicines"),
+            getData("/invoices"),
+          ]);
+          doctors = [user];
+          // filter for this doctor
+          appointments = (appointments || []).filter(
+            (a) => a.doctorId == user?.id
+          );
+          invoices = (invoices || []).filter((inv) => inv.doctorId == user?.id);
+          const doctorPatientIds = [
+            ...new Set((appointments || []).map((apt) => apt.patientId)),
+          ];
+          patients = (patients || []).filter((p) =>
+            doctorPatientIds.includes(p.id)
+          );
+        } else if (role === "patient") {
+          [appointments, medicines, invoices] = await Promise.all([
+            getData("/appointments"),
+            getData("/medicines"),
+            getData("/invoices"),
+          ]);
+          patients = [user];
+          doctors = await getData("/doctors");
+          appointments = (appointments || []).filter(
+            (a) => a.patientId == user?.id
+          );
+          invoices = (invoices || []).filter((inv) => inv.patientId == user?.id);
+        } else {
+          // admin/others
+          [patients, doctors, appointments, medicines, invoices] =
+            await Promise.all([
               getData("/patients"),
               getData("/doctors"),
               getData("/appointments"),
               getData("/medicines"),
               getData("/invoices"),
             ]);
-          }
-        } catch (apiError) {
-          // Fallback to db.json
-          console.log("API failed, using db.json fallback:", apiError);
-          const response = await fetch('/db.json');
-          if (response.ok) {
-            const data = await response.json();
-
-            patients = data.patients || [];
-            doctors = data.doctors || [];
-            appointments = data.appointments || [];
-            medicines = data.medicines || [];
-            invoices = data.invoices || [];
-
-            // Apply role-based filtering
-            if (role === 'doctor') {
-              appointments = appointments.filter(apt => apt.doctorId == user.id);
-              invoices = invoices.filter(inv => inv.doctorId == user.id);
-              const doctorPatientIds = [...new Set(appointments.map(apt => apt.patientId))];
-              patients = patients.filter(p => doctorPatientIds.includes(p.id));
-              doctors = [user];
-            } else if (role === 'patient') {
-              appointments = appointments.filter(apt => apt.patientId == user.id);
-              invoices = invoices.filter(inv => inv.patientId == user.id);
-              patients = [user];
-            }
-            // Admin sees all
-          }
         }
+      } catch (apiErr) {
+        // fallback to db.json
+        console.warn("API failed in dashboard load, falling back to db.json", apiErr);
+        const resp = await fetch("/db.json");
+        if (resp.ok) {
+          const data = await resp.json();
+          patients = data.patients || [];
+          doctors = data.doctors || [];
+          appointments = data.appointments || [];
+          medicines = data.medicines || [];
+          invoices = data.invoices || [];
 
-        if (!mounted) return;
-
-        setStats({
-          patients: patients.length,
-          doctors: doctors.length,
-          appointments: appointments.length,
-          medicines: medicines.length,
-        });
-
-        setRecentPatients(
-          patients
-            .sort((a, b) => new Date(b.registeredDate) - new Date(a.registeredDate))
-            .slice(0, 3)
-        );
-
-        setRecentAppointments(
-          appointments
-            .sort(
-              (a, b) =>
-                new Date(b.appointmentDate || b.registeredDate) -
-                new Date(a.appointmentDate || a.registeredDate)
-            )
-            .slice(0, 3)
-        );
-
-        setFilteredAppointments(
-          appointments.filter((a) => {
-            const d = dayjs(a.appointmentDate || a.registeredDate);
-            return d.isAfter(startDate) && d.isBefore(endDate.add(1, "day"));
-          })
-        );
-
-        setFilteredInvoices(
-          invoices.filter((invoice) => {
-            const d = dayjs(invoice.invoiceDate);
-            return d.isAfter(startDate) && d.isBefore(endDate.add(1, "day"));
-          })
-        );
-      } catch (err) {
-        console.log("Dashboard load error:", err);
-      } finally {
-        if (mounted) setLoading(false);
+          // apply same role-based filters as above
+          if (role === "doctor") {
+            appointments = appointments.filter((apt) => apt.doctorId == user?.id);
+            invoices = invoices.filter((inv) => inv.doctorId == user?.id);
+            const doctorPatientIds = [
+              ...new Set((appointments || []).map((apt) => apt.patientId)),
+            ];
+            patients = patients.filter((p) => doctorPatientIds.includes(p.id));
+            doctors = [user];
+          } else if (role === "patient") {
+            appointments = appointments.filter((apt) => apt.patientId == user?.id);
+            invoices = invoices.filter((inv) => inv.patientId == user?.id);
+            patients = [user];
+          }
+        } else {
+          // can't load fallback - keep things empty
+          patients = [];
+          doctors = [];
+          appointments = [];
+          medicines = [];
+          invoices = [];
+        }
       }
-    };
 
+      // ensure arrays
+      patients = patients || [];
+      doctors = doctors || [];
+      appointments = appointments || [];
+      medicines = medicines || [];
+      invoices = invoices || [];
+
+      // Build stats
+      setStats({
+        patients: patients.length,
+        doctors: doctors.length,
+        appointments: appointments.length,
+        medicines: medicines.length,
+      });
+
+      // RECENT PATIENTS (latest registeredDate)
+      const recentP = [...patients]
+        .sort(
+          (a, b) =>
+            new Date(b.registeredDate || b.createdAt || 0) -
+            new Date(a.registeredDate || a.createdAt || 0)
+        )
+        .slice(0, 3);
+      setRecentPatients(recentP);
+
+      // Map appointments and resolve patientName (handles patientId type mismatch)
+      const mappedAppts = (appointments || []).map((a) => {
+        const patient =
+          patients.find((p) => String(p.id) === String(a.patientId)) || null;
+        return {
+          ...a,
+          patientName: patient?.name || patient?.fullName || null,
+        };
+      });
+
+      // Sort by appointmentDate (newest first), fallback to created or registeredDate
+      const sortedAppts = mappedAppts.sort((a, b) => {
+        const da = a.appointmentDate || a.registeredDate || a.createdAt || "";
+        const db = b.appointmentDate || b.registeredDate || b.createdAt || "";
+        return new Date(db) - new Date(da);
+      });
+
+      setRecentAppointments(sortedAppts.slice(0, 3));
+
+      // Filtered lists for charts and other cards
+      setFilteredAppointments(
+        (appointments || []).filter((a) => {
+          const d = dayjs(a.appointmentDate || a.registeredDate);
+          return d.isAfter(startDate) && d.isBefore(endDate.add(1, "day"));
+        })
+      );
+
+      setFilteredInvoices(
+        (invoices || []).filter((invoice) => {
+          const d = dayjs(invoice.invoiceDate);
+          return d.isAfter(startDate) && d.isBefore(endDate.add(1, "day"));
+        })
+      );
+    } catch (err) {
+      console.error("Dashboard load error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // load on mount + auto-refresh every 20s so Recent Activity shows new data
+  useEffect(() => {
     loadStats();
-    return () => (mounted = false);
-  }, [startDate, endDate, role, user]);
 
-  // LOADER
+    // start polling
+    pollRef.current = setInterval(() => {
+      loadStats();
+    }, 20000); // 20s - change as needed
+
+    return () => {
+      if (pollRef.current) clearInterval(pollRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [role, user]);
+
+  // also reload whenever date filters change
+  useEffect(() => {
+    loadStats();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [startDate, endDate]);
+
   if (loading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh" }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "80vh",
+        }}
+      >
         <CircularProgress />
       </Box>
     );
@@ -191,29 +243,22 @@ const Dashboard = () => {
     0
   );
 
-  // Dynamic stat cards based on role
+  // stat cards by role (same as before)
   const getStatCards = () => {
-    if (role === 'doctor') {
+    if (role === "doctor") {
       return [
         { title: "My Patients", value: stats.patients, route: "/patients" },
         { title: "My Appointments", value: stats.appointments, route: "/appointments" },
         { title: "Medicines in Stock", value: stats.medicines, route: "/inventory" },
         { title: "My Revenue", value: `₹${totalRevenue}`, route: "/billing" },
       ];
-    } else if (role === 'patient') {
+    } else if (role === "patient") {
       return [
         { title: "My Appointments", value: stats.appointments, route: "/appointments" },
         { title: "Medicines in Stock", value: stats.medicines, route: "/inventory" },
         { title: "My Bills", value: `₹${totalRevenue}`, route: "/billing" },
       ];
-    } else if (role === 'nurse') {
-      return [
-        { title: "Total Patients", value: stats.patients, route: "/patients" },
-        { title: "Active Doctors", value: stats.doctors, route: "/doctors" },
-        { title: "Today's Appointments", value: stats.appointments, route: "/appointments" },
-        { title: "Medicines in Stock", value: stats.medicines, route: "/inventory" },
-      ];
-    } else if (role === 'pharmacist') {
+    } else if (role === "nurse" || role === "pharmacist") {
       return [
         { title: "Total Patients", value: stats.patients, route: "/patients" },
         { title: "Active Doctors", value: stats.doctors, route: "/doctors" },
@@ -249,12 +294,12 @@ const Dashboard = () => {
   );
 
   return (
-    <Box sx={{ minHeight: "100vh", background: "#f3f6fb", p: { xs: 3, md: 5 }, maxWidth: 1400, mx: "auto" }}>
-      
-      {/* FILTER SECTION (NO BOX) */}
+    <Box sx={{ minHeight: "50vh", background: "#f3f6fb", p: { xs: 3, md: 5 }, maxWidth: 1400, mx: "auto" }}>
+      {/* FILTER SECTION */}
       <Box sx={{ display: "flex", gap: 3, justifyContent: "flex-end", mb: 3 }}>
         <TextField
           type="date"
+          size="small"
           label="Start Date"
           InputLabelProps={{ shrink: true }}
           value={startDate.format("YYYY-MM-DD")}
@@ -263,6 +308,7 @@ const Dashboard = () => {
 
         <TextField
           type="date"
+          size="small"
           label="End Date"
           InputLabelProps={{ shrink: true }}
           value={endDate.format("YYYY-MM-DD")}
@@ -271,6 +317,7 @@ const Dashboard = () => {
 
         <Button
           variant="contained"
+          size="small"
           onClick={() => {
             setStartDate(dayjs().subtract(7, "day"));
             setEndDate(dayjs());
@@ -321,7 +368,6 @@ const Dashboard = () => {
 
       {/* RECENT ACTIVITY + NEW PATIENTS */}
       <Grid container spacing={4} sx={{ mt: 4 }}>
-        
         {/* RECENT ACTIVITY */}
         <Grid item xs={12} lg={7}>
           <Card sx={{ borderRadius: 4, p: 3, background: "white", boxShadow: "0 4px 12px rgba(0,0,0,0.08)" }}>
@@ -350,9 +396,10 @@ const Dashboard = () => {
                   </Avatar>
 
                   <Box sx={{ flex: 1 }}>
+                    {/* patientName resolved earlier; fallback to Unknown Patient */}
                     <Typography sx={{ fontWeight: 600 }}>{a.patientName || "Unknown Patient"}</Typography>
                     <Typography sx={{ fontSize: 13, opacity: 0.7 }}>
-                      {a.appointmentDate} • {a.appointmentTime}
+                      {a.appointmentDate || "-"} • {a.appointmentTime || "-"}
                     </Typography>
                   </Box>
 
@@ -408,7 +455,7 @@ const Dashboard = () => {
                   <Box sx={{ flex: 1 }}>
                     <Typography sx={{ fontWeight: 600 }}>{p.name || "Unnamed"}</Typography>
                     <Typography sx={{ opacity: 0.7 }}>
-                      {role === 'patient' ? `ID: ${p.id}` : p.registeredDate}
+                      {role === 'patient' ? `ID: ${p.id}` : p.registeredDate || "-"}
                     </Typography>
                   </Box>
                 </Box>
@@ -421,7 +468,6 @@ const Dashboard = () => {
       {/* CHARTS */}
       <Box sx={{ mt: 6 }}>
         <DashboardCharts
-          role={role}
           startDate={dayjs(startDate).format("YYYY-MM-DD")}
           endDate={dayjs(endDate).format("YYYY-MM-DD")}
         />

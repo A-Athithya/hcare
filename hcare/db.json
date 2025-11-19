@@ -50,25 +50,227 @@
       "rating": 4.5,
       "consultationFee": 600,
       "bio": "Expert in bone and joint surgeries with over 12 years of experience."
+    },
+    {
+      "id": 3,
+      "name": "Dr. Priya S",
+      "gender": "Female",
+      "age": 32,
+      "specialization": "Dermatologist",
+      "qualification": "MBBS, MD (Dermatology)",
+      "experience": "8 years",
+      "contact": "9876543212",
+      "email": "priya.s@gmail.com",
+      "password": "Priya@2024",
+      "role": "doctor",
+      "address": "Coimbatore, Tamil Nadu",
+      "availableDays": [
+        "Monday",
+        "Thursday",
+        "Saturday"
+      ],
+      "availableTime": "11:00 AM - 3:00 PM",
+      "status": "Active",
+      "department": "Dermatology",
+      "licenseNumber": "TN12347",
+      "rating": 4.6,
+      "consultationFee": 450,
+      "bio": "Dermatology specialist handling skin, hair, and nail-related conditions."
+    },
+    {
+      "id": 4,
+      "name": "Dr. Suresh K",
+      "gender": "Male",
+      "age": 45,
+      "specialization": "Neurologist",
+      "qualification": "MBBS, DM (Neurology)",
+      "experience": "15 years",
+      "contact": "9876543213",
+      "email": "suresh.k@gmail.com",
+      "password": "Suresh@2024",
+      "role": "doctor",
+      "address": "Madurai, Tamil Nadu",
+      "availableDays": [
+        "Tuesday",
+        "Friday"
+      ],
+      "availableTime": "10:00 AM - 1:00 PM",
+      "status": "Active",
+      "department": "Neurology",
+      "licenseNumber": "TN12348",
+      "rating": 4.8,
+      "consultationFee": 700,
+      "bio": "Experienced neurologist specializing in brain and nervous system disorders."
+    },
+    {
+      "id": 5,
+      "name": "Dr. Nithya V",
+      "gender": "Female",
+      "age": 38,
+      "specialization": "Gynecologist",
+      "qualification": "MBBS, MD (OBG)",
+      "experience": "11 years",
+      "contact": "9876543214",
+      "email": "nithya.v@gmail.com",
+      "password": "Nithya@2024",
+      "role": "doctor",
+      "address": "Salem, Tamil Nadu",
+      "availableDays": [
+        "Wednesday",
+        "Saturday"
+      ],
+      "availableTime": "9:30 AM - 1:30 PM",
+      "status": "Active",
+      "department": "Gynecology",
+      "licenseNumber": "TN12349",
+      "rating": 4.9,
+      "consultationFee": 550,
+      "bio": "Specialist in women’s health, pregnancy care, and reproductive health."
+    },
+    {
+      "id": 6,
+      "name": "Dr. Aravind T",
+      "gender": "Male",
+      "age": 37,
+      "specialization": "ENT Specialist",
+      "qualification": "MBBS, MS (ENT)",
+      "experience": "9 years",
+      "contact": "9876543215",
+      "email": "aravind.t@gmail.com",
+      "password": "Aravind@2024",
+      "role": "doctor",
+      "address": "Chennai, Tamil Nadu",
+      "availableDays": [
+        "Monday",
+        "Tuesday",
+        "Friday"
+      ],
+      "availableTime": "2:00 PM - 6:00 PM",
+      "status": "Active",
+      "department": "ENT",
+      "licenseNumber": "TN12350",
+      "rating": 4.4,
+      "consultationFee": 400,
+      "bio": "ENT specialist treating ear, nose, and throat-related conditions."
+    },
+    {
+      "id": 7,
+      "name": "Dr. Meenakshi L",
+      "gender": "Female",
+      "age": 42,
+      "specialization": "Ophthalmologist",
+      "qualification": "MBBS, MS (Ophthalmology)",
+      "experience": "14 years",
+      "contact": "9876543216",
+      "email": "meenakshi.l@gmail.com",
+      "password": "Meena@2024",
+      "role": "doctor",
+      "address": "Tirunelveli, Tamil Nadu",
+      "availableDays": [
+        "Thursday",
+        "Saturday"
+      ],
+      "availableTime": "10:00 AM - 2:00 PM",
+      "status": "Active",
+      "department": "Ophthalmology",
+      "licenseNumber": "TN12351",
+      "rating": 4.7,
+      "consultationFee": 500,
+      "bio": "Eye specialist with strong experience in vision care and eye surgeries."
+    },
+    {
+      "id": 8,
+      "name": "Dr. Raghavan P",
+      "gender": "Male",
+      "age": 50,
+      "specialization": "General Physician",
+      "qualification": "MBBS",
+      "experience": "20 years",
+      "contact": "9876543217",
+      "email": "raghavan.p@gmail.com",
+      "password": "Raghavan@2024",
+      "role": "doctor",
+      "address": "Trichy, Tamil Nadu",
+      "availableDays": [
+        "Monday",
+        "Wednesday",
+        "Friday"
+      ],
+      "availableTime": "9:00 AM - 12:00 PM",
+      "status": "Active",
+      "department": "General Medicine",
+      "licenseNumber": "TN12352",
+      "rating": 4.3,
+      "consultationFee": 300,
+      "bio": "General physician with expertise in diagnosing common medical problems."
+    },
+    {
+      "id": 9,
+      "name": "Dr. Lakshmi D",
+      "gender": "Female",
+      "age": 33,
+      "specialization": "Pediatrician",
+      "qualification": "MBBS, MD (Pediatrics)",
+      "experience": "7 years",
+      "contact": "9876543218",
+      "email": "lakshmi.d@gmail.com",
+      "password": "Lakshmi@2024",
+      "role": "doctor",
+      "address": "Chennai, Tamil Nadu",
+      "availableDays": [
+        "Tuesday",
+        "Thursday",
+        "Saturday"
+      ],
+      "availableTime": "11:00 AM - 4:00 PM",
+      "status": "Active",
+      "department": "Pediatrics",
+      "licenseNumber": "TN12353",
+      "rating": 4.8,
+      "consultationFee": 480,
+      "bio": "Child specialist providing care for infants, toddlers, and adolescents."
+    },
+    {
+      "id": 10,
+      "name": "Dr. Manoj V",
+      "gender": "Male",
+      "age": 39,
+      "specialization": "Psychiatrist",
+      "qualification": "MBBS, MD (Psychiatry)",
+      "experience": "10 years",
+      "contact": "9876543219",
+      "email": "manoj.v@gmail.com",
+      "password": "Manoj@2024",
+      "role": "doctor",
+      "address": "Chennai, Tamil Nadu",
+      "availableDays": [
+        "Wednesday",
+        "Friday"
+      ],
+      "availableTime": "3:00 PM - 7:00 PM",
+      "status": "Active",
+      "department": "Psychiatry",
+      "licenseNumber": "TN12354",
+      "rating": 4.6,
+      "consultationFee": 650,
+      "bio": "Psychiatrist specializing in mental health, stress, and emotional wellbeing."
     }
   ],
   "patients": [
     {
-      "id": 1,
       "name": "Aarav",
       "age": 32,
       "gender": "Male",
-      "bloodGroup": "A+",
       "contact": "9876543210",
       "email": "aarav.kumar@gmail.com",
-      "password": "Aarav@2024",
-      "role": "patient",
+      "bloodGroup": "A+",
       "address": "123 Main St, Trichy",
+      "registeredDate": "2025-11-01",
       "medicalHistory": "Diabetes",
       "allergies": "Penicillin",
       "emergencyContact": "Ananya (Sister) - 9876501234",
       "status": "Active",
-      "registeredDate": "2025-11-01"
+      "id": 1
     },
     {
       "name": "Ananya ",
@@ -86,17 +288,19 @@
       "id": 2
     },
     {
-      "id": 3,
       "name": "Abinav",
       "age": 30,
       "gender": "Male",
+      "bloodGroup": "O+",
+      "registeredDate": "2025-11-12",
       "contact": "9876543210",
       "email": "abinav@gmail.com",
-      "password": "Abinav@2024",
-      "role": "patient",
       "address": "Park street, Thanjavur",
-      "registeredDate": "2025-11-12",
-      "status": "Active"
+      "emergencyContact": "7856758493",
+      "medicalHistory": "Emergency medical attention",
+      "allergies": "Viral Fever",
+      "status": "Active",
+      "id": 3
     }
   ],
   "appointments": [
@@ -127,20 +331,73 @@
       "doctorId": 1,
       "appointmentDate": "2025-11-20",
       "appointmentTime": "05:00 PM",
-      "reason": "-",
-      "remarks": "-",
-      "status": "Pending",
+      "reason": "Asthma",
+      "remarks": "No",
+      "status": "Accepted",
       "paymentStatus": "Pending",
       "id": 103
+    },
+    {
+      "patientId": 1,
+      "doctorId": 2,
+      "appointmentDate": "2025-11-19",
+      "appointmentTime": "07:00 PM",
+      "reason": "Penicillin",
+      "remarks": "",
+      "status": "Rejected",
+      "paymentStatus": "Pending",
+      "id": 104
     }
   ],
   "users": [
     {
       "id": 1,
+      "role": "admin",
       "name": "Admin User",
       "email": "admin@hospital.com",
-      "password": "admin123",
-      "role": "admin"
+      "password": "admin123"
+    },
+    {
+      "id": 2,
+      "role": "doctor",
+      "name": "Dr. Asha R",
+      "email": "asha.r@gmail.com",
+      "password": "Asha@2024"
+    },
+    {
+      "id": 3,
+      "role": "nurse",
+      "name": "Priya Raj",
+      "email": "priya.raj@gmail.com",
+      "password": "nurse123"
+    },
+    {
+      "id": 4,
+      "role": "pharmacist",
+      "name": "Dr. Sameer",
+      "email": "sameer.pharma@example.com",
+      "password": "pharma123"
+    },
+    {
+      "id": 5,
+      "role": "receptionist",
+      "name": "Riya Sharma",
+      "email": "riya.sharma@example.com",
+      "password": "recep123"
+    },
+    {
+      "id": 6,
+      "role": "patient",
+      "name": "Aarav",
+      "email": "aarav.kumar@gmail.com",
+      "password": "Aarav@2024"
+    },
+    {
+      "name": "Sara",
+      "email": "sara@gmail.com",
+      "password": "sara123",
+      "role": "nurse",
+      "id": 7
     }
   ],
   "news": [
@@ -341,6 +598,21 @@
         "Ananya Patel"
       ],
       "dateJoined": "2021-06-15"
+    },
+    {
+      "name": "Sara",
+      "age": 28,
+      "gender": "Female",
+      "email": "sara@gmail.com",
+      "password": "sara123",
+      "role": "nurse",
+      "phone": "8756904563",
+      "department": "Assist",
+      "shift": "Night",
+      "experience": "",
+      "status": "Active",
+      "dateJoined": "2025-11-19",
+      "id": 2
     }
   ],
   "invoices": [

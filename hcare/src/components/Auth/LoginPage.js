@@ -1,3 +1,4 @@
+// src/components/Auth/LoginPage.js
 import React, { useEffect, useState } from "react";
 import {
   Box,
@@ -36,12 +37,12 @@ export default function LoginPage() {
   }, [user, navigate]);
 
   const roles = [
-    { value: "admin", label: "Admin", icon: "🏥" },
-    { value: "doctor", label: "Doctor", icon: "👨‍⚕️" },
-    { value: "nurse", label: "Nurse", icon: "👩‍⚕️" },
-    { value: "pharmacist", label: "Pharmacist", icon: "💊" },
-    { value: "receptionist", label: "Receptionist", icon: "📋" },
-    { value: "patient", label: "Patient", icon: "👤" },
+    { value: "admin", label: "Admin" },
+    { value: "doctor", label: "Doctor" },
+    { value: "nurse", label: "Nurse"},
+    { value: "pharmacist", label: "Pharmacist"},
+    { value: "receptionist", label: "Receptionist" },
+    { value: "patient", label: "Patient"},
   ];
 
   const handleLogin = (e) => {
@@ -64,8 +65,8 @@ export default function LoginPage() {
         container
         spacing={3}
         sx={{
-          width: "100%",
-          maxWidth: 1100,
+          width: "70%",
+          maxWidth: 900,
           alignItems: "stretch",
         }}
       >
@@ -103,14 +104,9 @@ export default function LoginPage() {
                 <LockIcon sx={{ fontSize: 40 }} />
               </Avatar>
 
-              <Typography variant="h4" fontWeight={700} sx={{ mb: 1 }}>
+              <Typography variant="h5" fontWeight={300} sx={{ mb: 1 }}>
                 Welcome to HealthTool
               </Typography>
-
-              <Typography variant="body2" sx={{ color: "gray", mb: 3 }}>
-                Manage appointments, patients, staff & inventory seamlessly.
-              </Typography>
-
               <Paper
                 elevation={0}
                 sx={{
@@ -227,13 +223,13 @@ export default function LoginPage() {
                 >
                   {loading ? "Signing in..." : "Sign In"}
                 </Button>
-
                 <Box
                   sx={{
                     mt: 2,
                     display: "flex",
-                    justifyContent: "space-between",
+                    justifyContent: "flex-start",  // LEFT SIDE
                     alignItems: "center",
+                    gap: 0,                      // small space between them
                   }}
                 >
                   <Typography variant="body2">New user?</Typography>
