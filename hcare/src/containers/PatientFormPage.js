@@ -34,12 +34,20 @@ export default function PatientFormPage() {
   };
 
   return (
-    <div style={{ padding: 20 }}>
+    <div style={{ padding: "10px 10px" }}>
       <Card
         title={id ? "Edit Patient" : "Add New Patient"}
-        bodyStyle={{ padding: 20 }}
-        style={{ width: "100%" }}
+        bodyStyle={{ padding: 15 }}
+        style={{
+          width: "100%",
+          maxWidth: 1100,         // ⭐ width reduce pannum
+          margin: "0 auto",      // ⭐ center alignment
+          marginTop: 5,         // ⭐ top gap reduce
+          maxHeight: "85vh",     // ⭐ height limit
+          overflow: "auto"       // ⭐ page scroll avoid
+        }}
       >
+
         {loading ? (
           <div style={{ textAlign: "center", padding: 60 }}>
             <Spin size="large" />

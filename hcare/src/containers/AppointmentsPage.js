@@ -12,8 +12,11 @@ import {
 import dayjs from "dayjs";
 import { getData, putData } from "../api/client";
 import AppointmentForm from "../components/Forms/AppointmentForm";
+import { useLocation } from "react-router-dom";
 
 export default function AppointmentsPage() {
+  const location = useLocation(); // ⭐ For reading query params
+
   const [appointments, setAppointments] = useState([]);
   const [patients, setPatients] = useState([]);
   const [doctors, setDoctors] = useState([]);
@@ -26,7 +29,7 @@ export default function AppointmentsPage() {
   const [filter, setFilter] = useState("Upcoming");
   const [search, setSearch] = useState("");
 
-  // Load main data
+  // Fetch data
   const loadData = async () => {
     setLoading(true);
     try {
@@ -48,6 +51,14 @@ export default function AppointmentsPage() {
   useEffect(() => {
     loadData();
   }, []);
+
+  // ⭐ CHECK URL PARAM "?create=true"
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("create") === "true") {
+      setMode("new");
+    }
+  }, [location]);
 
   const openNew = () => {
     setSelected(null);
@@ -201,9 +212,34 @@ export default function AppointmentsPage() {
             readOnly={mode === "view"}
           />
 
-          <Button onClick={backToList} style={{ marginTop: 16 }}>
-            Back to List
-          </Button>
+          {/* BUTTON BAR */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: 20,
+            }}
+          >
+            <Button onClick={backToList}>Back to List</Button>
+
+            <div style={{ display: "flex", gap: 8 }}>
+              <Button onClick={() => document.querySelector("form")?.reset()}>
+                Reset
+              </Button>
+              <Button
+                type="primary"
+                onClick={() =>
+                  document
+                    .querySelector("form")
+                    ?.dispatchEvent(
+                      new Event("submit", { bubbles: true, cancelable: true })
+                    )
+                }
+              >
+                {mode === "edit" ? "Update Appointment" : "Schedule Appointment"}
+              </Button>
+            </div>
+          </div>
         </Card>
 
         {/* RIGHT PANEL - PREVIEW */}
@@ -238,33 +274,6 @@ export default function AppointmentsPage() {
               <p>
                 <strong>Status:</strong> {selected.status}
               </p>
-
-              <h4 style={{ marginTop: 24 }}>Patient History</h4>
-              {appointments
-                .filter(
-                  (a) =>
-                    a.patientId === selected.patientId &&
-                    a.id !== selected.id
-                )
-                .slice(0, 5)
-                .map((h) => (
-                  <div
-                    key={h.id}
-                    style={{
-                      padding: 8,
-                      borderBottom: "1px solid #ddd",
-                      marginBottom: 6,
-                    }}
-                  >
-                    <strong>
-                      {dayjs(h.appointmentDate).format("DD MMM YYYY")}
-                    </strong>{" "}
-                    – {h.appointmentTime}
-                    <div style={{ fontSize: 13, color: "#666" }}>
-                      {h.reason}
-                    </div>
-                  </div>
-                ))}
             </>
           ) : (
             <>
@@ -278,7 +287,7 @@ export default function AppointmentsPage() {
   }
 
   // -----------------------------
-  // LIST MODE (MAIN TABLE)
+  // LIST MODE
   // -----------------------------
   return (
     <div style={{ padding: 24 }}>

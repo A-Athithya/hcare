@@ -14,6 +14,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { getData } from "../../api/client";
 import { logout } from "../../features/auth/authSlice";
 
@@ -34,7 +35,6 @@ export default function Navbar() {
       }
     };
     fetchAppointments();
-
     const interval = setInterval(fetchAppointments, 10000);
     return () => clearInterval(interval);
   }, []);
@@ -53,19 +53,18 @@ export default function Navbar() {
         sx={{
           background: "linear-gradient(90deg,#1e88e5,#3949ab)",
           zIndex: (t) => t.zIndex.drawer + 1,
-          boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-          paddingBottom: "6px",
+          boxShadow: "0 6px 18px rgba(0,0,0,0.2)",
         }}
       >
         <Toolbar
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            minHeight: "70px",
+            minHeight: "72px",
             px: 2,
           }}
         >
-          {/* LEFT SIDE */}
+          {/* LEFT AREA */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <IconButton color="inherit" onClick={toggleSidebar}>
               <MenuIcon />
@@ -86,16 +85,39 @@ export default function Navbar() {
                 textDecoration: "none",
                 fontWeight: 700,
                 fontSize: 18,
-                letterSpacing: 0.5,
               }}
             >
               HealthTool
             </Link>
           </Box>
 
-          {/* RIGHT SIDE */}
+          {/* CENTER AREA */}
+          <Box sx={{ position: "absolute", left: "50%", transform: "translateX(-50%)" }}>
+            <Button
+              variant="contained"
+              startIcon={<CalendarMonthIcon />}
+              onClick={() => navigate("/appointments?create=true")}
+              sx={{
+                textTransform: "none",
+                fontSize: 15,
+                px: 3,
+                py: 1.2,
+                borderRadius: 5,
+                background: "linear-gradient(90deg,#42a5f5,#1e88e5)",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
+                "&:hover": {
+                  background: "linear-gradient(90deg,#64b5f6,#2196f3)",
+                  boxShadow: "0 6px 20px rgba(0,0,0,0.3)",
+                },
+              }}
+            >
+              Book Appointment
+            </Button>
+          </Box>
+
+          {/* RIGHT AREA */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            {/* Add Patient Shortcut */}
+            {/* Add Patient */}
             <IconButton
               color="inherit"
               onClick={() => navigate("/patient/add")}
@@ -121,7 +143,7 @@ export default function Navbar() {
               </Badge>
             </IconButton>
 
-            {/* USER MENU */}
+            {/* USER DROPDOWN */}
             {user ? (
               <div className="dropdown">
                 <Button
@@ -140,8 +162,16 @@ export default function Navbar() {
                 </Button>
 
                 <ul className="dropdown-menu dropdown-menu-end shadow-sm">
-                  <li><Link className="dropdown-item" to="/profile">My Profile</Link></li>
-                  <li><Link className="dropdown-item" to="/appointments">Appointments</Link></li>
+                  <li>
+                    <Link className="dropdown-item" to="/profile">
+                      My Profile
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/appointments">
+                      Appointments
+                    </Link>
+                  </li>
                   <li>
                     <button className="dropdown-item text-danger" onClick={handleLogout}>
                       Logout
@@ -149,36 +179,12 @@ export default function Navbar() {
                   </li>
                 </ul>
               </div>
-            ) : (
-              <>
-                <Button
-                  color="inherit"
-                  onClick={() => navigate("/login")}
-                  sx={{ textTransform: "none", borderRadius: 2 }}
-                >
-                  Login
-                </Button>
-                <Button
-                  color="inherit"
-                  onClick={() => navigate("/register")}
-                  sx={{
-                    textTransform: "none",
-                    borderRadius: 2,
-                    background: "white",
-                    color: "#1976d2",
-                    "&:hover": { background: "#e6e6e6" },
-                  }}
-                >
-                  Register
-                </Button>
-              </>
-            )}
+            ) : null}
           </Box>
         </Toolbar>
       </AppBar>
 
-      {/* Spacing to avoid overlap */}
-      <Box sx={{ mt: "70px" }} />
+      <Box sx={{ mt: "75px" }} />
     </>
   );
 }

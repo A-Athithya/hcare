@@ -9,6 +9,7 @@ import {
   InputNumber,
   message,
 } from "antd";
+import { Collapse } from "antd";
 import dayjs from "dayjs";
 import { useDispatch } from "react-redux";
 import { postData, putData } from "../../api/client";
@@ -65,80 +66,92 @@ const PatientForm = forwardRef(({ initial = null, onSaved = () => {} }, ref) => 
   };
 
   return (
-    <div style={{ maxHeight: "75vh", overflowY: "auto", paddingRight: 10 }}>
-      <Form
-        layout="vertical"
-        form={form}
-        onFinish={submit}
-        initialValues={{ gender: "Male", status: "Active" }}
-      >
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item name="name" label="Full Name" rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
+      <div style={{ paddingRight: 10 }}>
+        <Form
+          layout="vertical"
+          form={form}
+          onFinish={submit}
+          initialValues={{ gender: "Male", status: "Active" }}
+        >
+          <Collapse defaultActiveKey={["1", "2", "3"]}>
+            
+            <Collapse.Panel header="Basic Details" key="1">
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Form.Item name="name" label="Full Name" rules={[{ required: true }]}>
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name="age" label="Age" rules={[{ required: true }]}>
+                    <InputNumber style={{ width: "100%" }} min={1} />
+                  </Form.Item>
+                  <Form.Item name="gender" label="Gender" rules={[{ required: true }]}>
+                    <Select>
+                      <Select.Option value="Male">Male</Select.Option>
+                      <Select.Option value="Female">Female</Select.Option>
+                      <Select.Option value="Other">Other</Select.Option>
+                    </Select>
+                  </Form.Item>
+                </Col>
 
-            <Form.Item name="age" label="Age" rules={[{ required: true }]}>
-              <InputNumber style={{ width: "100%" }} min={1} />
-            </Form.Item>
+                <Col span={12}>
+                  <Form.Item name="bloodGroup" label="Blood Group">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name="registeredDate" label="Registered Date">
+                    <DatePicker style={{ width: "100%" }} />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Collapse.Panel>
 
-            <Form.Item
-              name="gender"
-              label="Gender"
-              rules={[{ required: true }]}
-            >
-              <Select>
-                <Select.Option value="Male">Male</Select.Option>
-                <Select.Option value="Female">Female</Select.Option>
-                <Select.Option value="Other">Other</Select.Option>
-              </Select>
-            </Form.Item>
+            <Collapse.Panel header="Contact Details" key="2">
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Form.Item name="contact" label="Contact" rules={[{ required: true }]}>
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name="email" label="Email">
+                    <Input />
+                  </Form.Item>
+                </Col>
 
-            <Form.Item name="contact" label="Contact" rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
+                <Col span={12}>
+                  <Form.Item name="address" label="Address">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name="emergencyContact" label="Emergency Contact">
+                    <Input />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Collapse.Panel>
 
-            <Form.Item name="email" label="Email">
-              <Input />
-            </Form.Item>
+            <Collapse.Panel header="Medical Details" key="3">
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Form.Item name="medicalHistory" label="Medical History">
+                    <TextArea rows={3} />
+                  </Form.Item>
+                </Col>
 
-            <Form.Item name="bloodGroup" label="Blood Group">
-              <Input />
-            </Form.Item>
-          </Col>
+                <Col span={12}>
+                  <Form.Item name="allergies" label="Allergies">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name="status" label="Status">
+                    <Select>
+                      <Select.Option value="Active">Active</Select.Option>
+                      <Select.Option value="Inactive">Inactive</Select.Option>
+                    </Select>
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Collapse.Panel>
 
-          <Col span={12}>
-            <Form.Item name="address" label="Address">
-              <Input />
-            </Form.Item>
-
-            <Form.Item name="registeredDate" label="Registered Date">
-              <DatePicker style={{ width: "100%" }} />
-            </Form.Item>
-
-            <Form.Item name="medicalHistory" label="Medical History">
-              <TextArea rows={3} />
-            </Form.Item>
-
-            <Form.Item name="allergies" label="Allergies">
-              <Input />
-            </Form.Item>
-
-            <Form.Item name="emergencyContact" label="Emergency Contact">
-              <Input />
-            </Form.Item>
-
-            <Form.Item name="status" label="Status">
-              <Select>
-                <Select.Option value="Active">Active</Select.Option>
-                <Select.Option value="Inactive">Inactive</Select.Option>
-              </Select>
-            </Form.Item>
-          </Col>
-        </Row>
-      </Form>
-    </div>
-  );
+          </Collapse>
+        </Form>
+      </div>
+    );
 });
 
 export default PatientForm;

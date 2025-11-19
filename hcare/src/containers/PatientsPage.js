@@ -1,49 +1,51 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Table, Card, Input, Button } from "antd";
 import { useNavigate } from "react-router-dom";
 
 export default function PatientsPage() {
   const navigate = useNavigate();
-  const [patients, setPatients] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const { list: patients, loading } = useSelector((s) => s.patients);
+
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await fetch("/db.json");
-        if (res.ok) {
-          const data = await res.json();
-          setPatients(data.patients || []);
-        }
-      } catch (e) {
-        console.error(e);
-      }
-      setLoading(false);
-    };
-    load();
+    dispatch({ type: "patients/fetchStart" });
   }, []);
 
-  const filtered = patients.filter((p) =>
-    p.name?.toLowerCase().includes(filter.toLowerCase())
+
+const filterText = filter.toLowerCase();
+
+const filtered = patients.filter((p) => {
+  return (
+    p.name?.toLowerCase().includes(filterText) ||
+    p.contact?.toLowerCase().includes(filterText) ||
+    p.gender?.toLowerCase().includes(filterText) ||
+    p.allergies?.toLowerCase().includes(filterText) ||
+    p.bloodGroup?.toLowerCase().includes(filterText)
   );
+});
 
-  const cols = [
-    { title: "Name", dataIndex: "name" },
-    { title: "Age", dataIndex: "age" },
-    { title: "Gender", dataIndex: "gender" },
-    { title: "Contact", dataIndex: "contact" },
-    { title: "Address", dataIndex: "address" },
 
-    {
-      title: "Action",
-      render: (_, rec) => (
-        <Button type="link" onClick={() => navigate(`/patients/${rec.id}`)}>
-          View Details
-        </Button>
-      ),
-    },
-  ];
+const cols = [
+  { title: "Name", dataIndex: "name" },
+  { title: "Age", dataIndex: "age" },
+  { title: "Gender", dataIndex: "gender" },
+  { title: "Contact", dataIndex: "contact" },
+  { title: "Address", dataIndex: "address" },
+  { title: "Allergies", dataIndex: "allergies" },   // ⭐ NEW COLUMN
+
+  {
+    title: "Action",
+    render: (_, rec) => (
+      <Button type="link" onClick={() => navigate(`/patients/${rec.id}`)}>
+        View Details
+      </Button>
+    ),
+  },
+];
+
 
   return (
     <div style={{ padding: 24 }}>
@@ -51,22 +53,25 @@ export default function PatientsPage() {
         style={{
           display: "flex",
           justifyContent: "space-between",
+          alignItems: "center",
           marginBottom: 12,
         }}
       >
         <h2 style={{ margin: 0 }}>Patients</h2>
 
-        <Button type="primary" onClick={() => navigate("/patient/add")}>
-          + Add Patient
-        </Button>
-      </div>
+        <div style={{ display: "flex", gap: 10 }}>
+          <Input
+            placeholder="Search patient…"
+            style={{ width: 260 }}
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          />
 
-      <Input
-        placeholder="Search patient…"
-        style={{ width: 260, marginBottom: 12 }}
-        value={filter}
-        onChange={(e) => setFilter(e.target.value)}
-      />
+          <Button type="primary" onClick={() => navigate("/patient/add")}>
+            + Add Patient
+          </Button>
+        </div>
+      </div>
 
       <Card>
         <Table
@@ -78,4 +83,5 @@ export default function PatientsPage() {
       </Card>
     </div>
   );
+
 }
