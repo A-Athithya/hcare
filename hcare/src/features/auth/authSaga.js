@@ -1,6 +1,7 @@
 // src/features/auth/authSaga.js
 import { call, put, takeLatest } from "redux-saga/effects";
 import { getData } from "../../api/client";
+import { generateToken } from "../../utils/tokenHelper";
 import {
   loginStart,
   loginSuccess,
@@ -33,8 +34,16 @@ function* loginSaga(action) {
       return;
     }
 
-    // 3) SUCCESS
-    yield put(loginSuccess(found));
+    // 3) Generate JWT token
+    const token = generateToken({
+      id: found.id,
+      name: found.name,
+      email: found.email,
+      role: found.role,
+    });
+
+    // 4) SUCCESS - Pass both user and token
+    yield put(loginSuccess({ user: found, token }));
   } catch (err) {
     yield put(loginFailure("Login failed"));
   }

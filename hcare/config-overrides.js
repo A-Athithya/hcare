@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 
 module.exports = function override(config) {
   config.resolve = {
@@ -12,7 +13,21 @@ module.exports = function override(config) {
       util: require.resolve("util/"),
       assert: require.resolve("assert/"),
       url: require.resolve("url/"),
+      vm: require.resolve("vm-browserify"),
+      process: require.resolve("process/browser"),
     },
   };
+
+  config.plugins = (config.plugins || []).concat([
+    new webpack.DefinePlugin({
+      process: "global.process || { env: {} }",
+      "process.env": JSON.stringify(process.env),
+    }),
+    new webpack.IgnorePlugin({
+      resourceRegExp: /readable-stream\/lib\/_stream_writable\.js$/,
+      contextRegExp: /readable-stream/,
+    }),
+  ]);
+
   return config;
 };
