@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 
 import MuiProvider from "./mui/MaterialDesign";
 import Layout from "./components/Layout/Layout";
+import IdleTimer from "./components/IdleTimer";
 import { Spin } from "antd";
 import { checkAuthStatus } from "./features/auth/authSlice";
 
@@ -58,6 +59,7 @@ export default function App() {
 
   return (
     <MuiProvider>
+      <IdleTimer />
       <Suspense
         fallback={
           <div style={{ textAlign: "center", padding: "80px" }}>
