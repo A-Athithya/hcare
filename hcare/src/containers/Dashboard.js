@@ -25,7 +25,8 @@ import dayjs from "dayjs";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { user, role } = useSelector((state) => state.auth || {});
+  const { user } = useSelector((state) => state.auth || {});
+  const role = user?.role;
 
   const [stats, setStats] = useState({
     patients: 0,
