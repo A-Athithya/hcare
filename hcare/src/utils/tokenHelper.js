@@ -14,7 +14,7 @@ function base64url(text) {
 
 export function generateToken(payload) {
   const header = { alg: 'none', typ: 'JWT' };
-  const exp = Math.floor(Date.now() / 1000) + 24 * 60 * 60;
+  const exp = Math.floor(Date.now() / 1000) + 60;
   const body = { ...payload, exp };
   const token = `${base64url(JSON.stringify(header))}.${base64url(JSON.stringify(body))}.${base64url('')}`;
   return token;
