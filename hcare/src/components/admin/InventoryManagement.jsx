@@ -7,92 +7,100 @@ import {
   updateInventoryRequest,
   deleteInventoryRequest,
 } from "../../features/inventory/inventorySlice";
-import {
-  Table,
-  Card,
-  Input,
-  Button,
-  Modal,
-  Form,
-  message,
-} from "antd";
-import {
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  EyeOutlined,
-} from "@ant-design/icons";
+import { Table, Card, Input, Button, message, Tag } from "antd";
 import dayjs from "dayjs";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function InventoryManagement() {
   const dispatch = useDispatch();
   const { items, loading } = useSelector((state) => state.inventory);
 
-  const [filter, setFilter] = useState("");
-  const [filtered, setFiltered] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalMode, setModalMode] = useState("add"); // add / edit / view
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [form] = Form.useForm();
+  const [mode, setMode] = useState("list"); // list | add | edit | view
+  const [selected, setSelected] = useState(null);
+  const [search, setSearch] = useState("");
+  const [formData, setFormData] = useState({
+    medicineName: "",
+    category: "",
+    price: "",
+    stock: "",
+    expireDate: "",
+    status: "Available",
+    manufacturer: "",
+    sku: "",
+    weight: "",
+    genericName: "",
+    medicineDetails: "",
+  });
 
   useEffect(() => {
     dispatch(fetchInventoryRequest());
   }, [dispatch]);
 
-  // Search filter
-  useEffect(() => {
-    const q = filter.toLowerCase();
-    setFiltered(
-      items.filter(
-        (i) =>
-          i.medicineName?.toLowerCase().includes(q) ||
-          i.category?.toLowerCase().includes(q) ||
-          i.status?.toLowerCase().includes(q) ||
-          String(i.id).includes(q)
-      )
-    );
-  }, [filter, items]);
-
-  // Modal controls
-  const openModal = (mode, record = null) => {
-    setModalMode(mode);
-    setSelectedItem(record);
-    setModalVisible(true);
-    if (record) form.setFieldsValue(record);
-    else form.resetFields();
-  };
-
-  const closeModal = () => {
-    setModalVisible(false);
-    form.resetFields();
-  };
-
-  // Save Item
-  const handleSave = () => {
-    form.validateFields().then((values) => {
-      if (modalMode === "edit") {
-        dispatch(
-          updateInventoryRequest({ ...selectedItem, ...values })
-        );
-        message.success("Item updated successfully!");
-      } else if (modalMode === "add") {
-        dispatch(
-          addInventoryRequest({ ...values, id: Date.now().toString() })
-        );
-        message.success("Item added successfully!");
-      }
-      closeModal();
+  const openAdd = () => {
+    setMode("add");
+    setSelected(null);
+    setFormData({
+      medicineName: "",
+      category: "",
+      price: "",
+      stock: "",
+      expireDate: "",
+      status: "Available",
+      manufacturer: "",
+      sku: "",
+      weight: "",
+      genericName: "",
+      medicineDetails: "",
     });
   };
 
-  // Delete item
+  const openEdit = (record) => {
+    setMode("edit");
+    setSelected(record);
+    setFormData({ ...record });
+  };
+
+  const openView = (record) => {
+    setMode("view");
+    setSelected(record);
+    setFormData({ ...record });
+  };
+
+  const backToList = () => {
+    setMode("list");
+    setSelected(null);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSave = () => {
+    if (mode === "edit") {
+      dispatch(updateInventoryRequest({ ...selected, ...formData }));
+      message.success("Item updated successfully!");
+    } else if (mode === "add") {
+      dispatch(addInventoryRequest({ ...formData, id: Date.now().toString() }));
+      message.success("Item added successfully!");
+    }
+    dispatch(fetchInventoryRequest());
+    backToList();
+  };
+
   const handleDelete = (id) => {
     dispatch(deleteInventoryRequest(id));
     message.success("Item deleted successfully!");
   };
 
-  // Columns for table
+  const filtered = items.filter(
+    (i) =>
+      !search ||
+      i.medicineName?.toLowerCase().includes(search.toLowerCase()) ||
+      i.category?.toLowerCase().includes(search.toLowerCase()) ||
+      i.status?.toLowerCase().includes(search.toLowerCase()) ||
+      String(i.id).includes(search)
+  );
+
   const columns = [
     { title: "Medicine Name", dataIndex: "medicineName", key: "medicineName" },
     { title: "Category", dataIndex: "category", key: "category" },
@@ -109,8 +117,7 @@ export default function InventoryManagement() {
       render: (text) => (
         <span
           style={{
-            color:
-              text <= 10 ? "red" : text <= 50 ? "orange" : "green",
+            color: text <= 10 ? "red" : text <= 50 ? "orange" : "green",
             fontWeight: "bold",
           }}
         >
@@ -125,11 +132,7 @@ export default function InventoryManagement() {
       render: (text) => {
         if (!text) return "-";
         const isExpired = dayjs(text).isBefore(dayjs());
-        return (
-          <span style={{ color: isExpired ? "red" : "black" }}>
-            {text}
-          </span>
-        );
+        return <span style={{ color: isExpired ? "red" : "black" }}>{text}</span>;
       },
     },
     {
@@ -137,19 +140,9 @@ export default function InventoryManagement() {
       dataIndex: "status",
       key: "status",
       render: (text) => (
-        <span
-          style={{
-            color:
-              text === "Available"
-                ? "green"
-                : text === "Out of Stock"
-                ? "red"
-                : "orange",
-            fontWeight: "bold",
-          }}
-        >
+        <Tag color={text === "Available" ? "green" : text === "Out of Stock" ? "red" : "orange"}>
           {text}
-        </span>
+        </Tag>
       ),
     },
     {
@@ -157,188 +150,155 @@ export default function InventoryManagement() {
       key: "actions",
       render: (_, record) => (
         <div style={{ display: "flex", gap: 6 }}>
-          <Button
-            type="link"
-            icon={<EyeOutlined />}
-            size="small"
-            onClick={() => openModal("view", record)}
-          />
-          <Button
-            type="link"
-            icon={<EditOutlined />}
-            size="small"
-            onClick={() => openModal("edit", record)}
-          />
-          <Button
-            type="link"
-            danger
-            icon={<DeleteOutlined />}
-            size="small"
-            onClick={() => handleDelete(record.id)}
-          />
+          <Button size="small" onClick={() => openView(record)}>
+            View
+          </Button>
+          <Button size="small" type="primary" onClick={() => openEdit(record)}>
+            Edit
+          </Button>
+          <Button size="small" danger onClick={() => handleDelete(record.id)}>
+            Delete
+          </Button>
         </div>
       ),
     },
   ];
 
-  return (
-    <div style={{ padding: "16px 20px" }}>
-      <h2 style={{ marginBottom: 10 }}>Inventory Management</h2>
+  if (mode !== "list") {
+    return (
+      <div style={{ display: "flex", gap: 24, padding: 24 }}>
+        {/* Form Panel */}
+        <Card style={{ flex: 1, padding: 20 }}>
+          <h2 style={{ marginTop: 0 }}>
+            {mode === "view" ? "View Medicine" : mode === "edit" ? "Edit Medicine" : "Add Medicine"}
+          </h2>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSave();
+            }}
+            style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}
+          >
+            {[
+              { label: "Medicine Name", name: "medicineName" },
+              { label: "Category", name: "category" },
+              { label: "Price", name: "price" },
+              { label: "Stock", name: "stock" },
+              { label: "Expire Date", name: "expireDate", type: "date" },
+              { label: "Status", name: "status" },
+              { label: "Manufacturer", name: "manufacturer" },
+              { label: "SKU", name: "sku" },
+              { label: "Weight", name: "weight" },
+              { label: "Generic Name", name: "genericName" },
+              { label: "Details", name: "medicineDetails", isTextArea: true },
+            ].map((item) => (
+              <div
+                key={item.name}
+                style={{ gridColumn: item.isTextArea ? "1 / span 2" : undefined }}
+              >
+                <label>{item.label}</label>
+                {item.isTextArea ? (
+                  <textarea
+                    name={item.name}
+                    value={formData[item.name]}
+                    onChange={handleChange}
+                    readOnly={mode === "view"}
+                    rows={3}
+                    style={{
+                      width: "100%",
+                      padding: 8,
+                      borderRadius: 8,
+                      border: "1px solid #ccc",
+                      resize: "none",
+                    }}
+                  />
+                ) : (
+                  <input
+                    type={item.type || "text"}
+                    name={item.name}
+                    value={formData[item.name]}
+                    onChange={handleChange}
+                    readOnly={mode === "view"}
+                    style={{
+                      width: "100%",
+                      padding: 8,
+                      borderRadius: 8,
+                      border: "1px solid #ccc",
+                    }}
+                  />
+                )}
+              </div>
+            ))}
+            {mode !== "view" && (
+              <div style={{ gridColumn: "1 / span 2", display: "flex", gap: 8 }}>
+                <Button htmlType="submit" type="primary">
+                  {mode === "edit" ? "Update" : "Add"}
+                </Button>
+                <Button type="default" onClick={() => setFormData(selected || { ...formData })}>
+                  Reset
+                </Button>
+              </div>
+            )}
+          </form>
+          <div style={{ marginTop: 12 }}>
+            <Button onClick={backToList}>Back to List</Button>
+          </div>
+        </Card>
 
-      {/* Top Controls */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginBottom: 10,
-          flexWrap: "wrap",
-          gap: 6,
-        }}
-      >
-        <Input
-          placeholder="Search medicine..."
-          style={{ width: 240, height: 32 }}
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-        />
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          size="small"
-          onClick={() => openModal("add")}
-        >
-          Add Medicine
-        </Button>
+        {/* Preview Panel */}
+        <Card style={{ flex: 1, background: "#fafafa", padding: 20 }}>
+          <h3>Medicine Preview</h3>
+          {selected ? (
+            <>
+              <p><strong>Medicine Name:</strong> {selected.medicineName || "-"}</p>
+              <p><strong>Category:</strong> {selected.category || "-"}</p>
+              <p><strong>Price:</strong> ₹{selected.price || "-"}</p>
+              <p><strong>Stock:</strong> {selected.stock || "-"}</p>
+              <p><strong>Expire Date:</strong> {selected.expireDate || "-"}</p>
+              <p><strong>Status:</strong> 
+                <Tag color={selected.status === "Available" ? "green" : selected.status === "Out of Stock" ? "red" : "orange"}>
+                  {selected.status}
+                </Tag>
+              </p>
+              <p><strong>Manufacturer:</strong> {selected.manufacturer || "-"}</p>
+              <p><strong>SKU:</strong> {selected.sku || "-"}</p>
+              <p><strong>Weight:</strong> {selected.weight || "-"}</p>
+              <p><strong>Generic Name:</strong> {selected.genericName || "-"}</p>
+              <p><strong>Details:</strong> {selected.medicineDetails || "-"}</p>
+            </>
+          ) : (
+            <p>Fill the form to see preview here...</p>
+          )}
+        </Card>
       </div>
+    );
+  }
 
-      {/* Table */}
-      <Card style={{ borderRadius: 8 }}>
-        {!loading && items.length === 0 && (
-          <p style={{ textAlign: "center", color: "gray", margin: 0 }}>
-            No inventory items found.
-          </p>
-        )}
+  return (
+    <div style={{ padding: 24 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
+        <h2>Inventory Management</h2>
+        <div style={{ display: "flex", gap: 8 }}>
+          <Input.Search
+            placeholder="Search medicine"
+            allowClear
+            onSearch={(v) => setSearch(v)}
+            style={{ width: 220 }}
+          />
+          <Button type="primary" onClick={openAdd}>
+            Add Medicine
+          </Button>
+        </div>
+      </div>
+      <Card>
         <Table
+          rowKey="id"
           dataSource={filtered}
           columns={columns}
           loading={loading}
-          rowKey="id"
           pagination={{ pageSize: 7 }}
-          size="small"
         />
       </Card>
-
-      {/* Modal (View / Add / Edit) */}
-      <Modal
-        title={
-          modalMode === "view"
-            ? "View Medicine"
-            : modalMode === "edit"
-            ? "Edit Medicine"
-            : "Add Medicine"
-        }
-        open={modalVisible}
-        onCancel={closeModal}
-        onOk={modalMode === "view" ? closeModal : handleSave}
-        okText={modalMode === "view" ? "Close" : "Save"}
-        cancelButtonProps={{
-          style: { display: modalMode === "view" ? "none" : "inline-block" },
-        }}
-        width={580}
-        bodyStyle={{
-          maxHeight: "65vh",
-          overflowY: "auto",
-          padding: "10px 16px 6px",
-        }}
-      >
-        {modalMode === "view" ? (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "8px 16px",
-              fontSize: 13.5,
-            }}
-          >
-            {[
-              { label: "Medicine Name", value: selectedItem?.medicineName },
-              { label: "Category", value: selectedItem?.category },
-              { label: "Price", value: `₹${selectedItem?.price}` },
-              { label: "Stock", value: selectedItem?.stock },
-              { label: "Expire Date", value: selectedItem?.expireDate },
-              { label: "Status", value: selectedItem?.status },
-              { label: "Manufacturer", value: selectedItem?.manufacturer },
-              { label: "SKU", value: selectedItem?.sku },
-              { label: "Weight", value: selectedItem?.weight },
-              { label: "Generic Name", value: selectedItem?.genericName },
-            ].map((item, i) => (
-              <div key={i}>
-                <strong style={{ color: "#444" }}>{item.label}:</strong>
-                <div style={{ color: "#222" }}>{item.value || "-"}</div>
-              </div>
-            ))}
-            <div style={{ gridColumn: "1 / span 2" }}>
-              <strong style={{ color: "#444" }}>Details:</strong>
-              <div style={{ color: "#222", marginTop: 4 }}>
-                {selectedItem?.medicineDetails || "-"}
-              </div>
-            </div>
-          </div>
-        ) : (
-          <Form
-            form={form}
-            layout="vertical"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "8px 16px",
-            }}
-            size="small"
-          >
-            <Form.Item
-              name="medicineName"
-              label="Medicine Name"
-              rules={[{ required: true, message: "Enter medicine name" }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item name="category" label="Category">
-              <Input />
-            </Form.Item>
-            <Form.Item name="price" label="Price">
-              <Input />
-            </Form.Item>
-            <Form.Item name="stock" label="Stock">
-              <Input />
-            </Form.Item>
-            <Form.Item name="expireDate" label="Expire Date">
-              <Input type="date" />
-            </Form.Item>
-            <Form.Item name="status" label="Status">
-              <Input />
-            </Form.Item>
-            <Form.Item name="manufacturer" label="Manufacturer">
-              <Input />
-            </Form.Item>
-            <Form.Item name="sku" label="SKU">
-              <Input />
-            </Form.Item>
-            <Form.Item name="weight" label="Weight">
-              <Input />
-            </Form.Item>
-            <Form.Item name="genericName" label="Generic Name">
-              <Input />
-            </Form.Item>
-            <Form.Item
-              name="medicineDetails"
-              label="Details"
-              style={{ gridColumn: "1 / span 2" }}
-            >
-              <Input.TextArea rows={3} />
-            </Form.Item>
-          </Form>
-        )}
-      </Modal>
     </div>
   );
 }
