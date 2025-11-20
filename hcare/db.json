@@ -459,6 +459,17 @@
       "status": "Rejected",
       "paymentStatus": "Pending",
       "id": 104
+    },
+    {
+      "patientId": 2,
+      "doctorId": 4,
+      "appointmentDate": "2025-11-27",
+      "appointmentTime": "04:00 PM",
+      "reason": "-",
+      "remarks": "-",
+      "status": "Rejected",
+      "paymentStatus": "Pending",
+      "id": 105
     }
   ],
   "users": [

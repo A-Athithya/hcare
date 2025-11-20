@@ -1,4 +1,6 @@
 // src/App.js
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import React, { Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -6,6 +8,7 @@ import { useSelector } from "react-redux";
 import MuiProvider from "./mui/MaterialDesign";
 import Layout from "./components/Layout/Layout";
 import { Spin } from "antd";
+import { checkAuthStatus } from "./features/auth/authSlice";
 
 // Direct imports
 import CalendarPage from "./containers/CalendarPage";
@@ -49,6 +52,13 @@ const ProtectedRoute = ({ children }) => {
 // MAIN APP
 // -------------------------------------------
 export default function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Check authentication status on app load
+    dispatch(checkAuthStatus());
+  }, [dispatch]);
+
   return (
     <MuiProvider>
       <Suspense
