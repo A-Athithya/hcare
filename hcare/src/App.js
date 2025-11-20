@@ -31,6 +31,9 @@ const StaffManagement = lazy(() =>
 const InventoryManagement = lazy(() =>
   import("./components/admin/InventoryManagement")
 );
+const CommunicationPage = lazy(()=> import("./components/communication/CommunicationPage"));
+const AllCommunicationsPage = lazy(()=> import("./components/communication/AllCommunicationsPage"));
+const DoctorCommunications = lazy(()=> import("./components/communication/DoctorCommunications"));
 
 // -------------------------------------------
 // PROTECTED ROUTE
@@ -227,6 +230,39 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+
+           {/* Communication */}
+          <Route
+            path="/communicationpage"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <CommunicationPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/all-communications"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <AllCommunicationsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/doctor-communications"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <DoctorCommunications />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          
 
           {/* Default fallback */}
           <Route path="*" element={<Navigate to="/dashboard" replace />} />

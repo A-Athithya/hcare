@@ -1,34 +1,51 @@
-// src/containers/CommunicationModule.js
 import React, { useEffect, useState } from "react";
-import { Input, List, Card, Avatar, Button, Divider, message, Select, Tooltip } from "antd";
-import { getData, postData } from "../../api/client";
-import { useNavigate } from "react-router-dom";
+import {
+  Card,
+  Input,
+  List,
+  Avatar,
+  Button,
+  Divider,
+  Select,
+  Typography,
+  message,
+} from "antd";
 import { ProfileOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+import { getData, postData } from "../../api/client";
 
 const { TextArea } = Input;
 const { Option } = Select;
+const { Title, Text } = Typography;
 
-export default function CommunicationPage({ currentUser = {} }) {
+export default function CommunicationPage() {
   const navigate = useNavigate();
 
   const [patients, setPatients] = useState([]);
   const [allPrescriptions, setAllPrescriptions] = useState([]);
+  const [doctors, setDoctors] = useState([]);
+  const [nurses, setNurses] = useState([]);
+
   const [searchPatient, setSearchPatient] = useState("");
+  const [selectedNurse, setSelectedNurse] = useState(null);
   const [selectedPatient, setSelectedPatient] = useState(null);
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
+
   const [prescriptions, setPrescriptions] = useState([]);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [doctors, setDoctors] = useState([]);
-  const [selectedDoctor, setSelectedDoctor] = useState(null);
 
+  // Load data
   useEffect(() => {
-    getData("/patients").then(res => setPatients(res.filter(p => p?.id))).catch(() => message.error("Failed to load patients"));
-    getData("/prescriptions").then(res => setAllPrescriptions(res.filter(p => p?.id))).catch(() => message.error("Failed to load prescriptions"));
-    getData("/doctors").then(res => setDoctors(res.filter(d => d?.id))).catch(() => message.error("Failed to load doctors list"));
+    getData("/patients").then((res) => setPatients(res || []));
+    getData("/prescriptions").then((res) => setAllPrescriptions(res || []));
+    getData("/doctors").then((res) => setDoctors(res || []));
+    getData("/nurses").then((res) => setNurses(res || []));
   }, []);
 
-  const patientsWithPrescriptions = patients.filter(
-    p => p?.id && allPrescriptions.some(pr => Number(pr.patientId) === Number(p.id))
+  // Filter patients who have prescriptions
+  const patientsWithPrescriptions = patients.filter((p) =>
+    allPrescriptions.some((pr) => Number(pr.patientId) === Number(p.id))
   );
 
   const selectPatient = async (patient) => {
@@ -36,20 +53,25 @@ export default function CommunicationPage({ currentUser = {} }) {
     setSelectedPatient(patient);
     try {
       const pres = await getData(`/prescriptions?patientId=${patient.id}`);
-      setPrescriptions(pres.filter(p => p?.id));
-      const msgs = await getData(`/communications?patientId=${patient.id}&_sort=timestamp&_order=asc`);
-      setMessages(msgs.filter(m => m?.id));
-    } catch (err) {
-      message.error("Failed to fetch prescriptions/messages");
+      setPrescriptions(pres || []);
+      const msgs = await getData(
+        `/communications?patientId=${patient.id}&_sort=timestamp&_order=asc`
+      );
+      setMessages(msgs || []);
+    } catch {
+      message.error("Failed to fetch patient data");
     }
   };
 
   const handleSendMessage = async () => {
-    if (!newMessage.trim() || !selectedPatient?.id || !selectedDoctor) return;
+    if (!newMessage.trim() || !selectedPatient?.id || !selectedDoctor || !selectedNurse)
+      return;
 
+    const nurse = nurses.find((n) => n.id === selectedNurse);
     const payload = {
       patientId: selectedPatient.id,
       doctorId: selectedDoctor,
+      nurseId: selectedNurse,
       query: newMessage,
       reply: "",
       status: "pending",
@@ -58,98 +80,138 @@ export default function CommunicationPage({ currentUser = {} }) {
 
     try {
       const saved = await postData("/communications", payload);
-      if (saved?.id) setMessages(prev => [...prev, saved]);
+      if (saved?.id) setMessages((prev) => [...prev, saved]);
+
+      await postData("/notifications", {
+        roles: ["doctor"],
+        userId: selectedDoctor,
+        message: `New query from Nurse ${nurse?.name} for patient ${selectedPatient.name}`,
+        redirect: "/doctor-communications",
+        timestamp: new Date().toISOString(),
+        readBy: [],
+      });
+
       setNewMessage("");
       message.success("Query sent successfully");
-    } catch (err) {
+    } catch {
       message.error("Failed to send query");
     }
   };
 
+  // Filter patients by nurse assignment & search
   const filteredPatients = patientsWithPrescriptions
-    .filter(p => p?.name)
-    .filter(p => p.name.toLowerCase().includes(searchPatient.toLowerCase()));
+    .filter((p) =>
+      selectedNurse
+        ? nurses.find((n) => n.id === selectedNurse)?.assignedPatients?.includes(p.id)
+        : true
+    )
+    .filter((p) => p.name.toLowerCase().includes(searchPatient.toLowerCase()));
 
   return (
-    <div style={{ display: "flex", gap: 16, padding: 24, backgroundColor: "#f0f2f5" }}>
-      
-      {/* LEFT PANEL */}
+    <div
+      style={{
+        display: "flex",
+        gap: 24,
+        padding: 24,
+        minHeight: "100vh",
+        fontFamily: "Inter, sans-serif",
+        fontSize: 14,
+      }}
+    >
+      {/* LEFT PANEL - Patients */}
       <Card
+        title={<b>Patients</b>}
         style={{
           width: 280,
-          height: "80vh",
+          height: "82vh",
+          borderRadius: 8,
+          boxShadow: "0 3px 10px rgba(0,0,0,0.08)",
           overflowY: "auto",
-          borderRadius: 12,
-          boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
         }}
-        title="Patients"
       >
+        <Select
+          placeholder="Select Nurse"
+          style={{ width: "100%", marginBottom: 12 }}
+          value={selectedNurse}
+          onChange={setSelectedNurse}
+          allowClear
+        >
+          {nurses.map((n) => (
+            <Option key={n.id} value={n.id}>
+              {n.name}
+            </Option>
+          ))}
+        </Select>
+
         <Input
           placeholder="Search patient..."
           value={searchPatient}
           onChange={(e) => setSearchPatient(e.target.value)}
           style={{ marginBottom: 12, borderRadius: 8 }}
         />
+
         <List
           dataSource={filteredPatients}
-          renderItem={(p) =>
-            p ? (
-              <List.Item
-                key={p.id}
-                style={{ cursor: "pointer", borderRadius: 8, padding: 8, transition: "0.2s", marginBottom: 4 }}
-                onClick={() => selectPatient(p)}
-                onMouseEnter={e => e.currentTarget.style.background = "#e6f7ff"}
-                onMouseLeave={e => e.currentTarget.style.background = "transparent"}
-              >
-                <List.Item.Meta
-                  avatar={<Avatar style={{ backgroundColor: "#1890ff" }}>{p.name?.charAt(0)}</Avatar>}
-                  title={<b>{p.name}</b>}
-                  description={`${p.age} yrs, ${p.gender}`}
-                />
-              </List.Item>
-            ) : null
-          }
+          renderItem={(p) => (
+            <List.Item
+              key={p.id}
+              style={{
+                borderRadius: 6,
+                padding: 10,
+                cursor: "pointer",
+                transition: "0.2s",
+              }}
+              onClick={() => selectPatient(p)}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "#f0f5ff")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "white")}
+            >
+              <List.Item.Meta
+                avatar={<Avatar style={{ background: "#1677ff" }}>{p.name.charAt(0)}</Avatar>}
+                title={<b>{p.name}</b>}
+                description={`${p.age} yrs • ${p.gender}`}
+              />
+            </List.Item>
+          )}
         />
       </Card>
 
-      {/* MIDDLE PANEL */}
+      {/* MIDDLE PANEL - Communication */}
       <Card
         style={{
           flex: 1,
+          height: "82vh",
+          borderRadius: 8,
+          boxShadow: "0 3px 10px rgba(0,0,0,0.08)",
           display: "flex",
           flexDirection: "column",
-          height: "80vh",
-          borderRadius: 12,
-          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-          padding: 16
+          padding: 16,
         }}
       >
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-          <h3>Messages</h3>
-          <Tooltip title="View All Communications">
-            <Button
-              type="default"
-              icon={<ProfileOutlined />}
-              onClick={() => navigate("/all-communications")}
-            />
-          </Tooltip>
+        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
+          <Title level={4} style={{ margin: 0 }}>
+            Communication
+          </Title>
+          <Button
+            type="default"
+            shape="circle"
+            icon={<ProfileOutlined />}
+            onClick={() => navigate("/all-communications")}
+          />
         </div>
 
         {selectedPatient ? (
           <>
             <Select
-              placeholder="Select doctor"
-              style={{ width: 220, marginBottom: 12 }}
+              placeholder="Select Doctor"
+              style={{ width: 250, marginBottom: 12 }}
               value={selectedDoctor}
-              onChange={(value) => setSelectedDoctor(value)}
+              onChange={setSelectedDoctor}
             >
-              {doctors.map(doc =>
-                doc ? (
-                  <Option key={doc.id} value={doc.id}>
-                    {doc.name}
-                  </Option>
-                ) : null
-              )}
+              {doctors.map((d) => (
+                <Option key={d.id} value={d.id}>
+                  {d.name}
+                </Option>
+              ))}
             </Select>
 
             <TextArea
@@ -157,70 +219,85 @@ export default function CommunicationPage({ currentUser = {} }) {
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               placeholder="Type your message..."
-              style={{ marginBottom: 12, borderRadius: 8 }}
+              style={{ marginBottom: 12, borderRadius: 6 }}
             />
-            <Button type="primary" style={{ alignSelf: "flex-end" }} onClick={handleSendMessage}>
+            <Button type="primary" onClick={handleSendMessage} style={{ alignSelf: "flex-end" }}>
               Send
             </Button>
 
-            <Divider style={{ margin: "24px 0" }} />
-            <p style={{ textAlign: "center", color: "#888", marginTop: 40 }}>
-              All communications will be visible on the All Communications page.
-            </p>
+            <Divider />
+
+            <Text type="secondary" style={{ textAlign: "center" }}>
+              Communications will appear on the All Communications page.
+            </Text>
           </>
         ) : (
-          <p style={{ textAlign: "center", marginTop: 40, color: "#888" }}>Select a patient to start conversation</p>
+          <Text type="secondary" style={{ textAlign: "center", marginTop: 40 }}>
+            Select a patient to start communication
+          </Text>
         )}
       </Card>
 
-      {/* RIGHT PANEL */}
+      {/* RIGHT PANEL - Patient Info & Prescriptions */}
       {selectedPatient && (
         <Card
           style={{
             width: 320,
-            height: "80vh",
+            height: "82vh",
+            borderRadius: 8,
+            boxShadow: "0 3px 10px rgba(0,0,0,0.08)",
             overflowY: "auto",
-            borderRadius: 12,
-            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-            padding: 16
+            padding: 16,
           }}
         >
-          <h3>Patient Info</h3>
-          <p><b>Name:</b> {selectedPatient.name}</p>
-          <p><b>Age:</b> {selectedPatient.age}</p>
-          <p><b>Gender:</b> {selectedPatient.gender}</p>
-          <p><b>Contact:</b> {selectedPatient.contact}</p>
-          <p><b>Blood Group:</b> {selectedPatient.bloodGroup}</p>
-          <p><b>Allergies:</b> {selectedPatient.allergies || "—"}</p>
+          <Title level={4}>Patient Info</Title>
+          <p>
+            <b>Name:</b> {selectedPatient.name}
+          </p>
+          <p>
+            <b>Age:</b> {selectedPatient.age}
+          </p>
+          <p>
+            <b>Gender:</b> {selectedPatient.gender}
+          </p>
+          <p>
+            <b>Contact:</b> {selectedPatient.contact}
+          </p>
+          <p>
+            <b>Blood Group:</b> {selectedPatient.bloodGroup}
+          </p>
+          <p>
+            <b>Allergies:</b> {selectedPatient.allergies || "—"}
+          </p>
 
           <Divider />
-          <h4>Prescriptions</h4>
+
+          <Title level={5}>Prescriptions</Title>
           <List
             dataSource={prescriptions}
-            renderItem={pres =>
-              pres ? (
-                <List.Item style={{ borderBottom: "1px solid #f0f0f0", padding: 12 }}>
-                  <div>
-                    <b>Date:</b> {pres.prescribedDate} <br />
-                    <b>Doctor:</b> {doctors.find(d => d.id === pres.doctorId)?.name || pres.doctorId} <br />
-                    <b>Status:</b> {pres.status} <br />
-                    <b>Notes:</b> {pres.notes || "—"} <br />
-                    {pres.medicines?.length > 0 && (
-                      <>
-                        <b>Medicines:</b>
-                        <ul style={{ margin: 4, paddingLeft: 18 }}>
-                          {pres.medicines.map((med, idx) => (
-                            <li key={idx}>
-                              {med.medicineName} - {med.dosage}, {med.frequency}, Duration: {med.duration}
-                            </li>
-                          ))}
-                        </ul>
-                      </>
-                    )}
-                  </div>
-                </List.Item>
-              ) : null
-            }
+            renderItem={(pres) => (
+              <List.Item style={{ padding: 10, borderBottom: "1px solid #f0f0f0" }}>
+                <div>
+                  <b>Date:</b> {pres.prescribedDate} <br />
+                  <b>Doctor:</b>{" "}
+                  {doctors.find((d) => d.id === pres.doctorId)?.name || pres.doctorId} <br />
+                  <b>Status:</b> {pres.status} <br />
+                  <b>Notes:</b> {pres.notes || "—"} <br />
+                  {pres.medicines?.length > 0 && (
+                    <>
+                      <b>Medicines:</b>
+                      <ul style={{ marginTop: 5 }}>
+                        {pres.medicines.map((med, idx) => (
+                          <li key={idx}>
+                            {med.medicineName} – {med.dosage} ({med.frequency}), {med.duration}
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
+                </div>
+              </List.Item>
+            )}
           />
         </Card>
       )}

@@ -30,6 +30,8 @@ import Managestaff from "@mui/icons-material/ManageAccounts";
 import Inventory from "@mui/icons-material/Inventory2";
 import LogoutOutlined from "@ant-design/icons/LogoutOutlined";
 import UserOutlined from "@ant-design/icons/UserOutlined";
+import Communication from "@mui/icons-material/Message";
+
 
 export default function Sidebar() {
   const collapsed = useSelector((s) => s.ui?.sidebarCollapsed);
@@ -63,6 +65,7 @@ export default function Sidebar() {
       { text: "Prescriptions", icon: <ReceiptLongIcon />, link: "/prescriptions" },
       { text: "Billing", icon: <PaymentIcon />, link: "/billing" },
       { text: "Inventory", icon: <Inventory />, link: "/inventory" },
+      { text: "My Communications", icon: <Communication />, link: "/doctor-communications" },
     ],
     patient: [
       { text: "My Appointments", icon: <EventAvailableIcon />, link: "/appointments" },
@@ -75,6 +78,7 @@ export default function Sidebar() {
       { text: "Appointments", icon: <EventAvailableIcon />, link: "/appointments" },
       { text: "Prescriptions", icon: <ReceiptLongIcon />, link: "/prescriptions" },
       { text: "Inventory", icon: <Inventory />, link: "/inventory" },
+       { text: "Mycommunications", icon: <Communication />, link: "/communicationpage" },
     ],
   };
 

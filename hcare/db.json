@@ -258,22 +258,25 @@
   ],
   "patients": [
     {
+      "id": 1,
       "name": "Aarav",
       "age": 32,
       "gender": "Male",
+      "bloodGroup": "A+",
       "contact": "9876543210",
       "email": "aarav.kumar@gmail.com",
-      "bloodGroup": "A+",
+      "password": "Aarav@2024",
+      "role": "patient",
       "address": "123 Main St, Trichy",
-      "registeredDate": "2025-11-01",
       "medicalHistory": "Diabetes",
       "allergies": "Penicillin",
       "emergencyContact": "Ananya (Sister) - 9876501234",
       "status": "Active",
-      "id": 1
+      "registeredDate": "2025-11-01"
     },
     {
-      "name": "Ananya ",
+      "id": 2,
+      "name": "Ananya",
       "age": 27,
       "gender": "Female",
       "contact": "9876543211",
@@ -284,23 +287,132 @@
       "medicalHistory": "Asthma",
       "allergies": "Dust",
       "emergencyContact": "Aarav (Brother) - 9876543210",
-      "status": "Active",
-      "id": 2
+      "status": "Active"
     },
     {
+      "id": 3,
       "name": "Abinav",
       "age": 30,
       "gender": "Male",
-      "bloodGroup": "O+",
-      "registeredDate": "2025-11-12",
       "contact": "9876543210",
       "email": "abinav@gmail.com",
+      "password": "Abinav@2024",
+      "role": "patient",
       "address": "Park street, Thanjavur",
-      "emergencyContact": "7856758493",
-      "medicalHistory": "Emergency medical attention",
-      "allergies": "Viral Fever",
-      "status": "Active",
-      "id": 3
+      "registeredDate": "2025-11-12",
+      "status": "Active"
+    },
+    {
+      "id": 4,
+      "name": "Diya Sharma",
+      "age": 25,
+      "gender": "Female",
+      "contact": "9876543220",
+      "email": "diya.sharma@gmail.com",
+      "password": "Diya@2024",
+      "role": "patient",
+      "address": "12 MG Road, Trichy",
+      "registeredDate": "2025-11-05",
+      "medicalHistory": "Hypertension",
+      "allergies": "None",
+      "emergencyContact": "Rohan (Brother) - 9876543221",
+      "status": "Active"
+    },
+    {
+      "id": 5,
+      "name": "Rohan Verma",
+      "age": 29,
+      "gender": "Male",
+      "contact": "9876543230",
+      "email": "rohan.verma@gmail.com",
+      "password": "Rohan@2024",
+      "role": "patient",
+      "address": "56 Park Avenue, Trichy",
+      "registeredDate": "2025-11-06",
+      "medicalHistory": "None",
+      "allergies": "Peanuts",
+      "emergencyContact": "Diya (Sister) - 9876543220",
+      "status": "Active"
+    },
+    {
+      "id": 6,
+      "name": "Ishaan Rao",
+      "age": 31,
+      "gender": "Male",
+      "contact": "9876543240",
+      "email": "ishaan.rao@gmail.com",
+      "password": "Ishaan@2024",
+      "role": "patient",
+      "address": "78 Lake View, Trichy",
+      "registeredDate": "2025-11-07",
+      "medicalHistory": "Allergic Rhinitis",
+      "allergies": "Pollen",
+      "emergencyContact": "Meera (Sister) - 9876543241",
+      "status": "Active"
+    },
+    {
+      "id": 7,
+      "name": "Meera Nair",
+      "age": 28,
+      "gender": "Female",
+      "contact": "9876543250",
+      "email": "meera.nair@gmail.com",
+      "password": "Meera@2024",
+      "role": "patient",
+      "address": "90 Central Street, Trichy",
+      "registeredDate": "2025-11-08",
+      "medicalHistory": "Thyroid",
+      "allergies": "Seafood",
+      "emergencyContact": "Ishaan (Brother) - 9876543240",
+      "status": "Active"
+    },
+    {
+      "id": 8,
+      "name": "Kavya Menon",
+      "age": 26,
+      "gender": "Female",
+      "contact": "9876543260",
+      "email": "kavya.menon@gmail.com",
+      "password": "Kavya@2024",
+      "role": "patient",
+      "address": "23 MG Road, Trichy",
+      "registeredDate": "2025-11-09",
+      "medicalHistory": "Migraine",
+      "allergies": "None",
+      "emergencyContact": "Aryan (Brother) - 9876543261",
+      "status": "Active"
+    },
+    {
+      "id": 9,
+      "name": "Aryan Gupta",
+      "age": 33,
+      "gender": "Male",
+      "contact": "9876543270",
+      "email": "aryan.gupta@gmail.com",
+      "password": "Aryan@2024",
+      "role": "patient",
+      "address": "14 Lake Road, Trichy",
+      "registeredDate": "2025-11-10",
+      "medicalHistory": "Heart Disease",
+      "allergies": "Dust",
+      "emergencyContact": "Kavya (Sister) - 9876543260",
+      "status": "Active"
+    },
+    {
+      "id": 10,
+      "name": "Saanvi Iyer",
+      "age": 24,
+      "gender": "Female",
+      "contact": "9876543280",
+      "email": "saanvi.iyer@gmail.com",
+      "password": "Saanvi@2024",
+      "role": "patient",
+      "address": "67 Park Lane, Trichy",
+      "registeredDate": "2025-11-11",
+      "medicalHistory": "None",
+      "allergies": "Gluten",
+      "emergencyContact": "Neil (Brother) - 9876543281",
+      "status": "Active"
     }
   ],
   "appointments": [
@@ -594,12 +706,13 @@
       "experience": 4,
       "status": "Active",
       "assignedPatients": [
-        "Aarav Kumar",
-        "Ananya Patel"
+        1,
+        2
       ],
       "dateJoined": "2021-06-15"
     },
     {
+      "id": 2,
       "name": "Sara",
       "age": 28,
       "gender": "Female",
@@ -611,8 +724,68 @@
       "shift": "Night",
       "experience": "",
       "status": "Active",
-      "dateJoined": "2025-11-19",
-      "id": 2
+      "assignedPatients": [
+        3,
+        4
+      ],
+      "dateJoined": "2025-11-19"
+    },
+    {
+      "id": 3,
+      "name": "Rohit Sharma",
+      "age": 32,
+      "gender": "Male",
+      "email": "rohit.sharma@gmail.com",
+      "password": "nurse123",
+      "role": "nurse",
+      "phone": "9876543212",
+      "department": "Pediatrics",
+      "shift": "Night (11PM–7AM)",
+      "experience": 6,
+      "status": "Active",
+      "assignedPatients": [
+        5,
+        6
+      ],
+      "dateJoined": "2019-03-20"
+    },
+    {
+      "id": 4,
+      "name": "Meera Iyer",
+      "age": 27,
+      "gender": "Female",
+      "email": "meera.iyer@gmail.com",
+      "password": "nurse123",
+      "role": "nurse",
+      "phone": "9876543213",
+      "department": "Oncology",
+      "shift": "Morning (7AM–3PM)",
+      "experience": 3,
+      "status": "Active",
+      "assignedPatients": [
+        7,
+        8
+      ],
+      "dateJoined": "2021-11-05"
+    },
+    {
+      "id": 5,
+      "name": "Arjun Rao",
+      "age": 29,
+      "gender": "Male",
+      "email": "arjun.rao@gmail.com",
+      "password": "nurse123",
+      "role": "nurse",
+      "phone": "9876543214",
+      "department": "Cardiology",
+      "shift": "Evening (3PM–11PM)",
+      "experience": 4,
+      "status": "Active",
+      "assignedPatients": [
+        9,
+        10
+      ],
+      "dateJoined": "2022-02-18"
     }
   ],
   "invoices": [
@@ -807,6 +980,114 @@
       "notes": "Fever and mild pain relief.",
       "prescribedDate": "2025-11-13",
       "status": "Active"
+    },
+    {
+      "id": 5,
+      "patientId": 3,
+      "doctorId": 1,
+      "medicines": [
+        {
+          "medicineId": 4,
+          "medicineName": "Metformin",
+          "dosage": "500mg",
+          "frequency": "Twice daily",
+          "duration": "30 days"
+        }
+      ],
+      "nextFollowUp": "2025-11-22",
+      "notes": "Diabetic patient, maintain diet and exercise.",
+      "prescribedDate": "2025-11-14",
+      "status": "Active"
+    },
+    {
+      "id": 6,
+      "patientId": 4,
+      "doctorId": 2,
+      "medicines": [
+        {
+          "medicineId": 5,
+          "medicineName": "Salbutamol",
+          "dosage": "2 puffs",
+          "frequency": "As needed",
+          "duration": "14 days"
+        }
+      ],
+      "nextFollowUp": "2025-11-23",
+      "notes": "Asthma patient, keep inhaler handy.",
+      "prescribedDate": "2025-11-15",
+      "status": "Active"
+    },
+    {
+      "id": 7,
+      "patientId": 5,
+      "doctorId": 1,
+      "medicines": [
+        {
+          "medicineId": 6,
+          "medicineName": "Atorvastatin",
+          "dosage": "10mg",
+          "frequency": "Once daily",
+          "duration": "30 days"
+        }
+      ],
+      "nextFollowUp": "2025-11-25",
+      "notes": "Cholesterol management.",
+      "prescribedDate": "2025-11-16",
+      "status": "Active"
+    },
+    {
+      "id": 8,
+      "patientId": 6,
+      "doctorId": 2,
+      "medicines": [
+        {
+          "medicineId": 7,
+          "medicineName": "Cetirizine",
+          "dosage": "10mg",
+          "frequency": "Once daily",
+          "duration": "7 days"
+        }
+      ],
+      "nextFollowUp": "2025-11-26",
+      "notes": "Allergic rhinitis symptoms.",
+      "prescribedDate": "2025-11-17",
+      "status": "Active"
+    },
+    {
+      "id": 9,
+      "patientId": 7,
+      "doctorId": 1,
+      "medicines": [
+        {
+          "medicineId": 8,
+          "medicineName": "Levothyroxine",
+          "dosage": "50mcg",
+          "frequency": "Once daily",
+          "duration": "60 days"
+        }
+      ],
+      "nextFollowUp": "2025-11-28",
+      "notes": "Thyroid management, take on empty stomach.",
+      "prescribedDate": "2025-11-18",
+      "status": "Active"
+    },
+    {
+      "id": 10,
+      "patientId": 8,
+      "doctorId": 2,
+      "medicines": [
+        {
+          "medicineId": 9,
+          "medicineName": "Sumatriptan",
+          "dosage": "50mg",
+          "frequency": "As needed",
+          "duration": "7 days"
+        }
+      ],
+      "nextFollowUp": "2025-11-30",
+      "notes": "Migraine management, avoid triggers.",
+      "prescribedDate": "2025-11-19",
+      "status": "Active"
     }
   ],
   "pharmacists": [
@@ -906,6 +1187,113 @@
       "reply": "morning",
       "status": "replied",
       "timestamp": "2025-11-16T11:17:46.829Z"
+    },
+    {
+      "patientId": 4,
+      "doctorId": 2,
+      "nurseId": 2,
+      "query": "dsfgdzh",
+      "reply": "ok",
+      "status": "replied",
+      "timestamp": "2025-11-20T01:39:14.242Z",
+      "id": "rayhITa"
+    },
+    {
+      "patientId": 2,
+      "doctorId": 1,
+      "nurseId": 1,
+      "query": "dfgfdgz",
+      "reply": "",
+      "status": "pending",
+      "timestamp": "2025-11-20T01:38:18.692Z",
+      "id": "9EwL6xY"
+    },
+    {
+      "patientId": 1,
+      "doctorId": 1,
+      "nurseId": 1,
+      "query": "fgcghv",
+      "reply": "",
+      "status": "pending",
+      "timestamp": "2025-11-20T02:42:14.296Z",
+      "id": "6eCw9Zr"
+    },
+    {
+      "patientId": 1,
+      "doctorId": 1,
+      "nurseId": 1,
+      "query": "fcvcbv",
+      "reply": "",
+      "status": "pending",
+      "timestamp": "2025-11-20T03:27:16.061Z",
+      "id": "Zmp4rXD"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "notif-1",
+      "roles": [
+        "doctor"
+      ],
+      "message": "New query from John Doe",
+      "redirect": "/doctor-communications",
+      "timestamp": "2025-11-19T15:00:00Z",
+      "readBy": [
+        1,
+        2
+      ]
+    },
+    {
+      "roles": [
+        "doctor"
+      ],
+      "userId": 2,
+      "message": "New query from Nurse Sara for patient Diya Sharma",
+      "redirect": "/doctor-communications",
+      "timestamp": "2025-11-20T01:34:47.340Z",
+      "readBy": [
+        2
+      ],
+      "id": "7xYyVce"
+    },
+    {
+      "roles": [
+        "doctor"
+      ],
+      "userId": 1,
+      "message": "New query from Nurse Priya Raj for patient Ananya",
+      "redirect": "/doctor-communications",
+      "timestamp": "2025-11-20T01:38:18.711Z",
+      "readBy": [
+        2
+      ],
+      "id": "7gqRGL1"
+    },
+    {
+      "roles": [
+        "nurse"
+      ],
+      "userId": 2,
+      "message": "Doctor replied to your query for patient Diya Sharma.",
+      "redirect": "/communication",
+      "timestamp": "2025-11-20T01:39:14.272Z",
+      "readBy": [
+        3
+      ],
+      "id": "KVSAqqH"
+    },
+    {
+      "roles": [
+        "doctor"
+      ],
+      "userId": 1,
+      "message": "New query from Nurse Priya Raj for patient Aarav",
+      "redirect": "/doctor-communications",
+      "timestamp": "2025-11-20T02:42:14.637Z",
+      "readBy": [
+        2
+      ],
+      "id": "D1HkpSh"
     }
   ]
 }
