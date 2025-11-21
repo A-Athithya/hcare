@@ -2,15 +2,12 @@ import React, { useEffect, useState } from "react";
 import {
   Form,
   Input,
-  Button,
   Select,
   DatePicker,
   TimePicker,
-  Divider,
-  message,
-  Collapse,
   Row,
   Col,
+  message,
 } from "antd";
 import dayjs from "dayjs";
 import { getData, postData, putData } from "../../api/client";
@@ -24,30 +21,36 @@ export default function AppointmentForm({
   const [patients, setPatients] = useState([]);
   const [doctors, setDoctors] = useState([]);
 
-  /** ------- Load Patients + Doctors ------- **/
+  // ⭐ SAME UI AS PATIENT FORM
+  const inputStyle = {
+    height: 38,
+    fontSize: 15,
+  };
+  const textAreaStyle = {
+    minHeight: 38,
+    fontSize: 15,
+    resize: "vertical",
+  };
+
+  // Load patients + doctors
   useEffect(() => {
-    let mounted = true;
     async function load() {
       try {
         const [p, d] = await Promise.all([
           getData("/patients"),
           getData("/doctors"),
         ]);
-        if (!mounted) return;
         setPatients(p || []);
         setDoctors(d || []);
-      } catch (err) {
-        console.error("Load error", err);
-      }
+      } catch {}
     }
     load();
-    return () => (mounted = false);
   }, []);
 
-  /** ------- Prefill when editing ------- **/
+  // Prefill editing
   useEffect(() => {
     if (initial) {
-      const values = {
+      form.setFieldsValue({
         patientId: initial.patientId,
         doctorId: initial.doctorId,
         date: dayjs(initial.appointmentDate),
@@ -57,16 +60,15 @@ export default function AppointmentForm({
         reason: initial.reason || "",
         remarks: initial.remarks || "",
         status: initial.status || "Pending",
-      };
-      form.setFieldsValue(values);
+      });
     } else {
       form.resetFields();
       if (autoFocusPatientId)
         form.setFieldsValue({ patientId: autoFocusPatientId });
     }
-  }, [initial, autoFocusPatientId, form]);
+  }, [initial]);
 
-  /** ------- Submit Handler ------- **/
+  // submit
   const onFinish = async (vals) => {
     try {
       const payload = {
@@ -103,91 +105,109 @@ export default function AppointmentForm({
       layout="vertical"
       form={form}
       onFinish={onFinish}
-      style={{ paddingRight: 6 }}
+      style={{ paddingRight: 8, marginTop: "-10px" }}
     >
-      <Collapse defaultActiveKey={["1", "2", "3"]} style={{ marginBottom: 12 }}>
+      <Row gutter={[12, 4]}>
         
-        {/* SECTION 1 - PATIENT & DOCTOR */}
-        <Collapse.Panel header="Patient & Doctor" key="1">
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item
-                name="patientId"
-                label="Patient"
-                rules={[{ required: true, message: "Select patient" }]}
-              >
-                <Select placeholder="Select patient" showSearch optionFilterProp="children">
-                  {patients.map((p) => (
-                    <Select.Option key={p.id} value={p.id}>
-                      {p.name} {p.age ? `• ${p.age}` : ""}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            </Col>
+        {/* PATIENT */}
+        <Col span={8}>
+          <Form.Item
+            name="patientId"
+            label="Patient"
+            rules={[{ required: true }]}
+            style={{ marginBottom: 8 }}
+          >
+            <Select placeholder="Select patient" style={inputStyle}>
+              {patients.map((p) => (
+                <Select.Option key={p.id} value={p.id}>
+                  {p.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Col>
 
-            <Col span={12}>
-              <Form.Item
-                name="doctorId"
-                label="Doctor"
-                rules={[{ required: true, message: "Select doctor" }]}
-              >
-                <Select placeholder="Select doctor">
-                  {doctors.map((d) => (
-                    <Select.Option key={d.id} value={d.id}>
-                      {d.name} {d.specialization ? `• ${d.specialization}` : ""}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            </Col>
-          </Row>
-        </Collapse.Panel>
+        {/* DOCTOR */}
+        <Col span={8}>
+          <Form.Item
+            name="doctorId"
+            label="Doctor"
+            rules={[{ required: true }]}
+            style={{ marginBottom: 8 }}
+          >
+            <Select placeholder="Select doctor" style={inputStyle}>
+              {doctors.map((d) => (
+                <Select.Option key={d.id} value={d.id}>
+                  {d.name} {d.specialization ? `• ${d.specialization}` : ""}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Col>
 
-        {/* SECTION 2 - SCHEDULE */}
-        <Collapse.Panel header="Schedule" key="2">
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item
-                name="date"
-                label="Date"
-                rules={[{ required: true, message: "Select date" }]}
-              >
-                <DatePicker style={{ width: "100%" }} />
-              </Form.Item>
-            </Col>
+        {/* DATE */}
+        <Col span={8}>
+          <Form.Item
+            name="date"
+            label="Date"
+            rules={[{ required: true }]}
+            style={{ marginBottom: 8 }}
+          >
+            <DatePicker style={{ width: "100%", ...inputStyle }} />
+          </Form.Item>
+        </Col>
 
-            <Col span={12}>
-              <Form.Item
-                name="time"
-                label="Time"
-                rules={[{ required: true, message: "Select time" }]}
-              >
-                <TimePicker
-                  style={{ width: "100%" }}
-                  use12Hours
-                  format="hh:mm A"
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-        </Collapse.Panel>
+        {/* TIME */}
+        <Col span={8}>
+          <Form.Item
+            name="time"
+            label="Time"
+            rules={[{ required: true }]}
+            style={{ marginBottom: 8 }}
+          >
+            <TimePicker
+              style={{ width: "100%", ...inputStyle }}
+              format="hh:mm A"
+              use12Hours
+            />
+          </Form.Item>
+        </Col>
 
-        {/* SECTION 3 - REASON & NOTES */}
-        <Collapse.Panel header="Reason & Notes" key="3">
+        {/* STATUS */}
+        <Col span={8}>
+          <Form.Item
+            name="status"
+            label="Status"
+            style={{ marginBottom: 8 }}
+          >
+            <Select style={inputStyle}>
+              <Select.Option value="Pending">Pending</Select.Option>
+              <Select.Option value="Completed">Completed</Select.Option>
+              <Select.Option value="Cancelled">Cancelled</Select.Option>
+            </Select>
+          </Form.Item>
+        </Col>
+
+        {/* REASON */}
+        <Col span={24}>
           <Form.Item
             name="reason"
             label="Reason"
-            rules={[{ required: true, message: "Enter reason" }]}
+            rules={[{ required: true }]}
+            style={{ marginBottom: 8 }}
           >
-            <Input placeholder="Reason for appointment" />
+            <Input style={inputStyle} placeholder="Appointment reason" />
           </Form.Item>
+        </Col>
 
-          <Form.Item name="remarks" label="Remarks">
-            <Input.TextArea rows={3} placeholder="Optional notes" />
+        {/* REMARKS */}
+        <Col span={24}>
+          <Form.Item name="remarks" label="Remarks" style={{ marginBottom: 8 }}>
+            <Input.TextArea style={textAreaStyle} placeholder="Notes" />
           </Form.Item>
-        </Collapse.Panel>
-      </Collapse>
+        </Col>
+
+      </Row>
     </Form>
   );
 }

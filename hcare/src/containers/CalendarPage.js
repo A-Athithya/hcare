@@ -1,27 +1,41 @@
 import React, { useState, useEffect } from "react";
-import { Calendar, Card, Select, Button, Typography, Space, Badge, Divider } from "antd";
+import {
+  Calendar,
+  Card,
+  Select,
+  Button,
+  Typography,
+  Badge,
+  Divider,
+  Tooltip,
+} from "antd";
 import { getData } from "../api/client";
-import dayjs from "dayjs";
+
+import { useNavigate } from "react-router-dom";
 
 const { Title } = Typography;
 const { Option } = Select;
 
 const CalendarPage = () => {
+  const navigate = useNavigate(); // ✅ added
+
   const [appointments, setAppointments] = useState([]);
   const [filterDoctor, setFilterDoctor] = useState("all");
   const [doctors, setDoctors] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(dayjs());
+  const [patients, setPatients] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [appointmentsRes, doctorsRes] = await Promise.all([
+        const [appointmentsRes, doctorsRes, patientsRes] = await Promise.all([
           getData("/appointments"),
           getData("/doctors"),
+          getData("/patients"),
         ]);
 
         setAppointments(appointmentsRes);
         setDoctors(doctorsRes);
+        setPatients(patientsRes);
       } catch (error) {
         console.error("Error loading appointments:", error);
       }
@@ -42,59 +56,73 @@ const CalendarPage = () => {
 
   const dateCellRender = (value) => {
     const listData = getListData(value);
+
     return (
       <ul className="events" style={{ listStyle: "none", padding: 0, margin: 0 }}>
         {listData.map((item) => (
-          <li key={item.id} style={{ marginBottom: 4 }}>
-            <Badge
-              status={
-                item.status === "Completed"
-                  ? "success"
-                  : item.status === "Pending"
-                  ? "warning"
-                  : "error"
-              }
-              text={
-                <span style={{ fontSize: 12, color: "#666" }}>
-                  {item.patientName}
-                </span>
-              }
-            />
-          </li>
+          <Tooltip
+            key={item.id}
+            title={
+              <div>
+                <strong>{item.patientName}</strong> <br />
+                Time: {item.appointmentTime} <br />
+                Doctor: {doctors.find(d => d.id === item.doctorId)?.name || 'Unknown'} <br />
+                Reason: {item.reason} <br />
+                Status: {item.status}
+              </div>
+            }
+          >
+            <li
+              style={{
+                marginBottom: 4,
+                padding: "2px 4px",
+                background: "#f7f7f7",
+                borderRadius: 6,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Badge
+                status={
+                  item.status === "Completed"
+                    ? "success"
+                    : item.status === "Pending"
+                    ? "warning"
+                    : "error"
+                }
+              />
+              <span style={{ fontSize: 12, marginLeft: 6, color: "#444" }}>
+                {patients.find(p => p.id === item.patientId)?.name || item.patientName || 'Unknown'} — {item.appointmentTime}
+              </span>
+            </li>
+          </Tooltip>
         ))}
       </ul>
     );
   };
 
-  const onSelect = (value) => {
-    setSelectedDate(value);
-  };
-
-  const onPanelChange = (value, mode) => {
-    console.log(value.format("YYYY-MM-DD"), mode);
-  };
-
+  // ✅ UPDATED FUNCTION (redirect)
   const handleAddAppointment = () => {
-    // Placeholder for add appointment functionality
-    console.log("Add appointment clicked");
+    navigate("/appointments?create=true");
   };
 
   return (
-    <div style={{ padding: 24, background: "#fafbfc", minHeight: "90vh" }}>
+    <div style={{ padding: "10px 24px", background: "#fafbfc", minHeight: "90vh" }}>
       {/* Page Header */}
-      <Title level={2} style={{ marginBottom: 24, color: "#202124" }}>
+      <Title level={2} style={{ marginTop: 0, marginBottom: 24, color: "#202124" }}>
         Appointment Calendar
       </Title>
 
-      {/* Filter and Add Section */}
-      <Card
-        style={{
-          marginBottom: 24,
-          borderRadius: 12,
-          boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
-        }}
-      >
-        <Space wrap style={{ justifyContent: "space-between", width: "100%" }}>
+        {/* Filter and Add Section - SIMPLE (NO CARD) */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 12
+          }}
+        >
           <div>
             <span style={{ marginRight: 8, fontWeight: 500 }}>Filter by Doctor:</span>
             <Select
@@ -110,15 +138,11 @@ const CalendarPage = () => {
               ))}
             </Select>
           </div>
-          <Button
-            type="primary"
-            onClick={handleAddAppointment}
-            style={{ borderRadius: 8 }}
-          >
+
+          <Button type="primary" onClick={handleAddAppointment}>
             + Add Appointment
           </Button>
-        </Space>
-      </Card>
+        </div>
 
       <Divider style={{ margin: "24px 0" }} />
 
@@ -130,62 +154,8 @@ const CalendarPage = () => {
           overflow: "hidden",
         }}
       >
-        <Calendar
-          dateCellRender={dateCellRender}
-          onSelect={onSelect}
-          onPanelChange={onPanelChange}
-          style={{ borderRadius: 12 }}
-        />
+        <Calendar dateCellRender={dateCellRender} style={{ borderRadius: 12 }} />
       </Card>
-
-      {/* Selected Date Details */}
-      {selectedDate && (
-        <Card
-          style={{
-            marginTop: 24,
-            borderRadius: 12,
-            boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
-          }}
-        >
-          <Title level={4} style={{ marginBottom: 16 }}>
-            Appointments on {selectedDate.format("MMMM DD, YYYY")}
-          </Title>
-          {getListData(selectedDate).length === 0 ? (
-            <p style={{ color: "#666" }}>No appointments scheduled for this date.</p>
-          ) : (
-            <Space direction="vertical" style={{ width: "100%" }}>
-              {getListData(selectedDate).map((appointment) => (
-                <Card
-                  key={appointment.id}
-                  size="small"
-                  style={{
-                    borderRadius: 8,
-                    border: "1px solid #e8eaed",
-                  }}
-                >
-                  <Space>
-                    <Badge
-                      status={
-                        appointment.status === "Completed"
-                          ? "success"
-                          : appointment.status === "Pending"
-                          ? "warning"
-                          : "error"
-                      }
-                    />
-                    <div>
-                      <div style={{ fontWeight: 500 }}>{appointment.patientName}</div>
-                      <div style={{ fontSize: 12, color: "#666" }}>
-                        {appointment.appointmentTime} • {appointment.reason}
-                      </div>
-                    </div>
-                  </Space>
-                </Card>
-              ))}
-            </Space>
-          )}
-        </Card>
-      )}
     </div>
   );
 };

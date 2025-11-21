@@ -1,5 +1,6 @@
 // src/api/client.js
 import axios from "axios";
+import { getStoredToken } from "../utils/tokenHelper";
 
 const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:4000";
 
@@ -8,6 +9,33 @@ const api = axios.create({
   timeout: 10000,
   headers: { "Content-Type": "application/json" },
 });
+
+// Request interceptor to add JWT token to headers
+api.interceptors.request.use(
+  (config) => {
+    const token = getStoredToken();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Response interceptor to handle token expiration
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Token expired or invalid, redirect to login
+      localStorage.removeItem('authToken');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
 
 // Load mock data from db.json for development fallback
 const loadMockData = async () => {

@@ -2,14 +2,17 @@
 import React, { useEffect, useState } from "react";
 import { Input, List, Card, Avatar, Button, Divider, message, Select, Tooltip } from "antd";
 import { getData, postData } from "../../api/client";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ProfileOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
 const { Option } = Select;
 
-export default function CommunicationPage({ currentUser = {} }) {
+export default function CommunicationPage() {
   const navigate = useNavigate();
+  const auth = useSelector((s) => s.auth || {});
+  const currentUser = auth.user || {}; // logged-in nurse
 
   const [patients, setPatients] = useState([]);
   const [allPrescriptions, setAllPrescriptions] = useState([]);
@@ -22,9 +25,17 @@ export default function CommunicationPage({ currentUser = {} }) {
   const [selectedDoctor, setSelectedDoctor] = useState(null);
 
   useEffect(() => {
-    getData("/patients").then(res => setPatients(res.filter(p => p?.id))).catch(() => message.error("Failed to load patients"));
-    getData("/prescriptions").then(res => setAllPrescriptions(res.filter(p => p?.id))).catch(() => message.error("Failed to load prescriptions"));
-    getData("/doctors").then(res => setDoctors(res.filter(d => d?.id))).catch(() => message.error("Failed to load doctors list"));
+    getData("/patients")
+      .then(res => setPatients(res.filter(p => p?.id)))
+      .catch(() => message.error("Failed to load patients"));
+
+    getData("/prescriptions")
+      .then(res => setAllPrescriptions(res.filter(p => p?.id)))
+      .catch(() => message.error("Failed to load prescriptions"));
+
+    getData("/doctors")
+      .then(res => setDoctors(res.filter(d => d?.id)))
+      .catch(() => message.error("Failed to load doctors list"));
   }, []);
 
   const patientsWithPrescriptions = patients.filter(
@@ -49,6 +60,7 @@ export default function CommunicationPage({ currentUser = {} }) {
 
     const payload = {
       patientId: selectedPatient.id,
+      nurseId: currentUser.id, // nurse ID
       doctorId: selectedDoctor,
       query: newMessage,
       reply: "",
@@ -59,6 +71,17 @@ export default function CommunicationPage({ currentUser = {} }) {
     try {
       const saved = await postData("/communications", payload);
       if (saved?.id) setMessages(prev => [...prev, saved]);
+
+      // send notification to the doctor
+      await postData("/notifications", {
+        roles: ["doctor"],
+        userId: selectedDoctor,
+        message: `New query from Nurse ${currentUser.name} for patient ${selectedPatient.name}`,
+        redirect: "/doctor-communications",
+        timestamp: new Date().toISOString(),
+        readBy: [],
+      });
+
       setNewMessage("");
       message.success("Query sent successfully");
     } catch (err) {
@@ -72,18 +95,8 @@ export default function CommunicationPage({ currentUser = {} }) {
 
   return (
     <div style={{ display: "flex", gap: 16, padding: 24, backgroundColor: "#f0f2f5" }}>
-      
       {/* LEFT PANEL */}
-      <Card
-        style={{
-          width: 280,
-          height: "80vh",
-          overflowY: "auto",
-          borderRadius: 12,
-          boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
-        }}
-        title="Patients"
-      >
+      <Card style={{ width: 280, height: "80vh", overflowY: "auto", borderRadius: 12, boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }} title="Patients">
         <Input
           placeholder="Search patient..."
           value={searchPatient}
@@ -113,25 +126,11 @@ export default function CommunicationPage({ currentUser = {} }) {
       </Card>
 
       {/* MIDDLE PANEL */}
-      <Card
-        style={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          height: "80vh",
-          borderRadius: 12,
-          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-          padding: 16
-        }}
-      >
+      <Card style={{ flex: 1, display: "flex", flexDirection: "column", height: "80vh", borderRadius: 12, boxShadow: "0 4px 12px rgba(0,0,0,0.1)", padding: 16 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
           <h3>Messages</h3>
           <Tooltip title="View All Communications">
-            <Button
-              type="default"
-              icon={<ProfileOutlined />}
-              onClick={() => navigate("/all-communications")}
-            />
+            <Button type="default" icon={<ProfileOutlined />} onClick={() => navigate("/all-communications")} />
           </Tooltip>
         </div>
 
@@ -175,16 +174,7 @@ export default function CommunicationPage({ currentUser = {} }) {
 
       {/* RIGHT PANEL */}
       {selectedPatient && (
-        <Card
-          style={{
-            width: 320,
-            height: "80vh",
-            overflowY: "auto",
-            borderRadius: 12,
-            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-            padding: 16
-          }}
-        >
+        <Card style={{ width: 320, height: "80vh", overflowY: "auto", borderRadius: 12, boxShadow: "0 4px 12px rgba(0,0,0,0.1)", padding: 16 }}>
           <h3>Patient Info</h3>
           <p><b>Name:</b> {selectedPatient.name}</p>
           <p><b>Age:</b> {selectedPatient.age}</p>

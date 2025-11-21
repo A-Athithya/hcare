@@ -1,11 +1,15 @@
 // src/App.js
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import React, { Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import MuiProvider from "./mui/MaterialDesign";
 import Layout from "./components/Layout/Layout";
+import IdleTimer from "./components/IdleTimer";
 import { Spin } from "antd";
+import { checkAuthStatus } from "./features/auth/authSlice";
 
 // Direct imports
 import CalendarPage from "./containers/CalendarPage";
@@ -31,6 +35,9 @@ const StaffManagement = lazy(() =>
 const InventoryManagement = lazy(() =>
   import("./components/admin/InventoryManagement")
 );
+const CommunicationPage = lazy(()=> import("./components/communication/CommunicationPage"));
+const AllCommunicationsPage = lazy(()=> import("./components/communication/AllCommunicationsPage"));
+const DoctorCommunications = lazy(()=> import("./components/communication/DoctorCommunications"));
 
 // -------------------------------------------
 // PROTECTED ROUTE
@@ -46,8 +53,16 @@ const ProtectedRoute = ({ children }) => {
 // MAIN APP
 // -------------------------------------------
 export default function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Check authentication status on app load
+    dispatch(checkAuthStatus());
+  }, [dispatch]);
+
   return (
     <MuiProvider>
+      <IdleTimer />
       <Suspense
         fallback={
           <div style={{ textAlign: "center", padding: "80px" }}>
@@ -227,6 +242,39 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+
+           {/* Communication */}
+          <Route
+            path="/communicationpage"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <CommunicationPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/all-communications"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <AllCommunicationsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/doctor-communications"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <DoctorCommunications />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          
 
           {/* Default fallback */}
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
