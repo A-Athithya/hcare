@@ -74,7 +74,7 @@ export default function DoctorsPage() {
   useEffect(() => {
     dispatch({ type: "doctors/fetchStart" });
     loadExtraData();
-  }, []);
+  }, [dispatch]);
 
   const loadExtraData = async () => {
     try {
@@ -154,11 +154,10 @@ export default function DoctorsPage() {
     );
 
   return (
-    <Box sx={{ padding: 4, background: "#fafbfc", minHeight: "100vh" }}>
-      <Typography variant="h5" sx={{ mb: 3 }}>
-        Doctors Directory
-      </Typography>
-
+      <Box sx={{ padding: 0, pt: 1, background: "#fafbfc", minHeight: "100vh" }}>
+        <Typography variant="h5" sx={{ mb: 2, mt: 0 }}>
+          Doctors Directory
+        </Typography>
       {/* FILTER BAR */}
       <Box sx={{ display: "flex", gap: 2, mb: 3 }}>
         <Input

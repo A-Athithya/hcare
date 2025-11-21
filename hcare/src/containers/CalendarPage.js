@@ -5,18 +5,20 @@ import {
   Select,
   Button,
   Typography,
-  Space,
   Badge,
   Divider,
   Tooltip,
 } from "antd";
 import { getData } from "../api/client";
-import dayjs from "dayjs";
+
+import { useNavigate } from "react-router-dom";
 
 const { Title } = Typography;
 const { Option } = Select;
 
 const CalendarPage = () => {
+  const navigate = useNavigate(); // ✅ added
+
   const [appointments, setAppointments] = useState([]);
   const [filterDoctor, setFilterDoctor] = useState("all");
   const [doctors, setDoctors] = useState([]);
@@ -100,26 +102,27 @@ const CalendarPage = () => {
     );
   };
 
+  // ✅ UPDATED FUNCTION (redirect)
   const handleAddAppointment = () => {
-    console.log("Add appointment clicked");
+    navigate("/appointments?create=true");
   };
 
   return (
-    <div style={{ padding: 24, background: "#fafbfc", minHeight: "90vh" }}>
+    <div style={{ padding: "10px 24px", background: "#fafbfc", minHeight: "90vh" }}>
       {/* Page Header */}
-      <Title level={2} style={{ marginBottom: 24, color: "#202124" }}>
+      <Title level={2} style={{ marginTop: 0, marginBottom: 24, color: "#202124" }}>
         Appointment Calendar
       </Title>
 
-      {/* Filter and Add Section */}
-      <Card
-        style={{
-          marginBottom: 24,
-          borderRadius: 12,
-          boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
-        }}
-      >
-        <Space wrap style={{ justifyContent: "space-between", width: "100%" }}>
+        {/* Filter and Add Section - SIMPLE (NO CARD) */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 12
+          }}
+        >
           <div>
             <span style={{ marginRight: 8, fontWeight: 500 }}>Filter by Doctor:</span>
             <Select
@@ -136,15 +139,10 @@ const CalendarPage = () => {
             </Select>
           </div>
 
-          <Button
-            type="primary"
-            onClick={handleAddAppointment}
-            style={{ borderRadius: 8 }}
-          >
+          <Button type="primary" onClick={handleAddAppointment}>
             + Add Appointment
           </Button>
-        </Space>
-      </Card>
+        </div>
 
       <Divider style={{ margin: "24px 0" }} />
 

@@ -22,7 +22,7 @@ export default function PaymentPage() {
     }
   }, [invoice, form]);
 
-  const onFinish = (values) => {
+  const onFinish = () => {
     setLoading(true);
     // Simulate payment processing
     setTimeout(() => {
@@ -154,8 +154,8 @@ export default function PaymentPage() {
   };
 
   return (
-    <div style={{ maxWidth: 600, margin: "0 auto", padding: "20px" }}>
-      <Title level={2} style={{ textAlign: "center" }}>
+      <div style={{ maxWidth: 600, margin: "0 auto", padding: "8x 20px 20px" }}>
+      <Title level={2} style={{ textAlign: "center", marginTop: 0, marginBottom: 12 }}>
         {paymentMethod === "upi" ? <QrcodeOutlined /> : <CreditCardOutlined />} Payment Gateway
       </Title>
       <Card>
