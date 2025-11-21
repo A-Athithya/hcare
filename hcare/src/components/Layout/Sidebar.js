@@ -1,4 +1,3 @@
-// src/components/Layout/Sidebar.js
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -32,7 +31,6 @@ import LogoutOutlined from "@ant-design/icons/LogoutOutlined";
 import UserOutlined from "@ant-design/icons/UserOutlined";
 import Communication from "@mui/icons-material/Message";
 
-
 export default function Sidebar() {
   const collapsed = useSelector((s) => s.ui?.sidebarCollapsed);
   const auth = useSelector((s) => s.auth || {});
@@ -43,7 +41,9 @@ export default function Sidebar() {
   const toggleSidebar = () => dispatch({ type: "ui/toggleSidebar" });
   const handleLogout = () => dispatch({ type: "auth/logout" });
 
-  const baseItems = [{ text: "Dashboard", icon: <DashboardIcon />, link: "/dashboard" }];
+  const baseItems = [
+    { text: "Dashboard", icon: <DashboardIcon />, link: "/dashboard" }
+  ];
 
   const menuByRole = {
     admin: [
@@ -78,7 +78,7 @@ export default function Sidebar() {
       { text: "Appointments", icon: <EventAvailableIcon />, link: "/appointments" },
       { text: "Prescriptions", icon: <ReceiptLongIcon />, link: "/prescriptions" },
       { text: "Inventory", icon: <Inventory />, link: "/inventory" },
-       { text: "Mycommunications", icon: <Communication />, link: "/communicationpage" },
+      { text: "Mycommunications", icon: <Communication />, link: "/communicationpage" },
     ],
   };
 
@@ -86,27 +86,27 @@ export default function Sidebar() {
 
   return (
     <Drawer
-      variant="persistent"
-      open={!collapsed}
+      variant="permanent"
       anchor="left"
       sx={{
-        width: collapsed ? 0 : 240,
+        width: collapsed ? 70 : 240,
+        transition: "width 0.3s ease",
         "& .MuiDrawer-paper": {
-          width: 240,
+          width: collapsed ? 70 : 240,
           top: "64px",
           background: "#f7f9fc",
           borderRight: "1px solid #ddd",
-          transition: "all 0.3s ease",
+          transition: "width 0.3s ease",
           overflowY: "auto",
           maxHeight: "calc(100vh - 70px)",
         },
       }}
     >
-      {/* Top Title */}
+      {/* HEADER */}
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: collapsed ? "center" : "space-between",
           alignItems: "center",
           px: 2,
           py: 1.5,
@@ -115,7 +115,7 @@ export default function Sidebar() {
           fontWeight: 600,
         }}
       >
-        Menu
+        {!collapsed && "Menu"}
         <Box sx={{ cursor: "pointer" }} onClick={toggleSidebar}>
           {collapsed ? <MenuIcon /> : <MenuOpenIcon />}
         </Box>
@@ -129,42 +129,69 @@ export default function Sidebar() {
             <ListItemButton
               component={NavLink}
               to={item.link}
+              sx={{
+                justifyContent: collapsed ? "center" : "flex-start",
+                px: 2,
+                transition: "all 0.25s ease",
+              }}
               style={({ isActive }) => ({
                 backgroundColor: isActive ? "#e3f2fd" : "transparent",
                 borderLeft: isActive ? "4px solid #1976d2" : "4px solid transparent",
               })}
             >
-              <ListItemIcon sx={{ color: "#1976d2" }}>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
+              <ListItemIcon
+                sx={{
+                  color: "#1976d2",
+                  minWidth: collapsed ? 0 : 40,
+                }}
+              >
+                {item.icon}
+              </ListItemIcon>
+
+              {!collapsed && <ListItemText primary={item.text} />}
             </ListItemButton>
           </ListItem>
         ))}
 
-        {/* Settings Section */}
-        <ListItem disablePadding>
-          <ListItemButton onClick={() => setSettingsExpanded(!settingsExpanded)}>
-            <ListItemIcon sx={{ color: "#1976d2" }}>
+        {/* SETTINGS */}
+        <ListItem disablePadding sx={{ mt: 1 }}>
+          <ListItemButton
+            onClick={() => setSettingsExpanded(!settingsExpanded)}
+            sx={{
+              justifyContent: collapsed ? "center" : "flex-start",
+              transition: "all 0.25s ease",
+            }}
+          >
+            <ListItemIcon sx={{ color: "#1976d2", minWidth: collapsed ? 0 : 40 }}>
               <SettingsIcon />
             </ListItemIcon>
-            <ListItemText primary="Settings" />
-            {settingsExpanded ? <ExpandLess /> : <ExpandMore />}
+
+            {!collapsed && <ListItemText primary="Settings" />}
+            {!collapsed && (settingsExpanded ? <ExpandLess /> : <ExpandMore />)}
           </ListItemButton>
         </ListItem>
 
-        {/* Settings dropdown */}
         <Collapse in={settingsExpanded} timeout="auto" unmountOnExit>
-          <List sx={{ pl: 4 }}>
-            <ListItemButton component={NavLink} to="/settings">
-              <ListItemIcon sx={{ color: "#1976d2" }}>
+          <List sx={{ pl: collapsed ? 0 : 4 }}>
+            <ListItemButton
+              component={NavLink}
+              to="/settings"
+              sx={{ justifyContent: collapsed ? "center" : "flex-start" }}
+            >
+              <ListItemIcon sx={{ color: "#1976d2", minWidth: collapsed ? 0 : 40 }}>
                 <UserOutlined />
               </ListItemIcon>
-              <ListItemText primary="Profile" />
+              {!collapsed && <ListItemText primary="Profile" />}
             </ListItemButton>
-            <ListItemButton onClick={handleLogout}>
-              <ListItemIcon sx={{ color: "#d32f2f" }}>
+
+            <ListItemButton
+              onClick={handleLogout}
+              sx={{ justifyContent: collapsed ? "center" : "flex-start" }}
+            >
+              <ListItemIcon sx={{ color: "#d32f2f", minWidth: collapsed ? 0 : 40 }}>
                 <LogoutOutlined />
               </ListItemIcon>
-              <ListItemText primary="Logout" />
+              {!collapsed && <ListItemText primary="Logout" />}
             </ListItemButton>
           </List>
         </Collapse>

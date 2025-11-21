@@ -1,1698 +1,318 @@
 {
   "doctors": [
     {
-      "id": 1,
-      "name": "Dr. Asha R",
-      "gender": "Female",
-      "age": 35,
-      "specialization": "Cardiologist",
-      "qualification": "MBBS, MD",
-      "experience": "10 years",
-      "contact": "9876543210",
-      "email": "asha.r@gmail.com",
-      "password": "Asha@2024",
-      "role": "doctor",
-      "address": "Trichy, Tamil Nadu",
-      "availableDays": [
-        "Monday",
-        "Wednesday",
-        "Friday"
-      ],
-      "availableTime": "10:00 AM - 2:00 PM",
-      "status": "Active",
-      "department": "Cardiology",
-      "licenseNumber": "TN12345",
-      "rating": 4.7,
-      "consultationFee": 500,
-      "bio": "Specialist in heart and blood vessel conditions with 10 years of experience."
+      "data": "U2FsdGVkX18DlK3EdAA66l0G4JsJb1376Gj9GwNia50zA4m4GLhE0p6wIk+Ahk1AJXJmEYgyO7MVX9AazSyP1EggaKQji1chALAM4iupZCHGQQpYzLvBLOV0x/xn/FrwrJHH+h9nfzLMy8sP2cn44Z7oQvsUpCtcier1xSkeQOA9xtOhrIkjvkso+IUoGvRJ34vvnxfLUTQrOUFTZU/1s3mh+dgGyu8IiQWaMOI3x4LY3zBjA2Nnz8iPk8xHTnytWSmVM0my6D3Vl6PP1/z+Sl+WqXYdOdauN8CuROkAf141jpoTTrv0OqoFuXh4coyCEZdX9IFylAQ4eoo6bz27FEe7HWLM+exG9XElc/YKpbLbu1z8LiGw79EoYCqfqCjJE8Sc7VohDB+Q4rDSZIrySCSniHDsvtyt4LT1Ia0NlLK5YfhTDFd4eNCdtV2bA1VUtMbEzrjPqB6+JuucC9nfqAMOgG8ihscBaDS+AdZ5dDwbpPxk3PtHcSjMXA8ynKN8GOn+DtqAxN8pij5CUWJhXmNe/RShot2SLP5btsE+8sigT/h84691R4HhblWUGncDwzWuTzHncq8211LwNyr+iVqydS9EuiA0LHEthojJiGaRscoxrJ35UNDwMR+qBNJ0qExniJfQ3js+ZDc8hFk9KWF60MISqhpriLg1+3l96fmdV17O1GdPHde3BdEHLTfaikRcyxMrp0xYliWxp/nEXX0o9DfcM+SCgrVxcQk/eqQ=",
+      "id": 1
     },
     {
       "id": 2,
-      "name": "Dr. Karthik M",
-      "gender": "Male",
-      "age": 40,
-      "specialization": "Orthopedic Surgeon",
-      "qualification": "MBBS, MS (Ortho)",
-      "experience": "12 years",
-      "contact": "9876543211",
-      "email": "karthik.m@gmail.com",
-      "password": "Karthik@2024",
-      "role": "doctor",
-      "address": "Chennai, Tamil Nadu",
-      "availableDays": [
-        "Tuesday",
-        "Thursday"
-      ],
-      "availableTime": "9:00 AM - 1:00 PM",
-      "status": "Active",
-      "department": "Orthopedics",
-      "licenseNumber": "TN12346",
-      "rating": 4.5,
-      "consultationFee": 600,
-      "bio": "Expert in bone and joint surgeries with over 12 years of experience."
+      "data": "U2FsdGVkX1+Uy104P7mxqZD5SyI4NQX+gAKavMPEebr8EqzGh2Fbfl2cKA5zImsAtno7Wtx4W/g/SXMbugTNgxg2bMP1O4qkdtdQ73f+53/WThNtol/f/yN6pOM8EMj1sf7wdhZhm0U0ETrSBQmuATNnt04cpwDkHnSiteUnM9R5N5GZCgnfe8bUXUQn1Se7Evj3JmgC9fcjOD13JY4zln93QsbfyDwvP+08C6TuZ6rfOTUdIPU0Ndug1Dc2zv3iU7p2z8mbj2cGejII21E3CiovWp+JxV81iG8r4rxmlmQdxy18XrpNnYEjsG/CvEEhYS0gMfUvgo/KnWvDt55O+o5Z4Dp0ljHp2T60FumBigKlhC3wRsPlQDKZTzZChEhQCkniVzLN0NfpaqYC3m8t9EBolisvKpDDvgxWM/aYN91Rk6T2sg2UeH6n4O7fctA8aW3c3Ck1qdpM7nBSJ2jcYCqmMfu2dGtdPN3tSTG+y/jJruPg5Toatr4Kp/Ox2Zhqgrm5cyzdE74WwysDc8F86UCIs0JoyMJQrGbs+h9WPgJKdmRaJq479+WkDeLcSXDBOjKj1fWPMPGEMCTJvvd3gIyI7JvN0K1P5rxwVlfCWV69GNHPuU+IU93QoU2hF/m3TOGrPsQydl1li1hzWxQ2jxUqQ/3KxpEJU4g6Y27WRD81p4oRkQ/L7btrsQzaE1JqipWxd12VY/9WjX9orR5wyq93/xiK2EI4MxnwUW+bBIs="
     },
     {
       "id": 3,
-      "name": "Dr. Priya S",
-      "gender": "Female",
-      "age": 32,
-      "specialization": "Dermatologist",
-      "qualification": "MBBS, MD (Dermatology)",
-      "experience": "8 years",
-      "contact": "9876543212",
-      "email": "priya.s@gmail.com",
-      "password": "Priya@2024",
-      "role": "doctor",
-      "address": "Coimbatore, Tamil Nadu",
-      "availableDays": [
-        "Monday",
-        "Thursday",
-        "Saturday"
-      ],
-      "availableTime": "11:00 AM - 3:00 PM",
-      "status": "Active",
-      "department": "Dermatology",
-      "licenseNumber": "TN12347",
-      "rating": 4.6,
-      "consultationFee": 450,
-      "bio": "Dermatology specialist handling skin, hair, and nail-related conditions."
+      "data": "U2FsdGVkX1/93wU64eVtLqsm6WSXj3W6vs8BWL2NJ15S7/+DpWCFitlnVYW5keuQqhEoP8LVPMoJ+3oKK3VmuXPsNj9n0RYq33iOk/a3W8fGxnB7Mc6lOpZ/3QZKBPE2vvkxHL1aiHQKuVG//8IFg/PWOqIpiqGKqmEv1jV9+zMenFvrAAwT4MsXd3ZvtNxH8252P9h8Ky2ssVoAOTsxk31EK3DdIVeRQP6vM8buOfmpsfLTueEHFyMENCdide9v82MK2keaQgKCXZ5rYEOAyfA6XYIuHMpH+lZ9kmbuBBW+t9xoTz8Cf4kzNtzExtu0+EsOpcOe+Tbn48BpiNhk6A7iKiaSb3Qs2tDssg13p+ARPK1t+DZwTM7ksfMGX5mIPlD9HX0dtGRe9ZaLGaukjlBs/QfDDYFEZhGyLrnYcss+qikkXFkgFN6FKBk7f1wuTxrOwKTY7KFoQsMRcgbVjEyckxuIC5pKr5t0f8inA9UPcVG9TkyWsfhi4st3Fe3WM2JwFKWBkXQj/guWnXfjpn3SgCr4dLqHVUS0lvTQpZ4pBaCHbjMXjuNBPfJ5ohc/BqIH1d03SZR81byn9wHoBKhH1OpqqB2ACEOZGraZnjYDyPnbRccGScnH9WPtL2qGkS5mgtpxYuOicATFlELPg54NwMy9f9rXBRhJ8I2ZTrJr+2SvtuTQlA3jZNM+Ownyr/9Mji8OhDGGqtTWmWTJ7q8Da/kNbjAuWyUZiHIHHm8iB1nsjkLNUBgepy6vTmK0"
     },
     {
       "id": 4,
-      "name": "Dr. Suresh K",
-      "gender": "Male",
-      "age": 45,
-      "specialization": "Neurologist",
-      "qualification": "MBBS, DM (Neurology)",
-      "experience": "15 years",
-      "contact": "9876543213",
-      "email": "suresh.k@gmail.com",
-      "password": "Suresh@2024",
-      "role": "doctor",
-      "address": "Madurai, Tamil Nadu",
-      "availableDays": [
-        "Tuesday",
-        "Friday"
-      ],
-      "availableTime": "10:00 AM - 1:00 PM",
-      "status": "Active",
-      "department": "Neurology",
-      "licenseNumber": "TN12348",
-      "rating": 4.8,
-      "consultationFee": 700,
-      "bio": "Experienced neurologist specializing in brain and nervous system disorders."
+      "data": "U2FsdGVkX18pwzIaEOEHp/owDhUwHnxI/bjdGuNJz/qabXCS1zYctCQrgrrCBHy1ItDjj5Je1ao26AEExf5/Fcrc2FWVf5U1QbAKXhmy8XSTlz6cGmGT2YGcqhRytvXIfLttuc9h5J9oFhOijbZk+KmDq3s0V1lV9hnPX6zYMf56biEZatTp8LqLdHf9DtV/6cqtwzUOxrho5GW7qPKV4MLmva4WYw7/t+GTDD1Pfa1mxiv+wcLPIw+Rn+OumxC/poUL73kDzFaIPWygXE7Yd0lfjn21lKYlWTgFK3JfCVyCOcDmCB1J+P4PQJPqBUDo1OfcAvPg8KuGzkpQbLQB8XXUt1l6cJ1kMIB8IXBkgvr/crkLSQABSV/o0+qFtI8qBr7LeHD5TWIakdnmS8Zsh56kOzZGTlELgsK3oxpmRLNaQjQZzlZftJFKh5cCZbXBexDpr49jc74WM2v+4rSo//X7+UGSGHqmmIaLqG2frvddUaBuTTH6DB6WDUthQoq92hwyaSkYGf4x4IKHS6ptuKWmDXnKl+QwCYfCuCU0g6QJeBtugiSZsXRt0SrJYSNCjmHV1kq1xaPXSEW1nXJ1AgpIc8H10XAFk1SNLyt5w+Qkj21MZOoeIQ1xIBMP3ykE74PfVnS6/Ek/DrnJvcTzlhH2kMxV3jsRRywgTZYh0tUqpdgJvec25apjv0mvJHC7BqpZH2ykujxfvBskySpVnv0hy1UmMul2EJGdkDsawuc="
     },
     {
       "id": 5,
-      "name": "Dr. Nithya V",
-      "gender": "Female",
-      "age": 38,
-      "specialization": "Gynecologist",
-      "qualification": "MBBS, MD (OBG)",
-      "experience": "11 years",
-      "contact": "9876543214",
-      "email": "nithya.v@gmail.com",
-      "password": "Nithya@2024",
-      "role": "doctor",
-      "address": "Salem, Tamil Nadu",
-      "availableDays": [
-        "Wednesday",
-        "Saturday"
-      ],
-      "availableTime": "9:30 AM - 1:30 PM",
-      "status": "Active",
-      "department": "Gynecology",
-      "licenseNumber": "TN12349",
-      "rating": 4.9,
-      "consultationFee": 550,
-      "bio": "Specialist in women’s health, pregnancy care, and reproductive health."
+      "data": "U2FsdGVkX1+N1CcOpHBiFnvpxSMddPm5vGAMS9fWtlEy1vlxqmn98FiXPqEWdV/bIuTs/6uzVqNm1aH/PDnBybKy/yZIwj85CsDIWu+Tt9CCCy/aLlORgMxjwd9SU4+N5n7YvX+OotRWI8bT0fjQpf2qjJoBvjQmxOPnNmSo0Yj7cht61RhWit0hzhNNnam3OOmyJVaS/n8yPjz/7v7sLGmc6WuJoBA83No1R6fwYFzjc/1cEfQTIzSTVLO5voj90XMPX5A5TtYiiqPuDpSiBCuRUbNlEg4iMebkelOc4CnMLRgn1noyUkJ6NUUt2ouJXVe3YXuU7iAo453h4R8gRn9yK1XmiA6cSqvRt/FN2PWV2JBGYjXHowzQ2ztw0DdWHKLRoOGU5N+c0gFgiF6O1igKaVON+0if6IhWCOVZV8MN2a8vdcz3k1+G5zkXgvH8Wf0dvonowCdJQz+R5CGUeFarBoOazrrmF75JldEkCO0TYkX3iv20XyIMcGzhPNYMOg9ZuuNlFqD2NCEolYP1+9RX756Pv5sdnk5zRyTrkNSTtssVPlx2aSkaM1rTwa0ckgcsaSpSwbXdBTvNIgAqJF76UGqsr6DwfbM+FvHC1FlJXRzMJQvbwQhzdPLH0tAQX0dLH/2l5DihVx5qUskwamJbIGjKHNxhEO2FXl4O4/eTAhqlIo/Z2v1M7gMlHgIrVf1xZuOCuOXumEFqBn491J62JYMi4YjqvBgxK0/H2Sw="
     },
     {
       "id": 6,
-      "name": "Dr. Aravind T",
-      "gender": "Male",
-      "age": 37,
-      "specialization": "ENT Specialist",
-      "qualification": "MBBS, MS (ENT)",
-      "experience": "9 years",
-      "contact": "9876543215",
-      "email": "aravind.t@gmail.com",
-      "password": "Aravind@2024",
-      "role": "doctor",
-      "address": "Chennai, Tamil Nadu",
-      "availableDays": [
-        "Monday",
-        "Tuesday",
-        "Friday"
-      ],
-      "availableTime": "2:00 PM - 6:00 PM",
-      "status": "Active",
-      "department": "ENT",
-      "licenseNumber": "TN12350",
-      "rating": 4.4,
-      "consultationFee": 400,
-      "bio": "ENT specialist treating ear, nose, and throat-related conditions."
+      "data": "U2FsdGVkX1/bM9Nu27AtIn6KhaqOhzV+up7BxvvMOdjV/PwFCrriSSBN2mBpzENs7a6g9x7kAZZ2Hz4LV8bufN6eY5YBxd5blc1mtfhZbjGIWA07yBtexJyti3Sjs/3uoX/LA1jM/0mtXt5rFbugUj+KOIyPV5/epeMmCG6Qj9WPcIrqD/qn3k5MGL5PE+UBtxkZDmuIjlD5Fu/eDbZ9nH31vvBLWQu5vcZEUbAotn44+s0l24/8EcPoDTLcJ1qdZRiDmmqARUlKTYW2CZLRP3GpbeRkg70edyOe584RoqKjyialyZ+OT/mzXi8RLd55v+CjN0QdJW+P3bKjRWBTr3r0S5X5l/9Oj/bJXtsb88mwM1qjU/UcgX6hVyC4Xj75P4/3vXqASb8zE12Exs3Wg0nj0LCMLpdNUjEvRi1HfgcTI0+OjxTB6BlJHnEeB2RZm+EKuEnCsDND8SsyR2/6b5r9F4I1NMqEKcCBPomIyRRHbpgfH1QL3rFimFLW5grDdiLG3kt3VofHOb7sMZINa0JgqXcWHrbXXnnoCRck4cEMyzKolm4ThsxWl5E/KK4d1l+5gsV9/umhnfQOn6V3SGPo4xEM6LQLHpuXKi9+r516Wh+HnTQg9PXebkIxtYEnlc8B7PLdMPby2AtidKD0olrcylDu8U8kYkj3+T6MnCdOFAD16vsP5iZeuqaMoBJQ38Xd9OxmKY+Ti4b+X3TD5Q=="
     },
     {
       "id": 7,
-      "name": "Dr. Meenakshi L",
-      "gender": "Female",
-      "age": 42,
-      "specialization": "Ophthalmologist",
-      "qualification": "MBBS, MS (Ophthalmology)",
-      "experience": "14 years",
-      "contact": "9876543216",
-      "email": "meenakshi.l@gmail.com",
-      "password": "Meena@2024",
-      "role": "doctor",
-      "address": "Tirunelveli, Tamil Nadu",
-      "availableDays": [
-        "Thursday",
-        "Saturday"
-      ],
-      "availableTime": "10:00 AM - 2:00 PM",
-      "status": "Active",
-      "department": "Ophthalmology",
-      "licenseNumber": "TN12351",
-      "rating": 4.7,
-      "consultationFee": 500,
-      "bio": "Eye specialist with strong experience in vision care and eye surgeries."
+      "data": "U2FsdGVkX1+igXQGMkYyPP27ry0gj0ioTrYx4Eb4nvOwbTdImBeAmuLcRs1zrixIRX1yIxQCFGfWostRqVTb9yrRDJV/FzDI4+RbVPeJcpOR7gS5L/Y99cS/8JRfw4D/o6noFCumgNdIyNjvJNBuA1A987yPVYD4l9N4BKqirLOby7/u93sh0bJ9bnU6E+6LMmrBJY67fLWBc7ZCXmHzHboJk8W6mxjttHy5Uw0nlxgTeqbK1fatdIfc8LP1ZXr9N2B234yFeiS8E49A2yTgcNswSztmPi6YFJV3xies1pLbgQmUElarKjDGjKMiWhseGmwqjZ4GNpVHq8Znjzw/eG6P/A7kX/KuldQuqbi9e72Ca3EXa5CgObcXDssUyUvD/1mmilgU/AdbLup0QjGD5jOK3aNGB25xsSjCJTLTUPyknSwjgmq+MK+GaVKqaH+p8Gqx5eM4vgl3gDLAQXIekrbcXpFNXUwCD//1H50uuWqEx+7dexqWNECebxhE4dQY0hB9glvJCMZylEUzAXG6EARRoDM+n4Z0gFKXyc+T6Biplkhkm57Giykodkr4ajm0BCPIjqHZUdm4Ekcvszg4IzZolwiLcUdhB396F1UT4Xd41UZGY0dKB1pq4kHPmtfhD7J8sul5DHj63aIX8FInB1rFp/GsjUpQAG/moG2c7VoudotwHLD8jEa4OhlaP5W4W4qeHL+jFuXMW/dSM3nJp+7l9EhmpzstvCSZhN9L7WQ0WFgXGesnmy/VKe3wPDYA"
     },
     {
       "id": 8,
-      "name": "Dr. Raghavan P",
-      "gender": "Male",
-      "age": 50,
-      "specialization": "General Physician",
-      "qualification": "MBBS",
-      "experience": "20 years",
-      "contact": "9876543217",
-      "email": "raghavan.p@gmail.com",
-      "password": "Raghavan@2024",
-      "role": "doctor",
-      "address": "Trichy, Tamil Nadu",
-      "availableDays": [
-        "Monday",
-        "Wednesday",
-        "Friday"
-      ],
-      "availableTime": "9:00 AM - 12:00 PM",
-      "status": "Active",
-      "department": "General Medicine",
-      "licenseNumber": "TN12352",
-      "rating": 4.3,
-      "consultationFee": 300,
-      "bio": "General physician with expertise in diagnosing common medical problems."
+      "data": "U2FsdGVkX19KzfIlybTYihaXWeH6WKnqRsrzyY4HBp+FRjx+62t5kz6mM7biuA8ivVnxbiNdhUUg/M1vhEks9hI3fRrXsyV/A5v5qK8z89+WvzPYFgFBy9aosbFy8m00SgEsV2hEzk8GllC5u2LtDVX5Dr7dTCx7aqyUeSCxBMHKrJr2IdfAZW1l7b2zCuDOW2i6FiRRcefsvFXB37E0HRk4hG7ek5jSQICiD5KbjZMDT9jZ9xMnMgAN80ToEfWOR24aDSyUnnZE47umveoeYHDM0CxIHltBHWRzbdRRpzbCoLZxznXKlLLZIyiUEX26NeOqwbHmK9YI/q7XyT8FFjQJX+ahFuJLVF0byCW/k6/dncJe2Fjw5Qfhmib8RmeyBsimBp91Co/BgU2n2R2vr9NfAOJTbGSVWRQHGe5lM0YVvCumfAVuK3HgKU3eNm4YnatO9byVoIRIcf520yjbXBxR8Hq3e7mb+rC22xIRnWbYJN6djKXMgDqJyHjiCvDDcnrtWjPl1Eo+y9ggCo+/kgur7T6b/C3Ebcl2syYE83q5W69ZrlrAv9zccy8sPCA8Cyq1+rdZU/lwnLVRUyzLXz3Ky+gWW0qKWWOhU9kqGXRPdXUBOoCvAMZvuVGLG3MXYopZA/rqQsL7habcfdMPwvjz/YSU/Et2WUGSnjqi+NopKOXxMPBYqNyA271lggCVA3FkFvBO49CWkbX9amcQcm1hpOV/xqw7J3786YxVj8e4vIYUVXwWRb8hClcKfaaH"
     },
     {
       "id": 9,
-      "name": "Dr. Lakshmi D",
-      "gender": "Female",
-      "age": 33,
-      "specialization": "Pediatrician",
-      "qualification": "MBBS, MD (Pediatrics)",
-      "experience": "7 years",
-      "contact": "9876543218",
-      "email": "lakshmi.d@gmail.com",
-      "password": "Lakshmi@2024",
-      "role": "doctor",
-      "address": "Chennai, Tamil Nadu",
-      "availableDays": [
-        "Tuesday",
-        "Thursday",
-        "Saturday"
-      ],
-      "availableTime": "11:00 AM - 4:00 PM",
-      "status": "Active",
-      "department": "Pediatrics",
-      "licenseNumber": "TN12353",
-      "rating": 4.8,
-      "consultationFee": 480,
-      "bio": "Child specialist providing care for infants, toddlers, and adolescents."
+      "data": "U2FsdGVkX198QGSlQ8plP92Ka6eXy5LWa/dR08fECg4e/gg8l2aDue8ALrg5K58uZcORHh3uCx3Yh90WYkgs7CpeIZVlDUV/KiKohMhQRBV1e9Q2qd75Bd5yLVTgOaYbalrKB2SiRzT7D/VGMJWHHdfy3pCGs9wpLbpr1wiP0rSKqpDe0NH67Y9QCCT5wuRvjD4FKP0R9/Z1ydVIeBvXXcCmdoCuD/57uBYMwdYct8Go+huUaQ0s8MXdZn7epkBUZUH6uEsmCQ51JGuin/SZpECEdMpQZ3zs0pmsjMvBau6razSkM2/SB0XfeOQcQ7/8JZSe4B288mwaT3wA9hzkKCa3hJtrt9sAp957VxeviGr0gC+ka6kbry5RKaLra13OtDeLrery8dA47ZdO0zSq8JgRGiFfmbtpg2gnWtCtXZXGitnQLKepAGppqybmoiIybjnRl21/MUwT3Gzq+Lg3FhDX3bOq+frmFiBx13n4PHStOhoG2TRGRu6Xcy5nZBscvR1AD9Xc8f2wg2+J04Q/+44Dp/bsEMN62EVzIPvTkYuPpnxO/dwFnLyez0lMyO5ZvNrdV9e9szyCjqE9U8wATZjHfCtzYYFe/b9ASy4bTXq55Xfl78ICbKNLessLudN8FO6MncpiLlIN1O4+euR5foJKf9dLBnzl6RgobB7RhfdkICNArdF0JxukvYVy0k3c7Jyv6CEkmbsbzuqH0nhIFzU7pRTlzOgjl2FF1NQ3Xsbmr6SeNsfpVlFRgdJZKGeR"
     },
     {
       "id": 10,
-      "name": "Dr. Manoj V",
-      "gender": "Male",
-      "age": 39,
-      "specialization": "Psychiatrist",
-      "qualification": "MBBS, MD (Psychiatry)",
-      "experience": "10 years",
-      "contact": "9876543219",
-      "email": "manoj.v@gmail.com",
-      "password": "Manoj@2024",
-      "role": "doctor",
-      "address": "Chennai, Tamil Nadu",
-      "availableDays": [
-        "Wednesday",
-        "Friday"
-      ],
-      "availableTime": "3:00 PM - 7:00 PM",
-      "status": "Active",
-      "department": "Psychiatry",
-      "licenseNumber": "TN12354",
-      "rating": 4.6,
-      "consultationFee": 650,
-      "bio": "Psychiatrist specializing in mental health, stress, and emotional wellbeing."
+      "data": "U2FsdGVkX1//XKGjzgR40gI32o6tikw9W+XFTHZCP1VdT4asHk5kUWVwMw1w7Hc0TQqEuy0Pds4kZXgjkC2i91lLW7+HiYSGe8+11AXOTxgoIiu6/Xhu7bFZ6vvmnGpXP2S5Cxs/sHJxiM/inyRt8hYGELM53KYCF+ryVTIk+lMlZypUHkbUS/mlw7Wm1/1VBdvYYjhhqM7vS+5AjdsrAqPDtDSxm5frrFtRa3L+eWQpnktjyje/JcDHGy8d1WjSaC6ntefam0InUaPx3geV+EGB7jZIhqYxRU6xJlZlPu0yo4C+Rh0CnhmVzSjQpqNvy3bhg+6jkwqlGmmkPr2fd4vr8JnEBbB9qo7s1poBQ0HwxY5qrKa4jcpvEOAb1CEKdYTFGvfUmnSCKZWuDZo7xn8Ytnr2XzBVGopF7bKxciINHO5hTOxXPC5CwWlXmM3fDiHALbF3z1i+yGpk2PDdZZEnJwxYLY30GMqxQOsM1GWYOnWAbnjUm4UaXh409Efg+YgTMqhYHoX3LZCBk6XWV0Eee4QCV+KOhpwUNSWOdXVrASwpqRCOMsTo/XFHspMAPH+fd/YkZniTDXUOyqSn9SsA6hr8viJNA9wKIpTRCQKcfyBtDPyXNMOGf0TTCFHJVzJLLtc9VchyvvY/jelP0UrTYQznDNMWEElnTytLEjzik99aAdgOV5XvbIZeHlbmGVWd2JBNKDFeQJk0dx92QeizxY07r2kW4UNitzv2D6w="
     }
   ],
   "patients": [
     {
-      "id": 1,
-      "name": "Aarav",
-      "age": 32,
-      "gender": "Male",
-      "bloodGroup": "A+",
-      "contact": "9876543210",
-      "email": "aarav.kumar@gmail.com",
-      "password": "Aarav@2024",
-      "role": "patient",
-      "address": "123 Main St, Trichy",
-      "medicalHistory": "Diabetes",
-      "allergies": "Penicillin",
-      "emergencyContact": "Ananya (Sister) - 9876501234",
-      "status": "Active",
-      "registeredDate": "2025-11-01"
+      "data": "U2FsdGVkX1+mpGM4JQo8gwGWTaqX8UstPpe2+10F/Q61dhiRLP2ZWREInRn0JMY63HXGr1M754cCr5iXzxS6vP+4jwx0kZ8IC6MWOMjTUJy182Al99EkbTpe5OHxZGbqGgtGEScNul6BhbBHJwDIZrziOJGgCPhKIdEppYOE4qk+rufyoLeU+BC2q24naRtAVQ5hhntrkbICg5jYB+ct1rj+4DS92cwtF3BrfUnFC656d1VuC06kBIxfRPjgmpYohcYVTvM5UfFx82GoSDWz6FAUgPSKAEMfepW0gbndxy0TNwYm8dB20UrtSfCSEygkhe15IiKzg1qnTDnNLPuxpk6W276vDn4n1njqU9Mnf49Fg48RZ54KlPftNYlzKz2pSfrKN2KzYkZ9JnyJ2SODhWEt/BNgwCOxAWB+qVHwmNI=",
+      "id": 1
     },
     {
       "id": 2,
-      "name": "Ananya",
-      "age": 27,
-      "gender": "Female",
-      "contact": "9876543211",
-      "email": "ananya.raj@gmail.com",
-      "bloodGroup": "O+",
-      "address": "45 MG Street, Trichy",
-      "registeredDate": "2025-11-02",
-      "medicalHistory": "Asthma",
-      "allergies": "Dust",
-      "emergencyContact": "Aarav (Brother) - 9876543210",
-      "status": "Active"
+      "data": "U2FsdGVkX1/SnUwgHk9TMG5/iNm9+mZQcTta1ki0r/4lWMsjp89NLOKN7x5lI4tJaS7Y+knyLqLPPfnb4BcLpF6rrQXTxocqJfsv/2Zvvg5YE7NhdbTFEAUxtj82L/diPmEwfM9b3XJlZanTHW4QEw+Wy6ywTtAcTyJDM2QGZWuYXUEga4CVMiRAvj0BC8NfP+WtXkQiEBd1i+7U8gQFPCrsBU+T/WvkhreSghcSdQdPAM8fCYCoR6gVsajSpK4u2/KdparMzlQ+9J83UySSYy3SzMJKpO4SIVvGCaH+R1h/LYELrKx02xrLt3PnXu2lFPmWwTh9o/Kwwi4wwh698aGQgh+TNEDWYZGHwlxPJ6Uj92+ZnlXPBof+b/vimAQVGJp6niLd1V/L1qGjk/xM6+4ATcJiO4c5lAUesz+TS9I="
     },
     {
       "id": 3,
-      "name": "Abinav",
-      "age": 30,
-      "gender": "Male",
-      "contact": "9876543210",
-      "email": "abinav@gmail.com",
-      "password": "Abinav@2024",
-      "role": "patient",
-      "address": "Park street, Thanjavur",
-      "registeredDate": "2025-11-12",
-      "status": "Active"
+      "data": "U2FsdGVkX18gW/GUiW5axyXh3vb1XOmPAlCJ/c/g3JKpSgXxaY5wv0GmamSwK9jIEuLbxRBcfrXBq1O793bFak4dO27GbwH9k3BM0LWZRaWdZKJcfuzjjFjIa3ObcbvRQ78b2nUPTnjZ06fU7KF+i66dG8kiZ9M8LtM/uvB1ytqisYYvaW9D3gTWfgQ8RThyLMfpJ4e1olR+sFPrbHw95RPAz32U2e35QmayExUxU9c0jv+PHndeHpj9/YeVESvX7d8GX5XX7f+xbs7ABQsy0lxeNi+HKhO6OKEYgt2MjOCM0H+cNJy1PLb7LYWTpgLQ0fjtwSZG3GjpqIy8h96cJg=="
     },
     {
       "id": 4,
-      "name": "Diya Sharma",
-      "age": 25,
-      "gender": "Female",
-      "contact": "9876543220",
-      "email": "diya.sharma@gmail.com",
-      "password": "Diya@2024",
-      "role": "patient",
-      "address": "12 MG Road, Trichy",
-      "registeredDate": "2025-11-05",
-      "medicalHistory": "Hypertension",
-      "allergies": "None",
-      "emergencyContact": "Rohan (Brother) - 9876543221",
-      "status": "Active"
+      "data": "U2FsdGVkX1+UeBvRmzv0feWrlpSjcz8hSn4xisXHAJHTkSizytBUztDGQHArWMN9+gJ7Ev/KeOqP8INnsVaHFR4k6aRg/LWjAtf0GRSupV1knjC+UC47KjKhH7ZQh7+WlhnhQSGZ/Pkyy52WOgF8m70MHpxhEDA3rqTXv/mYVqjpiK1+lAUsomEJV1QnoZNQ5LDipFpaTlr8m/zveJ3i0wRhIe0FPetIhNOPXHU5hUNbPHl4dW7VxpWQguX/o7rK0sPY4sqFHVPMC9Vqnz9lrIashFfdfAbbrMgt96bnVCEPjP3X5Um1u+HAcpus1ZYtgXONzQ0PtWDmYJuLAjTUTlqrB8U5vLkzKf90f88IW3oHF1Qng3AZ/IQEtkyxxAEVbHobt1vgvdcKsSYT+TNdL8R+KdINsmWzT7A38r0THltBQCLqi3QIOGPKdSPfw9v1HfWa5TpH2tMYlLTM7zjkrg=="
     },
     {
       "id": 5,
-      "name": "Rohan Verma",
-      "age": 29,
-      "gender": "Male",
-      "contact": "9876543230",
-      "email": "rohan.verma@gmail.com",
-      "password": "Rohan@2024",
-      "role": "patient",
-      "address": "56 Park Avenue, Trichy",
-      "registeredDate": "2025-11-06",
-      "medicalHistory": "None",
-      "allergies": "Peanuts",
-      "emergencyContact": "Diya (Sister) - 9876543220",
-      "status": "Active"
+      "data": "U2FsdGVkX18bUfzahPwLNaQbXBMMGcKK6KagKBk+qvYhMnZrbD97ho0WJtJydx2pbVXjf9getdF81Bqh1IkCh4uaAeVKRnuwUtn6gUa7tBpBYgBoeH82xb3NFpFV1SHdttdypL5IwNcR/+A31dtKiSp3jkyFJBKl189FMrIHAps2/A3LwGVNBnapgehezFoXiegWEldSwep9hMra1QL+wbxqmCl7aukuQFor6OATXr7CdYTkd6Z6eCidMpvaQEylTs2mxs8aZ66ru9d7t7RVV0jcus63MLSNxVV5EHkUAymJalxQ0DbJodCj3twoOvZXTMMz+2gJ0s0qkYjKphRhBQ4II6oMeWlbbeObLbaiUWnQulRcNS1FB2VXa1odGmg4qKcJlx0YYsr3C+Qm2tOmZJYwbO3voQqA+pRGSL+X1cKUbTkNQEiDlHA9wUws6IT3fgnPhzGFKAUqDy4XpCCMTw=="
     },
     {
       "id": 6,
-      "name": "Ishaan Rao",
-      "age": 31,
-      "gender": "Male",
-      "contact": "9876543240",
-      "email": "ishaan.rao@gmail.com",
-      "password": "Ishaan@2024",
-      "role": "patient",
-      "address": "78 Lake View, Trichy",
-      "registeredDate": "2025-11-07",
-      "medicalHistory": "Allergic Rhinitis",
-      "allergies": "Pollen",
-      "emergencyContact": "Meera (Sister) - 9876543241",
-      "status": "Active"
+      "data": "U2FsdGVkX1/Gg9ZU/Fc+H8u8wwXh31NqnC8DkCXyjF/6d57NSqUvyZjclu43PWQveVGMiT6T2Yq7/rGHkYJLnA4IQgDfut5G+rXyb89w9C+9nPK2x/tc7BJQ45y11fPNCHTxOjzciAvTFAi9m2FqcDBfNhEmFPpTiMgcAZ99GzBP31knp6UArAm3uN2ZwdrwQNnKmUQ4Y7Te7cRsO5gKf3822HgbqjEm+SsWQC7OVQlBWUSazJrksIuTh36S+WE7P3nyK+CPrYz1qRLgcr5t6wR9V5Nm8hMa+ZRL0b4H2YGnC21Mnl68uwRhmtct8vPQT61qWOGCaxR53Rd3fhhsjlKowY1ppweEz9mte412paXn4iGdx4L0d8nPv0ogcU7w8reB23Y3pEh4M3d0XsRMfWNq3UYjt0sqoCLkIzJgA6NF0z/+5DwKg3k7oQWWvqhKu7g0KV82jQEXhz6wQNisHdf7FR2BHVWq1CuohNSHLZc="
     },
     {
       "id": 7,
-      "name": "Meera Nair",
-      "age": 28,
-      "gender": "Female",
-      "contact": "9876543250",
-      "email": "meera.nair@gmail.com",
-      "password": "Meera@2024",
-      "role": "patient",
-      "address": "90 Central Street, Trichy",
-      "registeredDate": "2025-11-08",
-      "medicalHistory": "Thyroid",
-      "allergies": "Seafood",
-      "emergencyContact": "Ishaan (Brother) - 9876543240",
-      "status": "Active"
+      "data": "U2FsdGVkX1+h3tiv0mZFSTupHGRCO0W2lMsmhO8EMaMZhU90rCNebk1TVmT3BMoOF49dBXpEVe6yKAEgf5pUVRrV/cSh0zCC8dHpVnvXm2MQmUvqEw3hGn/AyRyMPb2q0lBvJIwMXQ2S7bdpaYTVoxeHVBepBMSnANvDdeb9+2jvKcou0828tOpXLT7uyaU2nUJj5Jkx2zZD5cFmiYd2ywEyb49TC13dmj7IoPbsdLk0ZpTHvCkeVXxHNpKuSowq4dP4RNx/G36ZiyT71UXfajrxy49Aj6zGpnm7rC/pJpm+oDs6ritvFyprv3DXEptat8RG46Z52wQVRy1kDE9bQR5RDDz/LSmUCwrc80m6pc48cIhxVN4XXLMGirY3AoDRQJlwrtCMpq4dCVcZKocU1WSdX4K1/4x8vvXN8/Hoc495QxEUukFVQcCQioE/SuDq5aGjaZ28SwpANrko1tudLM/5iflmD6BuELYjfYS/J4I="
     },
     {
       "id": 8,
-      "name": "Kavya Menon",
-      "age": 26,
-      "gender": "Female",
-      "contact": "9876543260",
-      "email": "kavya.menon@gmail.com",
-      "password": "Kavya@2024",
-      "role": "patient",
-      "address": "23 MG Road, Trichy",
-      "registeredDate": "2025-11-09",
-      "medicalHistory": "Migraine",
-      "allergies": "None",
-      "emergencyContact": "Aryan (Brother) - 9876543261",
-      "status": "Active"
+      "data": "U2FsdGVkX19fKgyeVSvtl3LtguR7zTL0qmM7TkBMpOH9mf4Csrn/vWwVA3RtOy3Nz6/Yvt+ig4nkawfj0LoSFjwo4ZTEoAYJkQOzcn2WvYqOzsgQNcNUEr6tTp5aNxHKe/QV4GPuyGYc6nhu6NskXHEo9hQ6vMAxbtptqNTgE5eBJR64zDoRjc+apV3wTv3wAAiJ+szhkypet+15PADN+vzh+KxWoxTzHT1uyiG0Y+d8bLGFvfuvrIN2SZIr1iHOKsPXvJOCoEsU+YueSyn3OwAXajddKU9mjnMf56bMC9QxPS9sgsCQBCttEEK2bWO4JGMSAjmYv3jG53cgprY/szcKgUo9uzh6Wta5VuB7viFBZJdFR7PUTu5uNtgLXRZPZ1dBddblMJxpW8BJp6Qo7J0xnFpgVdVjdeeWeWaw8LyRnGOLwk576gnCQRllggNUA2uVjmDhcMdAjBON0THiuQ=="
     },
     {
       "id": 9,
-      "name": "Aryan Gupta",
-      "age": 33,
-      "gender": "Male",
-      "contact": "9876543270",
-      "email": "aryan.gupta@gmail.com",
-      "password": "Aryan@2024",
-      "role": "patient",
-      "address": "14 Lake Road, Trichy",
-      "registeredDate": "2025-11-10",
-      "medicalHistory": "Heart Disease",
-      "allergies": "Dust",
-      "emergencyContact": "Kavya (Sister) - 9876543260",
-      "status": "Active"
+      "data": "U2FsdGVkX1/+g2PV1GE+GK239t03DhKY4KDC61/bp5Ugrtj7+RsYzso/ru3JjBdvsZDskfT8iatHQrTcu+WTxXvezDU6OhOimsmxND7lSIQk7XtpiTgpWVkKKu7EL+HiuZcBmbGFePaVU3/hUkW+LNZGjCYB/7SPU8iFtVekisZsulIozjZ/Qc/G+rfAEIMNCl/6QfCWCZWIEK5iWFSDZi4EJEixzqFzotNnHuk+z1iG+DX6jnFxEw3Kd4j9mw2un2OJNYXpYluqzA2kNF/kEfKDarOUjMasu5eXXMBeikAejdcqIBttCRpvBwSLOe4OKyPD4YKHVNbMjtwgViT+RC5IRG0DPiDbMySID1uX5DIIwVjEonBpAgsq8EMtlVNa1yohTNcD45/cceT55BlrqvM9i6o2zvK7hQPPset55quq2I8BRwZ2SmfY4uuKicc4OKt4Me4VBJnNCkQVFjgdzw=="
     },
     {
       "id": 10,
-      "name": "Saanvi Iyer",
-      "age": 24,
-      "gender": "Female",
-      "contact": "9876543280",
-      "email": "saanvi.iyer@gmail.com",
-      "password": "Saanvi@2024",
-      "role": "patient",
-      "address": "67 Park Lane, Trichy",
-      "registeredDate": "2025-11-11",
-      "medicalHistory": "None",
-      "allergies": "Gluten",
-      "emergencyContact": "Neil (Brother) - 9876543281",
-      "status": "Active"
+      "data": "U2FsdGVkX18XxC750Ne78lAicPESqFYVkUppNQezYcgHRwQb6xnJB1JY+lPKLjLCthAbl+gmAcm+CLTjzrjgZdUTXQSuLyUOR0iLPKgSBgBzVd76j7iKVS1dasrbBNlAVfDocXOdj0rucf1JHHUpkv+YF+PWxd/M/0I81yTlD9W3QxfN/R4mpWgFpSE3uYkN4A6i2DOkuPpKBWLar5ThoOVMt4C/ii5RQ4XgDPdL7qtSw00sm1iOsOeIhqV/1U27KnP6HRdUgh76+SHK1jDbHxSKQB7VHRhmtddMBHGLMz24ydyL+e4LNr89Bafb1foWGJC2Jww1cWdR/SgAEaKTBaIhWjYdcGg2YrbDv42JoKmPs289vRoM0NjLyzhpooy1FxbsM7K7HQCw/ZCvmKh88xCcni8j7caZ4kSYAEodMDnWweGbvy7YyC45vFFqgDUPgMhW1pP0DGwmRxyPjHhCFA=="
     }
   ],
   "appointments": [
     {
       "id": 101,
-      "patientId": 1,
-      "doctorId": 1,
-      "appointmentDate": "2025-11-10",
-      "appointmentTime": "10:30 AM",
-      "reason": "Routine Checkup",
-      "status": "Completed",
-      "paymentStatus": "Paid",
-      "remarks": "Patient is stable, advised for regular exercise."
+      "data": "U2FsdGVkX1/ltdxtlv7LTaUm28CeW/oKUgC68lfS8sA5FY/2NzmwHBGYnkn7UTg0T22W1yf4V/eN4XYu2ks5PrDoZinT2iTRLGW6S2z4xqxmWBNWvJ7QgVdpR7eTievccFHRdHZmuwa0DkqTjPtvPXdx7Lz8E3ngyD+UW2bD7mkTfrm9Og9BxU5IpqbfUOHEbRPl1Oy4G056S2IJL5YP4u5/moMtmV4d59/O66Uw317YiG9gjNoYj69NVJTE85C/mN8Gj/tFyoQzARZ06urBBOXFqSHMIEvBPCz8ieq3t9XPLtEtOnZ4GsBR5YKk++gIIO9jyg9CRNFET5mTnDp+sg=="
     },
     {
       "id": 102,
-      "patientId": 2,
-      "doctorId": 2,
-      "appointmentDate": "2025-11-11",
-      "appointmentTime": "02:00 PM",
-      "reason": "Asthma follow-up",
-      "status": "Rejected",
-      "paymentStatus": "Pending",
-      "remarks": ""
+      "data": "U2FsdGVkX19RlnnIf2/WzxJVnzNZzWzic5K8LUeaRAao/JImv6zk1xRvRACLBezjghDxBOFRijD2YClfUHJMMJCFviT6gj1R9lf8vvL0Xj8YjsXfuSEKtlimAuC558ch2QEiu87ScptrF7/yJurBZ6KI2V1w96k0mLRdwAK6HvkjnyHCZGpGW/wz6+WOL6punuYde0v2rheNuqPiF5rX7O+nUBuh1NXYW0jW6RkruIfxxgl+zndmYyZ5CqY4Dmj/XVYX/0PqBucDUvYxMtE8Ag=="
     },
     {
-      "patientId": 2,
-      "doctorId": 1,
-      "appointmentDate": "2025-11-20",
-      "appointmentTime": "05:00 PM",
-      "reason": "Asthma",
-      "remarks": "No",
-      "status": "Accepted",
-      "paymentStatus": "Pending",
-      "id": 103
+      "id": 103,
+      "data": "U2FsdGVkX19fIyNBKhmrZXL0AyOFzGbSPDpC4x43XvqWOt0VTrU27oMYucgYHb+CXC+5nDgCbHlMF9Uc/C6sdR4OVglAYuR/gLEwH55j1q2pP7x5BDoIzr44m00AVOSZNRUH2DqvkA7P+FA3A+Ejx3kxBSB7YRywDc9jiUzNanOr3symWv8oE8js7OCu/FKAVZ0epxiOck8KvVVaAqH0uZoQQgzr96JL1jgEjq/diS8XvvgI8PP2cpL/AQ1ilDU8U1iZfbD4ifPTwGeBUtF7xQ=="
     },
     {
-      "patientId": 1,
-      "doctorId": 2,
-      "appointmentDate": "2025-11-19",
-      "appointmentTime": "07:00 PM",
-      "reason": "Penicillin",
-      "remarks": "",
-      "status": "Rejected",
-      "paymentStatus": "Pending",
-      "id": 104
+      "id": 104,
+      "data": "U2FsdGVkX1/RNAIQFAHAn+691odFtYVdR6uL+pr0zRdw7pzRjGnAGu8uQvzc/ZdxNE2u0EiEzV9/bX3VYFZGg4eu18JJP6/olE6w+3crYiA9nNLaO0pODwIOZybVPQv3yQEeikj7bZWyRj+Lv1Qe3oxwEXysT/cNnjazYb5n/YYQZmzRJk4xPedCQc1MX3rWQ09bFuSQTuQvvI8px3jeHojmh0CPtKCEP3uqvTd4AObXPR1fEkZeekKctQfDbj3kHOvgVZfd7slHbgJds8Mh3w=="
     },
     {
-      "patientId": 2,
-      "doctorId": 4,
-      "appointmentDate": "2025-11-27",
-      "appointmentTime": "04:00 PM",
-      "reason": "-",
-      "remarks": "-",
-      "status": "Rejected",
-      "paymentStatus": "Pending",
+      "data": "U2FsdGVkX1+zeuJQghtjAsZio2b7QhWVOxzoSV3Xl1W51VsR6t34QZbZbAwDXo9kppwgjUsYIAhojPAb2Ytuk+sCSDpktZW3iCw4EkjMMqG99Xs1b0V1J0IkEAgMMWIsZt2Y/lDYMWgfgsUwf8uIogvf8lvxP3AUw2NXG1UyEgzEgWabR2lvLfJSDvitk77CgRggI73ZoI+WQhfFJ8swIPFi/wj8OTXcNlHO1J/ZSQage4kDfjmGEMKifaDC31yx0+D+uwh63AQwfc/Txx4KFg==",
       "id": 105
     }
   ],
-  "users": [
-    {
-      "id": 1,
-      "role": "admin",
-      "name": "Admin User",
-      "email": "admin@hospital.com",
-      "password": "admin123"
-    },
-    {
-      "id": 2,
-      "role": "doctor",
-      "name": "Dr. Asha R",
-      "email": "asha.r@gmail.com",
-      "password": "Asha@2024"
-    },
-    {
-      "id": 3,
-      "role": "nurse",
-      "name": "Priya Raj",
-      "email": "priya.raj@gmail.com",
-      "password": "nurse123"
-    },
-    {
-      "id": 4,
-      "role": "pharmacist",
-      "name": "Dr. Sameer",
-      "email": "sameer.pharma@example.com",
-      "password": "pharma123"
-    },
-    {
-      "id": 5,
-      "role": "receptionist",
-      "name": "Riya Sharma",
-      "email": "riya.sharma@example.com",
-      "password": "recep123"
-    },
-    {
-      "id": 6,
-      "role": "patient",
-      "name": "Aarav",
-      "email": "aarav.kumar@gmail.com",
-      "password": "Aarav@2024"
-    },
-    {
-      "name": "Sara",
-      "email": "sara@gmail.com",
-      "password": "sara123",
-      "role": "nurse",
-      "id": 7
-    }
-  ],
-  "news": [
-    {
-      "id": 1,
-      "title": "Free Health Checkup Camp",
-      "content": "Join our annual free health checkup at City Center Hospital this weekend."
-    },
-    {
-      "id": 2,
-      "title": "New Cardiology Wing Opened",
-      "content": "Our hospital inaugurates a new 24x7 cardiology unit with advanced equipment."
-    }
-  ],
+  "users": {
+    "data": "U2FsdGVkX19VduBHVvWTqatAYKWx3NXkgcU9DemgPK5ERjTVDcncXHoZ7R6PwEYuJcAe5b10w3/KWu1IdwEAhhg0HbO7vozNnI0QxMzuZ6RM6Tq9MTocGxZ3bwWyeRDPzXKjSLdjfxmSd42uhfAnDKkI+1BqZk6uwgC59h8RC3QKcCjROpgw44uXmBjY9zjXaLBz/apj3vJ+dAQRPrlZte03twrvWUa1DdMh9uPh2xTv2BWYjIh3JlRvVAvGOyY9cGlMc+d7rNQl1YB+mr6x+VdDoY4hG9zPRZBWPv65SD+eRFuGpF5EAslWSu8BxkBJm2zlKu3um7+Wc5akMbrtAnxc7xXrfT9B2uiqV40y+TD5seWIWcAOAsHd7ll5aobdb/JT4MDD4QSker9vGo46ifnng25adUzb+VFjtAHiHjr1tuHdhRTjI3B87OUfdfjtvmDC0JQn+xgY1Vw+wQyb92Za622woi0B9TPX8U7nmQln5zOq90/8yyMDRi49gNopvbjtM1/N4hPDY7Fp+Oa7QOaSL2WhyOGkr4IchVS33bsMx/BHmIArZdzkUNKw5Vrit/WrSoX8rSSmgbtPm/7fyHmsXSowBBWcHztvT9565QS4/cqawTEzoO7LfWunn3gDXFGg6MZOXfHeMWA5FPN/wPyt52ijJPhTov6dIYE+mx5ySsWvpyjLyKEd1KvF7GaROy5GBoiT8BiBNGGTRqN+2cW54heO06x5WJPbQOUKQU4Fg+r1GnTX/SQtxMiFjzlp++m/2TLXesvbielfFLk8OqYV4DAEE1jd7rHVAk2lKxzD1kN14qI0qdNLom2RvwI+ODaVTpfDYJhZ8ptUYWywSNXxkg+D2vuBxGUzIvhoU5IiNh5E0lDN+5shNEWi2lTU2URTDyfiQEkCVpvJJy85hTqLhPO6jgaxxbEll1LtSpI="
+  },
+  "news": {
+    "data": "U2FsdGVkX1/ZxhK2Y6CcZ5TBXSJeyNc4RvrpivF+TluMdXGvi4GXoXqhloOegEOPogC/1qdoyXLxX1O10ILanQNhd1X/aZxTaQdVdYILhFMsp6WIfiwkymDz0GfDi7fYLg84XNA+B1r/yIHPKAT+4Azf7pgTunPOnEDaqvSfBkyr4I+Uq6O+t+Hzzz1apGdq5AbYDd9c1slvoNa+N5rwxg5JGFU7XcDJ+5lod+GhWtidbpcKYGdcCI3htvm0GR4NfRE1bKZJS3fLmQRQT9ZbVJCsHHh6FyIkgqsPDAVQsjehwXR/ys3beZfcHVojZkPfDa7UpXBPHMrxRqsRku0oZtz7+1Q9LdkSpozFFcw5wjkEAzjYdOKWL4uVRtypu0WJ"
+  },
   "medicines": [
     {
       "id": 1,
-      "medicineName": "Paracetamol",
-      "genericName": "Acetaminophen",
-      "sku": "MED001",
-      "weight": "500mg",
-      "category": "Pain Relief",
-      "manufacturer": "Cipla Ltd",
-      "price": "30",
-      "manufacturerPrice": 18,
-      "stock": 120,
-      "expireDate": "2026-04-12",
-      "status": "Available",
-      "medicineDetails": "Used to reduce fever and relieve mild to moderate pain."
+      "data": "U2FsdGVkX18+i2HwYgk7QjpYB5mG7et190as0txxnzP0Ptil6Rs5Oqr4TKtgQo+ASvnt8l/IXzapZRUQIep3+OIXSWY9wrU7mCs33+3J6YNPLqRYouSvleSCacTInEQhxWG/1bMrAwNyfvC2fXAlqqLikB4cTvC83eLSZ+Lc8TbvXd87dUXEfIeHBBapUaT1xKarrxekjjKSPmObwC4jkuyVon2mEk7V9jhk+pcJ9iaZmhMQvPOWuzoZLd62/DvvQdn9gZrgQknZHlFS0ldI3wEXpMvyeyMjWxqZnhW8UacZnS1EyHPW2wh4j44PUmqESH/WShkqInYeSM5R7odV0hC1Bs8QBKGLtK19DhmpnNWjb4Bc0DMFTEDpnQpgsyjJJxcStuxjuQpAs9AhjMBb2hcld3zGhB07zJ06foswyH1W/Vm3Xp8PjHLRx5MVIgNLd5shJLqnxa5c4+wuWMxYjQ=="
     },
     {
       "id": 2,
-      "medicineName": "Aspirin",
-      "genericName": "Acetylsalicylic Acid",
-      "sku": "MED002",
-      "weight": "75mg",
-      "category": "Pain Relief",
-      "manufacturer": "Sun Pharma",
-      "price": "25",
-      "manufacturerPrice": 10,
-      "stock": 200,
-      "expireDate": "2026-05-20",
-      "status": "Available",
-      "medicineDetails": "Used for pain relief and anti-inflammatory."
+      "data": "U2FsdGVkX1+PZjEz7QXHbJ6BBMFYdAbfBEbcXDdDlRCytmwflrk3KH5fQYE2plh248/GFZlyqtTzFTIkErrRzFTBLXIJzuRI5E6ggLDLslLrmwj6evks3Fe2Fp5vt8kQUpNC7HjJMrUdDJd4J1Wo1pT9h8b/i8EZ520ki5j47SKXVZrnaTgMz5maLaE4dG0GMYfZORZWh6O1g4zWlm5EC0jFVAjK0U34UzpQ+yUMDBsBjCDP4uhk6yro0myA4sqYOJI+mninwybZVcL52WV8k6Wa/+Pjq+jyv2ZVOHbV4QNc7xpAKJjRhumbwuWngXUrMUnV0/p/G+zoZWpqSFL7dMc2gStxiTiH8Hj9KJx+Aldd3mcrYDzgBui2F3PltHhfIw5etnZJiQABXS7duYp6TQhcdMAstuF+Wj/Ufc84opdW4TDT6G0Rnv1fzHsewO8g"
     },
     {
       "id": 3,
-      "medicineName": "Ibuprofen",
-      "genericName": "Ibuprofen",
-      "sku": "MED003",
-      "weight": "200mg",
-      "category": "Pain Relief",
-      "manufacturer": "Dr. Reddy's",
-      "price": 20,
-      "manufacturerPrice": 12,
-      "stock": 150,
-      "expireDate": "2026-06-15",
-      "status": "Available",
-      "medicineDetails": "Non-steroidal anti-inflammatory drug for pain and inflammation."
+      "data": "U2FsdGVkX19zEtD/xhvrs52SSaRZbpz+JBPOrAVu5ZzPTIFS9s8ydBS92FoLoqxy9AEi+bsJ7qfj4y+u8RLZfoyB/iwkvVMYUnSIqOgB6KRAInTiGXE2j4oF7nIcoLGiVkLmuLOEGJ+l7Zdnl3x7XIQTEvzP0Fe8IcE/gOdqNM+n2liyMBh7i4soF4d5PZ7S+m9L1PFCQGyQ9nCZzScSoJ/eZ8peMO/xC63AOBtMLkgNrzSWtm/kmxeysD8IvxklGmjDo+Y61sE+OUHeQJnTmcwCA1ezpcJAC3hvP2k6PkywnW1+80xHqkqDmvaF47ssMa85O6TV13rKesCH6dVLhxWiOh65XuAL4aBDAlb3cqDwS3BcQh1QEa8TIEveEFCKFKltW3Ya0/ojafBdwFN648Nruv1Tn5HmXfcrrM43stRiRitlIdnJHDLvrFyBxs91DJWZWKOO25yQtUh8ysJA+g=="
     },
     {
       "id": 4,
-      "medicineName": "Paracetamol",
-      "genericName": "Acetaminophen",
-      "sku": "MED001",
-      "weight": "500mg",
-      "category": "Pain Relief",
-      "manufacturer": "Cipla Ltd",
-      "price": 25,
-      "manufacturerPrice": 18,
-      "stock": 120,
-      "expireDate": "2026-04-12",
-      "status": "Available",
-      "medicineDetails": "Used to reduce fever and relieve mild to moderate pain."
+      "data": "U2FsdGVkX192y2AMkDoO4sgnOIHUmzbY5dc7PoHMS02ybaVYvCTta+0dYqLK+Tm45P/VCgXc8FtcthLDXwYUFOmhxDOnchSeCFQNstVIBCExOMjlbVKTS7tsObZu0LKiW2l9zhRkaFAjzatQz/XFUSP1LV+Jbll77jN2XiqxsxIZGxV57dmCht1aixVcxFWMnT6iWHqoSyd7ahbd/0eVXVa4IP7zRBF6JbtZiONFartoYD1J/22lgOP8S2F3/Ahmiv0D7KtNSioYTcVYTuByMnFhI173TQ1HTK3bPJpBuL2wr1DEAd+1kSmHZvi9tR4FSdUe24SBAGy+/JY1HMnAmwsxqKgIMzN4CiGno8q9h+3X4bbGPm/2VtJxn4+2LWeaJAqiRJJqZTJcXagX2usgWgBc4eOl/p33/ouYgdv5OVlu5lYAo6fIrAGRz3gCDM8x03s/oz0r5fnO0OphYpGJUw=="
     },
     {
       "id": 5,
-      "medicineName": "Amoxicillin",
-      "genericName": "Amoxicillin Trihydrate",
-      "sku": "MED002",
-      "weight": "250mg",
-      "category": "Antibiotic",
-      "manufacturer": "Sun Pharma",
-      "price": 40,
-      "manufacturerPrice": 30,
-      "stock": 80,
-      "expireDate": "2025-12-31",
-      "status": "Available",
-      "medicineDetails": "Used to treat bacterial infections such as respiratory tract infections."
+      "data": "U2FsdGVkX19zC0sEWRh0hmO/2vlXmd9ve8u/zK5q3sKxXyiSKADybw5Zkac22bSJG/GcRvti49vHQqgnqUTStHQUrcU/DdnJGSYY9vwaUC4FCLgkqMc4HFcekC8yus5BQA2Rz92JWujEtUBgVUY1dYoRtJCrDElMIXDiW3LOUZ6NPHjYlvYhj3phDTHDPvEspjXn9WTKZmW/zSfp2VHxK5VA3NmrKIlkq7DJX1O17hbyQZNL/jU6tBaPECF7qAcoo1ObDDGhaMrS9lRgGJtHuoVZMWaK+s6NOftGTe/LfLtXOcIyzQsIdLr/XB0lzf2es0lMWlkEwdJuNxT4uRlH2/UAdKvUpYbSjVLw9/XGy2Ym0R5lNNgW/HFefiabNVI/qMMbT4YbI9DnDYdDXAdjCswvrXCGGICtJxfLIJaFqZVJUhtAmOEKW2u8T/GMv6Vt1fkIMpCyO3yKDkKhNM0FLOj4GixrHJKg7YqniVIg1ZA="
     },
     {
       "id": 6,
-      "medicineName": "Ibuprofen",
-      "genericName": "Ibuprofen",
-      "sku": "MED003",
-      "weight": "400mg",
-      "category": "Pain Relief",
-      "manufacturer": "Glenmark",
-      "price": 35,
-      "manufacturerPrice": 25,
-      "stock": 100,
-      "expireDate": "2026-06-30",
-      "status": "Available",
-      "medicineDetails": "Used to relieve pain, inflammation, and reduce fever."
+      "data": "U2FsdGVkX19dHJ+Q+EC91gPu9V11JSZmpGJ9HbihHGadGHGJN7qRMTfUr99j5AAuizrHkfHLaQVngqx6/qW6PmKMXK8MPPITGhk9pSW9HpjCA6/GO7nJRbSoS+RsRt8q6R9QoFLaUgUdOR15/TSmqCeuq0xKFP15+LVLXOsAzFB+4rQmhfKjfBWBvAb47UbDsrTda+1XOJO83drADb0UKj/SQaNDoCt9ArhZmfa4f5AE7ZkOX+U/WN/bgUcPxK9El8x+Xh2WebRl9+SOiUeV6fPAEzp04jrNiyeEnJmDCdtdQRKmtXllON4WNrP2KOTlxjfpdoGRxKKHRd1bILpzkwOEs4wn7rpvMsqm7N+uZeq0IgqNicNIvQvzkLfjYKTwOdUrAClhgHBYOsJBBv3iZXX7+/w7TEqHYcmKqDo1szMlR7IcRGmqp3B90hLTppjc"
     },
     {
       "id": 7,
-      "medicineName": "Cetirizine",
-      "genericName": "Cetirizine Hydrochloride",
-      "sku": "MED004",
-      "weight": "10mg",
-      "category": "Antihistamine",
-      "manufacturer": "Dr. Reddy's",
-      "price": 20,
-      "manufacturerPrice": 12,
-      "stock": 150,
-      "expireDate": "2025-09-15",
-      "status": "Available",
-      "medicineDetails": "Used to relieve allergy symptoms such as sneezing, itching, and runny nose."
+      "data": "U2FsdGVkX19oCseZoQxz/d0qlnIFNG9XFAsTqtyWy4ESsmZR6fw2TooOO7Rh0t2wvRHSMTCAIRvmAbEDsVc63gUDwnGCdxfnoioxxfQxGNz2+E1WMHJkoXpIjPkM+jddUV1iUaHgPFL0KodfnUPunY0ZeBx2bWp7w5Si9p0fmfKyAH0DP08jLZ19fyBBnWP2OV3uwlxVWi7ypPIEEotLLA3HT7+e0JsUTqaWJwbY2eQgnQcLaI0ywC4VGEcpucMPCgeRhNbK7LNQvkzIuQS3LAppyR2LLZa8YG07eUGqVSqQBsbS/UaY5QreHT9pO1mPdLM4ZbnHDPvlEUYrUPMdnGvUUKPAbvv8/Wd+k/NpJM62vTSfRAewFnGIbDoL9JyZDG32CWdGwFQzOQ3byZJOO2SsWNRyi1bI5IN6n57jw9XOp1j3wPLFFsC2/mffPzbcqr+/g/K9Na1uW2IGWyc5J1Wx+e6tMhd23LTzhZ540/tbJoUQgyzdzsloH+cUD4h/"
     },
     {
       "id": 8,
-      "medicineName": "Metformin",
-      "genericName": "Metformin Hydrochloride",
-      "sku": "MED005",
-      "weight": "500mg",
-      "category": "Diabetes",
-      "manufacturer": "Sun Pharma",
-      "price": 50,
-      "manufacturerPrice": 35,
-      "stock": 60,
-      "expireDate": "2026-01-31",
-      "status": "Available",
-      "medicineDetails": "Used to control high blood sugar in patients with type 2 diabetes."
+      "data": "U2FsdGVkX1/ik+k22zTqmKBPpOf4R86fTpGNqIS3zX+GvV3InQpZO3Fo2Bo5ON6vkv2vzHQyVte+hxLGXRaxm/goWRUFiSEZTARFgJ32As5OcpDpV8PaT2/nlXIo0iCMR0xc2BEEbZxvBlrpX0Ydizz0+tjPQHUtTU/j4lpuFk87Y2KXXneaHFviZRpLDUyzdTOtCuzsKlZHr6nWbcp1TSxGXhYHP7zqAVy4A9BLJCM5HX1R3+sqH3n2Y2eydghqIEMn5yefztwroIi8xuttD1bN/RoKKa0Xx6rkPp5bQGPMJNO1BfSCAt627Y1bO6+ced3z2DhmSdMZznLWP7MK5gCVt6znmmEQmmb4eEzOYF65ftOU2f7TaBvZB1GGeteVRtRhIcu1iBXjqNKTzWNkQvNODPjSeT+2dGmYsyj/Vxa6saX1i0lT8HIGd41AEyFKiKdmUi0MPxAd/RT6W5pZlD/pNyH4vx+xQ/uoHNF+HMU="
     },
     {
       "id": 9,
-      "medicineName": "Omeprazole",
-      "genericName": "Omeprazole",
-      "sku": "MED006",
-      "weight": "20mg",
-      "category": "Gastrointestinal",
-      "manufacturer": "Cipla Ltd",
-      "price": 45,
-      "manufacturerPrice": 30,
-      "stock": 70,
-      "expireDate": "2026-03-30",
-      "status": "Available",
-      "medicineDetails": "Used to treat gastroesophageal reflux disease (GERD) and ulcers."
+      "data": "U2FsdGVkX19J5NkV+igSZIWQJsJ+fYBliNF3lwXlOeyDh9rWb9iker2U8/1O51+qlUCWNWJtsilzy2XCdqI/gdNTyJwOK3bhy3ildHuk8gxnSf8aS/sdWxJXYKUMIbC+h+JCxMEY8TdrRpgKq/K1qx6ueO4eojqLhuuqUlRdgTRHaNme0PMNwBoU7WIffKRn70jSLStRAyk1JtZKvgz1/2KWNpsnG+AsvZYr5Na2j+RXgBjpvmgpsIXbUZH+G/PD1q6Z5lB8As5D4fXHdjWOwE6joDjwuVsvYza7a7iVWO+v1g5LF9/1yIXVO+nHdOXVnIEoLCIUYTo1dO19QYnDv774hDVTYQCyfHMlUmLRZBpIxmBwHptl5cPXgesoApPh9Mtf8qbZnNTYd6ibxAShERErMwmkwbywjgaxrqoREZALJR37KQ41BAMvc4GSCcp9FaRXRGiOpAcuBLXhc7+5rw=="
     },
     {
       "id": 10,
-      "medicineName": "Aspirin",
-      "genericName": "Acetylsalicylic Acid",
-      "sku": "MED007",
-      "weight": "75mg",
-      "category": "Cardiovascular",
-      "manufacturer": "Bayer",
-      "price": 30,
-      "manufacturerPrice": 20,
-      "stock": 90,
-      "expireDate": "2025-11-30",
-      "status": "Available",
-      "medicineDetails": "Used to prevent blood clots, heart attack, and stroke."
+      "data": "U2FsdGVkX1+OMbLWPlK9c86t5aYRIlDCoXcMrOcJ14oqcSSccO3d+tsFGC6TK2F1X0RpAJeE5DnNz1n/+ZPiMG0fHic6vKQJAily0Rmmr8MmcY/XqD8AIuKN0n+cWEP/34rK+urQQ2hi2I4BO5deKlSYJ2fsu/R/TccTWf5RnkUmjogFhxULcTwabPzNRPQ8II6qtQttmiu7azo7vylgbHt6RsX7QXUCAFWbzv/HW9SRryNU+RJwn1osvmh3mcOrtjPB9/Pz+GpJl2fk3pzlIi2HaMda7dG5T2lx8aoWZAN0XsSvSVWk/OKQ9AJkVjYfZKsHSvrNE0Clv1AY4qwdv+piyVI26z8yNPpGw668T+KOswzmlFY8aB3/kOq3vB4m/kzEF43c9Cs4Y2iBBjMPKhc7geCIB1q3JFbCSkBVRFazvDLgEV+G9yJyZDqDV1g7/jzY+8FEWlsD358fA0LuZQ=="
     },
     {
       "id": 11,
-      "medicineName": "Salbutamol",
-      "genericName": "Salbutamol Sulfate",
-      "sku": "MED008",
-      "weight": "100mcg",
-      "category": "Respiratory",
-      "manufacturer": "Novartis",
-      "price": 60,
-      "manufacturerPrice": 40,
-      "stock": 50,
-      "expireDate": "2026-07-15",
-      "status": "Available",
-      "medicineDetails": "Used to treat asthma and other respiratory conditions by opening airways."
+      "data": "U2FsdGVkX1+f6/bo7opm1dWPqRI+DnR9cLgTBIBobCP6+2mppU4Hvp8cRt0PrljycitOcfRh639sfXg2S8hyQXMT+DbORzryZX5rEJeV6DE5VmK+KyI3HQRrwfB7JaaFQ+PHoo4Gcf67867n24JDqD92DMTDXJzmvfBhfXcjv4IEFB3AVRYHkU1GBsgHAB75tSDvwDhn6qZLaXNjgnlvDCvQmuCMBxQWxyq6Nl2OHH8xJ4Doyf7QtE9EWnoVsnR8Jqn7eMNFZ/IICsAZ0B7rmgOFMI4/WQ3oQCMfMNLRXBbUjwn71/hlwHpORtLMBlpB2ipej8KI9c08Lms51nyxjze334xdkApJm4mJM6E5AzCI6SzdichpomIcqol2zpTK/kukcry2AM00302nlAd8Ktg2v/WI/CQTsu9QtgPIAEhRsOGVjPLgMlIk6fQQDwiVm2Lp0nmOzJgyf5YHtv+OBnk1qUsKXXi0ylfj18XvN+k="
     },
     {
       "id": 12,
-      "medicineName": "Doxycycline",
-      "genericName": "Doxycycline Hyclate",
-      "sku": "MED009",
-      "weight": "100mg",
-      "category": "Antibiotic",
-      "manufacturer": "Alkem Labs",
-      "price": 55,
-      "manufacturerPrice": 40,
-      "stock": 100,
-      "expireDate": "2026-08-20",
-      "status": "Available",
-      "medicineDetails": "Used to treat bacterial infections including acne and respiratory infections."
+      "data": "U2FsdGVkX18ueQ77cxOuLdR3aIFlaFexilfmyi1RlSNHJehUMoTwMOkgPROuizdGgc/IDRn/iwUfgbRZOGRBQxaCwmXoYPHFg/MjKY5b8bQF8oxEHBChV69pCFfn5RQdzdxpfvuAdn2ztOpjXmA0Tk4oRx6eaVtCnaX/3ef8+BBjvmJaqgh6OfCnzmxK7XY99QP7Nsr0NFT6GqkyGZWiEo+kxQOoKh9KucmVfElXD7of2Jqq2MOtl5I6TA//U69Jxp5UEZ1WstEvAeQQWmyYjc1WmPMvEa744MWwVaa/sHF+l0IUHtUvx8vg8fbi0jd9Whjpywu0vsN2xCTugwUT2b9As6VgH2mEs2XWHAqeMySemNBPeuhnU6l8xXV9oYrs/qMS4IdpJ/Z8dsp4MRr7Xy645AEuJFrLJ+BRTTwPTywRIepJBdfvb/1wCBrocdFn8qbS5lLb+8zVNfvOhahOZ20aZm2RL/Qf0wny3aXRibo="
     },
     {
       "id": 13,
-      "medicineName": "Azithromycin",
-      "genericName": "Azithromycin",
-      "sku": "MED010",
-      "weight": "500mg",
-      "category": "Antibiotic",
-      "manufacturer": "Cipla Ltd",
-      "price": 80,
-      "manufacturerPrice": 60,
-      "stock": 70,
-      "expireDate": "2026-10-05",
-      "status": "Available",
-      "medicineDetails": "Used to treat respiratory infections, skin infections, and sexually transmitted diseases."
+      "data": "U2FsdGVkX19Q/scn5V8D9bzCxwdqztIuGylaz/tObpluOuXF2N5F7jpv+K3xE9ISmz6qyBieB4E8llju2q4ratpC3WOyRg1aZ+46EbJgpjZ+5euMGXXqG+jV0f8achoISmJlffr8LGPpzQSuHtiROQSVA2WUnSICFiyWapitehJS0DjhkSLZvolSuMgg5bMk1UFaUt55hC8ABVOASeARmJQKuESHPT24bzrZ836Q0Xl1MRiUhWZDqQzsmFoMXae5KeTOQr2/rSBNaWhxmOJWmRPTRsPL5QkapuSdRF3ZMeZhBqYIqegHG+saGSQnekN9rRCy1gPLUvOrOi7zR5RDGNzbKSlLy23SPHjMcZCbldNkDEFXXV+cBhu8Kq8y/4E1sqlOXkZ4BBJYhu5CStbmTSGqA5YegLikp/rRBVglqIQfwPGP0s7We59SYYVQeqCpAuxIxV09BJj1ejjdgV37Gxi09OdBiO288z6AfMkdMuGApsWXktkjRGeuReg7pWyw"
     },
     {
       "id": 14,
-      "medicineName": "Pantoprazole",
-      "genericName": "Pantoprazole Sodium",
-      "sku": "MED011",
-      "weight": "40mg",
-      "category": "Gastrointestinal",
-      "manufacturer": "Sun Pharma",
-      "price": 35,
-      "manufacturerPrice": 22,
-      "stock": 90,
-      "expireDate": "2026-09-12",
-      "status": "Available",
-      "medicineDetails": "Used to reduce stomach acid and treat GERD."
+      "data": "U2FsdGVkX19/HVjHZpSIzRhHdqZ2iOldvwOLT3UMpv274Pxyg2me6O8RIoS0poRiLBabzQ+DXH3r2WxWIGGlb6k8a3b655xh/hPNLH+6YvNlFeLnHb5CFFTAVj3hHIYgFmvv8kHb1voYFMnWvh3k29zoYNpmMCPQrGVc1o78MSIgjcYvcCK3U/TYjq7lovk7yFM7HehPz/pqPpKmi0eOgyWdefbpAZ/jqvnX/NOhkEzbCKgDmuo0RqhZGTsNGkoM/R2yy0VAwNGCW9WMmrX9sObk0bPxERaQ0TtKh2NnmAqTEUy0Dxps1kvPK+BdHBtpRIotkN/acqi6oglRO/kKg1HaVlJIvCAglUviq/wDUJl3AsyZw0pusKTQIVukiLQPlzcduu63AH5d5dR+kLhM3Ir9u5zIYxI0OHmMxaACrp09+I0tVX7bOZ7ll1YYrYfyiVmoTupPIFNQqZBfDOkCIA=="
     },
     {
       "id": 15,
-      "medicineName": "Atorvastatin",
-      "genericName": "Atorvastatin Calcium",
-      "sku": "MED012",
-      "weight": "10mg",
-      "category": "Cardiovascular",
-      "manufacturer": "Dr. Reddy's",
-      "price": 75,
-      "manufacturerPrice": 55,
-      "stock": 110,
-      "expireDate": "2027-01-01",
-      "status": "Available",
-      "medicineDetails": "Used to reduce cholesterol and prevent heart disease."
+      "data": "U2FsdGVkX19uts4kdmk8A/4x0tFm+/AEsDHEqFiyOFrcoMoPFfl+TIrCPHxtl7M3vRVlDayjmC1XFE2ivnuh6qfCAUFHg6LNVRD1n8zewmepgdGV3XBqIWe2v/ud07+vZw623d0fx59Ujr6dFVoQRlnNkAUM0F6wTU/ANFlS+zZZvqS4i9PLvPUxfv0u2iShKUBFn4+PwWsxziWWXj60VrPTQzgOrCI4EyxgIhgyr6HrwfKXOXK4IKCAOr5lswphea8LCMPGYt42LpATtyLpVNgXsBRNr7yrcEZQFfi1H5Hd+NqwXKqW0Zly74yDz1RnujtOYLe9UCxIY+vFCZu3BeWA9hsB+buBkWCNZeLJ0ChzZ2Fcg4N8yapkuu6sgsMXhqEhWc+Z+8vxppgukJE9V+LXpzMsqUuxL2m9Nd/Drdww2sXdul7i+dVvxViDEpiItSR4sH/pfg4qJbqlcQVyTA=="
     },
     {
       "id": 16,
-      "medicineName": "Losartan",
-      "genericName": "Losartan Potassium",
-      "sku": "MED013",
-      "weight": "50mg",
-      "category": "Cardiovascular",
-      "manufacturer": "Torrent Pharma",
-      "price": 65,
-      "manufacturerPrice": 45,
-      "stock": 95,
-      "expireDate": "2026-12-10",
-      "status": "Available",
-      "medicineDetails": "Used to treat high blood pressure and protect kidneys."
+      "data": "U2FsdGVkX1/6rInosC1SPkdfNqgRgDwbarO/nqrCC4xGgw9Ap0KXy/8hRkvy2cZKY6HapFcnz/I4wSYOlzapauFRc8swFxymiBI0DoG/8vbtA2aNa9fA+crVPtYU+QQmQyPMgxf9EKyKOnlVpyCqpL6W5vP7sBPRAtFqSt8qEJED9WBncCMn0dJ1CVFEwlrZ4X+zMS1KOZtp70GU4BfiUp1fpXnHGdSKjGW5+gTxAEF26E4g2/o70LetGfUI7A/719FeB1s7ZckSlT4KuLDyfQ+V9eoF6l3WfPhytcgFb6aE1l9W1U5CpH+YSIeNmdkxp8leNENBm9RAUwDR+PSLd6K8ZHSQORPI6mpleK2gsyzY7V3Ajt3GlUVE7KCbjKpuxNQu+Vq7lxpL0Bp64gXQ26plJhpfu/MUmAMydOoQ/vGgj/sxYneWceq9PeqTnNZGTXPakq4ZVTI7xIJ67ijH6g=="
     },
     {
       "id": 17,
-      "medicineName": "Amlodipine",
-      "genericName": "Amlodipine Besylate",
-      "sku": "MED014",
-      "weight": "5mg",
-      "category": "Cardiovascular",
-      "manufacturer": "Cipla Ltd",
-      "price": 30,
-      "manufacturerPrice": 18,
-      "stock": 140,
-      "expireDate": "2026-11-22",
-      "status": "Available",
-      "medicineDetails": "Used to treat high blood pressure and chest pain."
+      "data": "U2FsdGVkX18N95XPESs+XdjIDn4IdBgCyOPr3BbczLkWjOk4VFWRca1+Ht3oXz4k1PMVfLiG2nc/lewm10uYGi96D3jlmtrIEkPVcQThKvNDfo6acmez8rWfNfbqcoGP4nm/jbmPChEPYirPqDigZvYS9wgCssNqcFKoRKJdL7v7Tc+s0/wnbZx3DGudqmir3v+p1arZV16ZFkr/YA0BxvWtdX+gpnS4n8W3iprPuRYchpfmwliAspVDYlYdwwVHnnafcwXhnWIoA2jlDVG33A8UrXGyz6tQTSG1Z18/aGxzq8nZ5pjAtMqWpUJ9HpdwCczIejVGPH7wByARWsm/fXdqaq3HKBcpa0AGHP4C49734iy//LE97kEbsaxZFM9/6OVBiPj3lrrdclBCDJzGOeXdfvFYRDVMwwqjwT6RXLIwHdcSKX2DxYmjmhUwFo24uHccuRfIoQ7NNbo1a2HKXQ=="
     },
     {
       "id": 18,
-      "medicineName": "Montelukast",
-      "genericName": "Montelukast Sodium",
-      "sku": "MED015",
-      "weight": "10mg",
-      "category": "Respiratory",
-      "manufacturer": "Sun Pharma",
-      "price": 45,
-      "manufacturerPrice": 30,
-      "stock": 85,
-      "expireDate": "2026-10-30",
-      "status": "Available",
-      "medicineDetails": "Used to prevent asthma and relieve allergy symptoms."
+      "data": "U2FsdGVkX18qEXSpMRRWEytXX7QI5ZBWCYV66Qgl5T0CHxLcURjbC0CeOT6IUyJBvu84eba87M0zDpVIAWi0viexdcgjbAlvFcuTyBsFPTUON6ULN7qTuJ0gKrlt1cTwcVWs3sszwEtuueGEqlYTcVyETaepn13hSNvrE++Kbc/dgd2sSuZ6hJHlUOqp8NXkXnW4fO7dkSckCh/vQDJSTLTl7MKlUIGWaJ1pSzOBs+GlQef8MfBEdLZFQvTFZ6SzfpWX6qnBrzDfdU7+Fug5E6+NAnp3t2w4EBQiIHlZnXTTvtLPCbH23nClPVzY5ofItT2HHhcuib8Ae4NvXXA366p16aiASEd6X7Lhyuw875sfFzXNy2uiMAihm4Bdrc0cvivqbOaXshFKexo4HwgUcFDGrJNKjLIc42AHquSfiz4UbRGv6j9CYz0UhcghOjBRQWLmG9hMYe/tt9JTJCnpcQ=="
     },
     {
       "id": 19,
-      "medicineName": "Ranitidine",
-      "genericName": "Ranitidine Hydrochloride",
-      "sku": "MED016",
-      "weight": "150mg",
-      "category": "Gastrointestinal",
-      "manufacturer": "Glenmark",
-      "price": 28,
-      "manufacturerPrice": 18,
-      "stock": 75,
-      "expireDate": "2026-09-05",
-      "status": "Available",
-      "medicineDetails": "Used to reduce stomach acid and treat ulcers."
+      "data": "U2FsdGVkX18SQt/twd+VbsT1HEDoa47scRx6y8A0+wHwUEw30V8mT8EISD7qG3CyA2pHoR12pHoda5fqXYnWCWry341XbdUfJdxt+jFZvxQcy1iFkr2T7yMD6W/WmjT6sVHQ8lLLZy/D0F2aKT8geHQcCvZWDcMhFpXOnXUXNETwrCq7PSTfI/cfGE5cleHrn6/s82jllnXSsXmG0ZHWesU97a34ovHmaQkh6j/h7yDBzCPc/TTL68A3KacM3xQ+VjEWSFkiXKNKKg0nYSaJADGy3RP39MI7JbR+oC/F/dwogztvu3nZ2KAggxAE3gF9F7oGPyviZnwL1QGFz8nRvZ/CWO2bW53Y62p7ilX3o5Je4de+GUdUWSHZ3U/TWmmMv8PIFo0CjiLwjq/5ulsqlZE7/O/WouGYWTK6dibiQEhW7vXVeTFA+5fR8E/SL3UkZ/j93w41gCGSSS9Cxn5K+w=="
     },
     {
       "id": 20,
-      "medicineName": "Levocetirizine",
-      "genericName": "Levocetirizine Dihydrochloride",
-      "sku": "MED017",
-      "weight": "5mg",
-      "category": "Antihistamine",
-      "manufacturer": "Alkem Labs",
-      "price": 25,
-      "manufacturerPrice": 15,
-      "stock": 120,
-      "expireDate": "2026-06-18",
-      "status": "Available",
-      "medicineDetails": "Used to relieve allergic symptoms and chronic urticaria."
+      "data": "U2FsdGVkX1/yD1QrIjy3uyc7TrLhLYiDEK2SUC6WT/n3iMCkquTOs617xUEpMzhb5prRLmPA4Zz29UHKkwfvzFYFNStfhrEON88JPVyWVE70HNxIFfBp8/2HbQ8mbd2HrZAINCHXjlhbWTvqilJ1VDT5NDUYIh5PEcP7EmZSjJgM0xV1SjcjEJ1OzIKrjKQ90O0tMGhzk6bKT5sJGNnK01yGfUqKN032hakD7v3hAPcu+NzG09uba1aNAuLF8AuKcVdcCx8Pzc3SODlHu93/+HB+kC8Sz5sg6BcXwlC4q5ecgUluaLc3MGFLOa1ZkjzFtEKbk69azv8fJvKR+FIEdddSNd1+fwv+88H757JGtaT0hMxncR/ihn5dGSMIeyqfQ43uy0uaGJ7tLuvWR8jxxkDl1xtmCAEC4P952HgpRpV6LxCMJjs1KEAFRoTggEixf6SFLTqGD9uclXaPEQjlsSIgha9mPN2/3NJ0oNMUby8="
     },
     {
       "id": 21,
-      "medicineName": "Fluconazole",
-      "genericName": "Fluconazole",
-      "sku": "MED018",
-      "weight": "150mg",
-      "category": "Antifungal",
-      "manufacturer": "Cipla Ltd",
-      "price": 50,
-      "manufacturerPrice": 35,
-      "stock": 60,
-      "expireDate": "2026-08-08",
-      "status": "Available",
-      "medicineDetails": "Used to treat fungal infections including yeast infections."
+      "data": "U2FsdGVkX1+5T39YLXzQJuU0FxQcQaB9NC3H6fIyEC5mu9Wf1P4ODZ1qs2Puv3N1Xvt0FEJWisjFxuGg+6Px0Wn/jN7hjcOdZbp/aQeAAy6Zr7Q/g3DPF7fktWuNGgDcSX+JulBx1W0CSFcLAocYIBOuah1gr8VZ3UBJEfLqWTm4qvVYdg1aTbnbF8p3tdTfz/d+rG1742Nnn01KS+rpzZcFiQLEEGp2IOEXmOnjMt3xfKzD1NKuo943HByPctrfgYNCMLPtGGeptCphhd3nE5BreRbG0L880vD/u5AYTCqzxfwjUEDCryjcQ7Q0o+iFH+36LjDNO8iEF5X4oJB+IUH9c/WQa9CEIkz4990jiAGp0rfLQVP6myRyNrAX7vMS+h2hWfrxIQ1jFiv6Di5LoIL3BXZSZ429h6yXFJzDtzE+oadQUJt48jEDBOj8QyUdGIthL/Ij7721ktVX2lm0yw=="
     },
     {
       "id": 22,
-      "medicineName": "Clopidogrel",
-      "genericName": "Clopidogrel Bisulfate",
-      "sku": "MED019",
-      "weight": "75mg",
-      "category": "Cardiovascular",
-      "manufacturer": "Sun Pharma",
-      "price": 85,
-      "manufacturerPrice": 60,
-      "stock": 70,
-      "expireDate": "2026-12-20",
-      "status": "Available",
-      "medicineDetails": "Used to prevent blood clots and reduce risk of stroke."
+      "data": "U2FsdGVkX1/8yX72yYdlyo/UobzOzegegBejhbEl5IV4tNlLjeSq/3FA4ARQMyreSI6E7Jwu8xVXPjukX1aPtE/TR49Ib+opctx1F9SPvBY1BkV8GhdcKjBnI7/NvNsiZkA240ZNbGE/tHR9oR+BX4NHO/UPu1+ypRGOTjD+B9gl4XN4Xt30ays7CX2u1oy2/wdD5VHbV8PRhW0+HUj65chCcNd9JurC6DH1wYi3iadE6l/yccHuXs6NxSdkUdQcwh60RdY68GlcECoyGbm9KwBFCm/9oDQbNfhrWPNfxqN/UlDgcewrZtuBtgWJ+CPZDlRcSICUhp3wk9Oiv28M7hzbI/NA8YoDr2TmUVDUEEKH68mils32GXBxJ65LP2tfm1xus04IM92z1ld+iqdKJfvcOHxdD8i/3b3H2bnWJwyY1Rc2/6J4ZTN0Z3zhxa4FyAGf79lSR8YZv4giKNGyIw=="
     },
     {
       "id": 23,
-      "medicineName": "Hydroxyzine",
-      "genericName": "Hydroxyzine Hydrochloride",
-      "sku": "MED020",
-      "weight": "25mg",
-      "category": "Antihistamine",
-      "manufacturer": "Dr. Reddy's",
-      "price": 40,
-      "manufacturerPrice": 28,
-      "stock": 65,
-      "expireDate": "2026-07-02",
-      "status": "Available",
-      "medicineDetails": "Used to treat anxiety and allergy symptoms."
+      "data": "U2FsdGVkX18wJ382tqCj/T4mermLUJsqDA7pjcY659KwHBZM9nJwW456cXXmw+ETfZ9U3eNMzljiy/A+G/W+G+4PdHe6BBTHuU40QiLpwYcsdqmSW9WC0FJMKU6IbyEq7tFpTHq1LATMbzAnhOssevhhliB514NtrgZMHTuIqDxtPCsU3+6Jh78etGcrSMReyJIRwIN8Fnxn5CTPVG3+Ky4e95t4Is+eBK9dwL/v+7XdCbap1PZAx8jFF4hnT0tJOtRtLlDyZRYtffz/VyqIZEOC5zm5zjvFw5gabLtSC9N75J+yKz2sPZ/gg2WAquGUMK3KaVxcj+dPrl7OYkalX9jDWCD5geQ8Ii6B+RGSsyAnCllFCMCrH8I27SBaD2DUJOXMS4VPqRRavjcR2g5wACe4aBAATyekfXcsTfTS/oCR5e9cnjVXUbndaI9yNJpI1D7Rh6qohvbNWoLRYiraAQ=="
     },
     {
       "id": 24,
-      "medicineName": "Prednisolone",
-      "genericName": "Prednisolone",
-      "sku": "MED021",
-      "weight": "10mg",
-      "category": "Steroid",
-      "manufacturer": "Cipla Ltd",
-      "price": 45,
-      "manufacturerPrice": 32,
-      "stock": 55,
-      "expireDate": "2026-05-28",
-      "status": "Available",
-      "medicineDetails": "Used as an anti-inflammatory and immunosuppressant."
+      "data": "U2FsdGVkX1/Wj0nlFvpViq5BCmIZjzatvBzAr6l7IEy8hgbr5v1ut/+0TvskR6qpJ7giroxlOoAflLA4p7GYJUt9RE+O5r9vkc1Iz1TPE1jr3Bzpv6LaH3391MmlUEbZAJwIFCq0cNdtfXdeBWkPCh+QN4HgEb7h5VCv1Qk73TuwVluUvM2hz9A3MwQufnhL5vmbYYTsCdFpV2x6gmCcP437GJW+L/pQiiKy+eNb3TorJiha6vJx0DzCq9eF2gH+91MfkTzsYRBnR93J93wBVZwMliOuhC2DuEYGMGGuiwTV27+nq+4VwPclpgxEuIQBEG6g1au2ytZKiXgoLeojsamM9VkNNshDk153MmGi/4nWjmEMddPi2gF3fY/iJkjwfcMkoaRmTHbNb8c70F7zC20RdLBagjHZtwnOGCDsTuQhOjqfFdmTWoLin7TVcnvD"
     },
     {
       "id": 25,
-      "medicineName": "Vitamin C",
-      "genericName": "Ascorbic Acid",
-      "sku": "MED022",
-      "weight": "500mg",
-      "category": "Supplement",
-      "manufacturer": "Glenmark",
-      "price": 30,
-      "manufacturerPrice": 15,
-      "stock": 180,
-      "expireDate": "2027-02-10",
-      "status": "Available",
-      "medicineDetails": "Used as antioxidant support and immunity booster."
+      "data": "U2FsdGVkX194B+opYKUgLatzOryhNgCP/JODEWHaqcdEMgwaKcoviZ0TImfaPWJfSM7IocEXrbtKI3Ai4s4FQVX5aOzZvVijTcLvb4sDLAWtftDAYhJGcrvQf6bgvGr7qnmCSNZZUrctBmwyAuU2vl2Hxba+Df9hil85KftdhHKNPkJ5xRROAjkKavvdaKP54jatK9XAiUarS5lceUyhO21b0b1ssHV50OZ0GaFMzum452KhBnLDFA2hbilxmGOk1dGCaU1MNMKK8+Z8o6ms6vp+2JtGyrxpchXUHZ+NKkuW8B8ZF/42UyD0VL/UalGDRXpV0MSS5+OabtmNQXZJXy5EzLssIQDTVjod9DfrVzc6cvDkLByGjrGVOa1yfl0Gt3+JbLSfaekdmBLLOuyra84mwH8bRAkkd84soZEScHRVrOu2vC9ARUVyoaQkED65"
     },
     {
       "id": 26,
-      "medicineName": "Iron Tablets",
-      "genericName": "Ferrous Sulfate",
-      "sku": "MED023",
-      "weight": "65mg",
-      "category": "Supplement",
-      "manufacturer": "Sun Pharma",
-      "price": 55,
-      "manufacturerPrice": 38,
-      "stock": 90,
-      "expireDate": "2026-09-25",
-      "status": "Available",
-      "medicineDetails": "Used to treat or prevent low blood levels of iron."
+      "data": "U2FsdGVkX1/B7Q3df+KhcYd51zJOeHd1nT2QpPQ+7KXnVlsfl6lA6ERKPhk4/8tZ4SaZq0/PzpDSC0paTnOI2QW1bsg7HP8Uvkm32N+7czP1/WX4i7V8jv3ZZ5xBHfD0zpW6A0mL3Ch6QD5Rnu5m9c2J4BYkLV762HIonwcfU2Gzsyvy2zAeg1UmT9UNsswZL/IW2z3G/wWnWrbz7xvtq6V3WnbSD4Z4+hjLh/dAdHxDoWrYTIQz7gzcBdVp8bsT3v7AnTAWppH6X3N7tAVYfviSsKhPTL+69UqX+qXKIriu/4BsL95YNUfRBwJnniXrBVBQski5fHSNCLRLU3dOFtNnsKPov7tlQblnMLARV8kM5DB+ZmUBTNy4pDK/Kp7yKX7guS/1MYNYBucWS5S5G7aFaMpWXHX//b8rb95idlt/Gha3QzwTQU3p7evGeNhy"
     },
     {
       "id": 27,
-      "medicineName": "Calcium D3",
-      "genericName": "Calcium Carbonate + Vitamin D3",
-      "sku": "MED024",
-      "weight": "500mg",
-      "category": "Supplement",
-      "manufacturer": "Dr. Reddy's",
-      "price": 65,
-      "manufacturerPrice": 45,
-      "stock": 85,
-      "expireDate": "2027-01-15",
-      "status": "Available",
-      "medicineDetails": "Used to strengthen bones and prevent calcium deficiency."
+      "data": "U2FsdGVkX19Re6ad+QTJigSAqoqPhhCd5pJQry/XaEPTDIWWFiHJUtt4Coht7peDec/F0XWVaVXnRyX8EdTBF4yAfAAW08x8kraM5lo0NlFpNBVGvPeL/Ls+S8tr5uvRy95ihIv/vWCHMqNpJWYvlveSPRSwsVIZRy1ZAsDbJ7CzwQu4TDCrF78YZM2Q5LhksyuFNacff21tATBncXdZL/5v/LtqbJywmBkttXYKN0HDTIXXXRo1P++UDv+vPMxA6RVK4+abochw9pUWbQMFi5ePNE3FPp+SB6rMiWNOJmwIoYdir8GcDHUO267TGG0KfmF4y1YGTLoi+o03C0EnjMmKWuYmzOPpM6W37yWEtk1WCo1H3yeeG8QunDQakxdTpJvNBveUTpr79MaTMm2BDBzktpf8Nq4xKUwUqhj8Ilq6tOHQfcYmYvdgpk9C76Fnh84E73YpRdbuvm1hWfdLcKBqogw64ISRrr3uz8BH3Hg="
     },
     {
       "id": 28,
-      "medicineName": "Zinc Sulfate",
-      "genericName": "Zinc Sulfate Monohydrate",
-      "sku": "MED025",
-      "weight": "50mg",
-      "category": "Supplement",
-      "manufacturer": "Cipla Ltd",
-      "price": 45,
-      "manufacturerPrice": 28,
-      "stock": 110,
-      "expireDate": "2026-10-18",
-      "status": "Available",
-      "medicineDetails": "Used to boost immunity and treat zinc deficiency."
+      "data": "U2FsdGVkX1/lhtdbJzE1NbQDYiz4RoLyC9Ox9ACJ/kpLOnpjBUVxSLsER7FRWa2QXoIzqmw8iCFkYKkkcEhOlikc6qXI/yA3mOYOXd29DtPxmM+O1Hf4gJjRq4DmUmXOGt+452kcevCJORfU3rOBat/9WhM+0g2n4WW2XjvcZnM28VWjVIF4DjtcYAYOU+YKCUgPlcZdEP/ShXEixj5js18eaoufqBexhfXW/GpAdQBd2d75ssywOg50eXYomCE9p3jDZ+hUW65WMqXxGW0Wi0kdr2VvJ0rXBteXRjWS6WPRv6oCYzps5VrSHlIlhvAoNN6ga3J5I+ymQbpnE9G5XbC8keqXUTxES6nI1QwCAeG0Y9yxsAoy9tWk/uADN/U59TyTaVdH1Tlryn/oLbtp5w+pmXmf5NfIfqvo0ME/6RCd/Fo6y9G5DSkxLyf4FNvE18+b/cgQuVT/x4SoqBLE3Q=="
     },
     {
       "id": 29,
-      "medicineName": "ORS Solution",
-      "genericName": "Oral Rehydration Salts",
-      "sku": "MED026",
-      "weight": "21g",
-      "category": "Hydration",
-      "manufacturer": "Reckitt",
-      "price": 20,
-      "manufacturerPrice": 10,
-      "stock": 200,
-      "expireDate": "2026-08-01",
-      "status": "Available",
-      "medicineDetails": "Used to prevent dehydration caused by diarrhea or heat."
+      "data": "U2FsdGVkX18GFQOnTVxb3b+AeBgqa226h+sv38hDxJ7xS7FRRHjTDzqKInCYCdkG1k5cMP1jEczDi7uEwvXBnbhuSu+V7VoYtzea2gX0R2jtzpe9KpbqhyUEvin5hLSo/+0j6HFDZ9Q/Io7u+Q1e4G1fGeFoxwYmgL1rikXA40l4HA231oybqfTpWdl2tcxgjDEtSjboEubjA5ex/bEJXUkTufaQjIUcyLtSU9BhY5tHvA8z/4M+D2VTvXcV4jn+4CvM4vrEUhyqtNcfXd1P1uZ3Dd5wbm4U0bPNpCZOG6XQbUd908lJE9Ju+jDz4LYv+DwG66RJfCLUovwqmdxcd+ysG7SBS4ErPrfqegM6nvKdG77W0/965eO1fChSRucbMo8s+eB79Nqeucg6gp4PQ5AV31EspWnQGdgf5/R+VltN+olEvT/zCJsgan1lDf88YGK8n4UBLHVupiufDMovxA=="
     },
     {
       "id": 30,
-      "medicineName": "Loperamide",
-      "genericName": "Loperamide Hydrochloride",
-      "sku": "MED027",
-      "weight": "2mg",
-      "category": "Gastrointestinal",
-      "manufacturer": "Alkem Labs",
-      "price": 35,
-      "manufacturerPrice": 22,
-      "stock": 90,
-      "expireDate": "2026-09-12",
-      "status": "Available",
-      "medicineDetails": "Used to control and treat diarrhea."
+      "data": "U2FsdGVkX19K9zxwvXhGJTWR+rUFSRvIlZM8oNgtVDTxfnIr2vsfEjU1xrQWgqesRzk6fG1+i2ZvCMLsbkf35hXkRtFGlQ5qA0fGrTQDReqrKJi3tHF5H2cPtOtknVH7KdCSMKigsw1b+12pg+8yWqlIQThHz0Bt7u8Rhf8AlnK9FBr8KWmE+OyfcVQwcc130RpHXgv5y/7iEkp78QrRSFdlQC8h70ldaFwF5SXddZwboKTF4M+JYkDERYyy8i9ak3rDYTNDEMJsk2pV5sRS0vI8XdzkccPxKKRSaTW04+FBjRPy3NaNVgiQaD8HiSuEamnl4ZcfI8lQ5fxe7MjQWLdBwYIi3hcPeTJcAKIWl/yyL3b8vlOm2EsQoI31/sbN1hGCBYqymftkLJ/dQV4sQxGGYLekpOWbC4TvJ0nC6UEfBG4P4CiAZYUSWhIfEp75"
     },
     {
       "id": 31,
-      "medicineName": "Guaifenesin",
-      "genericName": "Guaifenesin",
-      "sku": "MED028",
-      "weight": "200mg",
-      "category": "Respiratory",
-      "manufacturer": "Sun Pharma",
-      "price": 40,
-      "manufacturerPrice": 25,
-      "stock": 120,
-      "expireDate": "2026-11-04",
-      "status": "Available",
-      "medicineDetails": "Used as an expectorant to relieve chest congestion."
+      "data": "U2FsdGVkX1++fa/ZA/0RVIbbII/FNscACO5zuw/VWCAEtmJghMVMpP1RQae+6KhBQtnJ9Av6Mrcc4nHZMDHGzgNf3wUoUex4Vl3Vv0OtA9octnr2MmOmIJ6rhXvWNMY4fKlstd9DNij/WVApiIOx31BevdLfvLl1UhM250z0Y50tKZBgAPVxlCnykqr8ztFSjgBFBFf/N8KC/DLLdteHL6MsysxET2DJpRtLgpGBvO1WoV4TiGiEq0dwXUNCbFZlux8yBtssPb5wWACv1iVIL6IZIT/ujubVMROeT/6hpxwd02z1rfGNwxtzEFnlPuwxDy1Qqg0sVClNgnlPFYuv2L/HmVcZiy3pRj9rMGrrHU89jnXZLE2GqrXduMW2Mivn6u5zfdAHmLQyPS5h2QYy83f38+jqDhEU22i+ka74S5WzsKWJlSt79veJdtYaZE+W"
     }
   ],
   "nurses": [
     {
       "id": 1,
-      "name": "Priya Raj",
-      "age": 28,
-      "gender": "Female",
-      "email": "priya.raj@gmail.com",
-      "password": "nurse123",
-      "role": "nurse",
-      "phone": "9876543210",
-      "department": "Cardiology",
-      "shift": "Morning (7AM–3PM)",
-      "experience": 4,
-      "status": "Active",
-      "assignedPatients": [
-        1,
-        2
-      ],
-      "dateJoined": "2021-06-15"
+      "data": "U2FsdGVkX19oSs+bODuMeNlwGwmPJ0yX7IMsNRK9sMD14pL85vXgkztEC1oW27DvwaFlYpcN4FXzXOQdXJlNypKFCVDN964/FMq9/7WQaJ3tF7C0Vm0OEHOJzLsjNb02ze1H5wJ0WbutCMmb+mWnQ086IQxJ0XMIS7amqrNa1NwEZlGPCmzqjWyC0OBJIqTE7P/dAZ+YvKgre652dLDZf55HrZMZIDxGeyAOq3l44uLqrNiLLYBRKpGe5TrU2wZORdDyWPCw5KJ1rffLFpiDOv3SXIZ3xlOsUNPAdXj9VKarGL3QAXjKHnnByIPBFpaHW+4uEpRITSKL/vXW+jWsvRVPuCfAPjWYKA0VxtTNVBYDL0KNuF6XU8S15B6gRZfpLeWC2si45iDpzbeYyBq3vg=="
     },
     {
       "id": 2,
-      "name": "Sara",
-      "age": 28,
-      "gender": "Female",
-      "email": "sara@gmail.com",
-      "password": "sara123",
-      "role": "nurse",
-      "phone": "8756904563",
-      "department": "Assist",
-      "shift": "Night",
-      "experience": "",
-      "status": "Active",
-      "assignedPatients": [
-        3,
-        4
-      ],
-      "dateJoined": "2025-11-19"
+      "data": "U2FsdGVkX19TMDEeB3HYLK8QBBEsl75un8UKwbRDUevu0dMCPM7+oMPAUH5YYYDbaFtOMj00urhMnon+ZyU/cE7v5jeY3G0uW+c7Df8V4dawVn+xa9tO3MKQZbuTfXlHM+1qP+srFMzWZYOKArWfqw9y/CWsCwTgeF5YO0OCYHOj42U+bf88I4dtC41c8nEACCpxTpsOszu8WcY8FLsq3r1Vmdr0OuqIqsbshnbTuvku9Fb3rsnsDd6rEwYimyyyR4+LTmsWhqvm/5AAQm/+oPWdKLtwxPVROWDJmY7MKCnkgdHHc3FH/nelo2N32nH9keJaAcHNPGts5Uft8BSqwDEODNsHqKWO0T/QsWIsFhk="
     },
     {
       "id": 3,
-      "name": "Rohit Sharma",
-      "age": 32,
-      "gender": "Male",
-      "email": "rohit.sharma@gmail.com",
-      "password": "nurse123",
-      "role": "nurse",
-      "phone": "9876543212",
-      "department": "Pediatrics",
-      "shift": "Night (11PM–7AM)",
-      "experience": 6,
-      "status": "Active",
-      "assignedPatients": [
-        5,
-        6
-      ],
-      "dateJoined": "2019-03-20"
+      "data": "U2FsdGVkX1/UBZ5nLLqYDx39SdUjFbnPk/XedWb4VlRXMGWTJODKbMZOIMwKu8OkcNBXGhy9nnxvIoDlNAM/HALHm/YQUjb5dqGJZNf038kFNCf0CZEc2FaGXBYAJNIiXXgHi6ezwjLP2V6urbXlB55W0vkb1+Skaxp68rT/XtyML2smz1KvJ6xwOAjqNCVzECcsMQvfy/+OZqiUrD7GL/atpEMokh8zIRiFdc4opJcLOAFnWM6G65e4C4qsixm4Js+o2FUEyac5YtJBSHfm/pvFzBGflMaaxRzmMOa4JDjFW9xBcI096Fb1QJkiV6yRmlJa9IPpEA/MVlvmYT6qbZz6mPfyh+yT3IimWJbbtT/v8xE4T4+U0i+N89JiMSudiX63+kjlhoGbVC0JOywygQ=="
     },
     {
       "id": 4,
-      "name": "Meera Iyer",
-      "age": 27,
-      "gender": "Female",
-      "email": "meera.iyer@gmail.com",
-      "password": "nurse123",
-      "role": "nurse",
-      "phone": "9876543213",
-      "department": "Oncology",
-      "shift": "Morning (7AM–3PM)",
-      "experience": 3,
-      "status": "Active",
-      "assignedPatients": [
-        7,
-        8
-      ],
-      "dateJoined": "2021-11-05"
+      "data": "U2FsdGVkX1/D+0V9/gQLQGhKN4vPQuie/7R4IKur6fSh/4RjHQm23SHJ7suk7eM7oGvSwvt8ULDPqgnM/mBKr+winBSQStvzxaScU9YJ8mJtUkeMsnXS8FftqvRmMRBqwmXbYcJnTXubrWM/CISiidp6wFndeMOA2Dmywq6joTaRoNxBQGmPRd96AunUp+ZugGvpZlyz9s5h5LqvoPMHh+AvbHgDLy8xTgLX0cwn0CFs709r4lGfD4/0sOxqgH8Hyfy2liL7sPx2PMlqPZCwDQ9cC8gx5OlFOY0jOID1mQolI+O1XgFmFGVZ9vXuC2Dp0KxlhEedmCZrRX1Jj6OHR8mCDxjWY16fqRdgX8eGFPlT1xDwz18E+n8yS1qD1M1plpIXLBV7vp4T3PoTcE+GZA=="
     },
     {
       "id": 5,
-      "name": "Arjun Rao",
-      "age": 29,
-      "gender": "Male",
-      "email": "arjun.rao@gmail.com",
-      "password": "nurse123",
-      "role": "nurse",
-      "phone": "9876543214",
-      "department": "Cardiology",
-      "shift": "Evening (3PM–11PM)",
-      "experience": 4,
-      "status": "Active",
-      "assignedPatients": [
-        9,
-        10
-      ],
-      "dateJoined": "2022-02-18"
+      "data": "U2FsdGVkX19EH9J9d3yz0PZAxOzxSFOr6Y2WgrpJjlH4mAk9/dWgIeHUU/VkP85Lf2tz61yosPmlCZvRUNsthVBxVMnb3lVKs2cZ9WPdGGBMvMW9aEhDzI0Eg9ZRL2qTUpA9eBXe0GuOkwEew85YZFmnbZA2aPaMtAlKrustl5peLP96JPOmgOT59Laih9eD4fO11LEmZVR1K7aUsJ8uYaOlEMj5v6anC83gfzqcQsCXMJUK5Au26aCNwS/puKmrSlxMPDnJjIOj4cCq+qgQ2TrNMjQ55WPoDtzR3cfup/0WpWEeDrNkTc06NXsDLh8bdYdATXTNsQyElu85bYTAJTe5DLkWfbg0rycILcxiY8oCFlJgDyWjFeulsmkoXK0juvk98o6Nzv7HB+/e1ruQtg=="
     }
   ],
-  "invoices": [
-    {
-      "id": 1,
-      "patientId": 1,
-      "patientName": "Aarav Kumar",
-      "doctorId": 1,
-      "doctorName": "Dr. Asha R",
-      "appointmentId": 101,
-      "services": [
-        {
-          "service": "Consultation",
-          "amount": 500
-        },
-        {
-          "service": "ECG",
-          "amount": 200
-        }
-      ],
-      "totalAmount": 700,
-      "paidAmount": 700,
-      "balance": 0,
-      "status": "Paid",
-      "invoiceDate": "2025-11-10",
-      "dueDate": "2025-11-10",
-      "paymentMethod": "Cash",
-      "notes": "Routine checkup billing."
-    },
-    {
-      "id": 2,
-      "patientId": 2,
-      "patientName": "Ananya Raj",
-      "doctorId": 2,
-      "doctorName": "Dr. Karthik M",
-      "appointmentId": 102,
-      "services": [
-        {
-          "service": "Consultation",
-          "amount": 600
-        },
-        {
-          "service": "X-Ray",
-          "amount": 300
-        }
-      ],
-      "totalAmount": 900,
-      "paidAmount": 500,
-      "balance": 400,
-      "status": "Partial",
-      "invoiceDate": "2025-11-11",
-      "dueDate": "2025-11-18",
-      "paymentMethod": "Card",
-      "notes": "Follow-up appointment."
-    },
-    {
-      "id": 3,
-      "patientId": 1,
-      "patientName": "Aarav Kumar",
-      "doctorId": 2,
-      "doctorName": "Dr. Karthik M",
-      "appointmentId": null,
-      "services": [
-        {
-          "service": "Consultation",
-          "amount": 600
-        },
-        {
-          "service": "MRI",
-          "amount": 1500
-        }
-      ],
-      "totalAmount": 2100,
-      "paidAmount": 0,
-      "balance": 2100,
-      "status": "Unpaid",
-      "invoiceDate": "2025-11-12",
-      "dueDate": "2025-11-25",
-      "paymentMethod": "",
-      "notes": "Orthopedic consultation."
-    },
-    {
-      "id": 4,
-      "patientId": 2,
-      "patientName": "Ananya Raj",
-      "doctorId": 1,
-      "doctorName": "Dr. Asha R",
-      "appointmentId": null,
-      "services": [
-        {
-          "service": "Consultation",
-          "amount": 500
-        },
-        {
-          "service": "Blood Test",
-          "amount": 150
-        }
-      ],
-      "totalAmount": 650,
-      "paidAmount": 650,
-      "balance": 0,
-      "status": "Paid",
-      "invoiceDate": "2025-11-13",
-      "dueDate": "2025-11-13",
-      "paymentMethod": "Online",
-      "notes": "Cardiology follow-up."
-    }
-  ],
-  "prescriptions": [
-    {
-      "id": 1,
-      "patientId": 1,
-      "doctorId": 1,
-      "medicines": [
-        {
-          "medicineId": 1,
-          "medicineName": "Paracetamol",
-          "dosage": "500mg",
-          "frequency": "Twice daily",
-          "duration": "5 days"
-        }
-      ],
-      "nextFollowUp": "2025-11-15",
-      "notes": "Patient is stable, advised for regular exercise.",
-      "prescribedDate": "2025-11-10",
-      "status": "Active"
-    },
-    {
-      "id": 2,
-      "patientId": 2,
-      "doctorId": 2,
-      "medicines": [
-        {
-          "medicineId": 1,
-          "medicineName": "Paracetamol",
-          "dosage": "500mg",
-          "frequency": "Once daily",
-          "duration": "7 days"
-        }
-      ],
-      "nextFollowUp": "2025-11-18",
-      "notes": "Monitor asthma symptoms closely.",
-      "prescribedDate": "2025-11-11",
-      "status": "Active"
-    },
-    {
-      "id": 3,
-      "patientId": 1,
-      "doctorId": 2,
-      "medicines": [
-        {
-          "medicineId": 2,
-          "medicineName": "Aspirin",
-          "dosage": "75mg",
-          "frequency": "Once daily",
-          "duration": "10 days"
-        },
-        {
-          "medicineId": 3,
-          "medicineName": "Ibuprofen",
-          "dosage": "200mg",
-          "frequency": "Three times daily",
-          "duration": "7 days"
-        }
-      ],
-      "nextFollowUp": "2025-11-20",
-      "notes": "Pain management for joint issues.",
-      "prescribedDate": "2025-11-12",
-      "status": "Active"
-    },
-    {
-      "id": 4,
-      "patientId": 2,
-      "doctorId": 1,
-      "medicines": [
-        {
-          "medicineId": 1,
-          "medicineName": "Paracetamol",
-          "dosage": "500mg",
-          "frequency": "Twice daily",
-          "duration": "3 days"
-        },
-        {
-          "medicineId": 2,
-          "medicineName": "Aspirin",
-          "dosage": "75mg",
-          "frequency": "Once daily",
-          "duration": "5 days"
-        }
-      ],
-      "nextFollowUp": "2025-11-16",
-      "notes": "Fever and mild pain relief.",
-      "prescribedDate": "2025-11-13",
-      "status": "Active"
-    },
-    {
-      "id": 5,
-      "patientId": 3,
-      "doctorId": 1,
-      "medicines": [
-        {
-          "medicineId": 4,
-          "medicineName": "Metformin",
-          "dosage": "500mg",
-          "frequency": "Twice daily",
-          "duration": "30 days"
-        }
-      ],
-      "nextFollowUp": "2025-11-22",
-      "notes": "Diabetic patient, maintain diet and exercise.",
-      "prescribedDate": "2025-11-14",
-      "status": "Active"
-    },
-    {
-      "id": 6,
-      "patientId": 4,
-      "doctorId": 2,
-      "medicines": [
-        {
-          "medicineId": 5,
-          "medicineName": "Salbutamol",
-          "dosage": "2 puffs",
-          "frequency": "As needed",
-          "duration": "14 days"
-        }
-      ],
-      "nextFollowUp": "2025-11-23",
-      "notes": "Asthma patient, keep inhaler handy.",
-      "prescribedDate": "2025-11-15",
-      "status": "Active"
-    },
-    {
-      "id": 7,
-      "patientId": 5,
-      "doctorId": 1,
-      "medicines": [
-        {
-          "medicineId": 6,
-          "medicineName": "Atorvastatin",
-          "dosage": "10mg",
-          "frequency": "Once daily",
-          "duration": "30 days"
-        }
-      ],
-      "nextFollowUp": "2025-11-25",
-      "notes": "Cholesterol management.",
-      "prescribedDate": "2025-11-16",
-      "status": "Active"
-    },
-    {
-      "id": 8,
-      "patientId": 6,
-      "doctorId": 2,
-      "medicines": [
-        {
-          "medicineId": 7,
-          "medicineName": "Cetirizine",
-          "dosage": "10mg",
-          "frequency": "Once daily",
-          "duration": "7 days"
-        }
-      ],
-      "nextFollowUp": "2025-11-26",
-      "notes": "Allergic rhinitis symptoms.",
-      "prescribedDate": "2025-11-17",
-      "status": "Active"
-    },
-    {
-      "id": 9,
-      "patientId": 7,
-      "doctorId": 1,
-      "medicines": [
-        {
-          "medicineId": 8,
-          "medicineName": "Levothyroxine",
-          "dosage": "50mcg",
-          "frequency": "Once daily",
-          "duration": "60 days"
-        }
-      ],
-      "nextFollowUp": "2025-11-28",
-      "notes": "Thyroid management, take on empty stomach.",
-      "prescribedDate": "2025-11-18",
-      "status": "Active"
-    },
-    {
-      "id": 10,
-      "patientId": 8,
-      "doctorId": 2,
-      "medicines": [
-        {
-          "medicineId": 9,
-          "medicineName": "Sumatriptan",
-          "dosage": "50mg",
-          "frequency": "As needed",
-          "duration": "7 days"
-        }
-      ],
-      "nextFollowUp": "2025-11-30",
-      "notes": "Migraine management, avoid triggers.",
-      "prescribedDate": "2025-11-19",
-      "status": "Active"
-    }
-  ],
+  "invoices": {
+    "data": "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"
+  },
+  "prescriptions": {
+    "data": "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"
+  },
   "pharmacists": [
     {
       "id": "1",
-      "name": "Dr. Sameer",
-      "licenseNo": "PH1234",
-      "email": "sameer.pharma@example.com",
-      "password": "pharma123",
-      "role": "pharmacist",
-      "contact": "9876501234",
-      "experience": "5 years"
+      "data": "U2FsdGVkX18Q0CJv8u2hTor8wTbIMcM9qT+pTjXmf0jcbyQelNQNzHl2ggvKgsbytFefJk9goqwlVtNYmN7o68WU/m1tFGr54NnPf3Vr4Oo1DFnn+K8XqYQvo7l2yl+7LJ0EoDMVP49iruxPP0YtmdEcl3I/MuPeyxgCC0yteuYo1pUDHbDcCjox85Tz/d5YQkSbaEIvQt8hB5mbpeqR1jvFX4fuXZ1FMS9MJLGG4vI7ZmVZbC1eODp/QZ/fYSHySZU26CqUmCjzfgztILBDuQ=="
     },
     {
       "id": "2",
-      "name": "Dr. Nisha",
-      "licenseNo": "PH1235",
-      "email": "nisha.pharma@example.com",
-      "contact": "9876501235",
-      "experience": "4 years"
+      "data": "U2FsdGVkX1/mpMDfDy4htbXvuMOBQairNjzJhkv7G2hc0lhEzz6Ya47w/OWRMJQ2MZevhnV+NsKk3rS6ul8EdNrCUOwOUTMqtLkRUUOvoRQJO6rfZC9zQW0UWL6AAcTw58lGpOaK0nwZ4ge7gDo77Rs8KOyvCRn+wvYytkXJMYBRHtQP+H+DFxJjZtBWgG+tjFEMLD5jRXbBAmy/OO1g8w=="
     },
     {
       "id": "3",
-      "name": "Dr. Rajat",
-      "licenseNo": "PH1236",
-      "email": "rajat.pharma@example.com",
-      "contact": "9876501236",
-      "experience": "6 years"
+      "data": "U2FsdGVkX1/IO/THMzA+mEUj5+6CnuDQZCL8EjhJdV11JBv9HlzqtKqsQjYlGakUR9qAJnsHEy9QMa3tpnh489DoLlNLn9hzdhonAZb/pXibL/PW5Pd3l+J0RJ3ZKmPqmYXbQFPOP6GSetAWOsOqyAzQgREzBH/hDQ81h0zgDjQbZZ//1XoSJdPZEipDtPMJs71k8JcAFozFHdCUA7rlFw=="
     },
     {
       "id": "4",
-      "name": "Dr. Ayesha",
-      "licenseNo": "PH1237",
-      "email": "ayesha.pharma@example.com",
-      "contact": "9876501237",
-      "experience": "3 years"
+      "data": "U2FsdGVkX18S+fd0tcJH49ggooluzxoa/mTCQ3RU/E6qGmC3ROTf68YcxGt6+1fsjLKY8S2qHesM+7L7zf+eRkTtSKENAxM+WHi1duFNIWGmY5MxIic3zPg9/lhB700pZZkEWFHr/586WH9WH8Wxo4hc5dyV+qle0d7kRYNeRo63MOpIZrzD05z00hoAQbZLZ9Q0C2hbDWa3xS6su+adsQ=="
     },
     {
       "id": "5",
-      "name": "Dr. Vikram",
-      "licenseNo": "PH1238",
-      "email": "vikram.pharma@example.com",
-      "contact": "9876501238",
-      "experience": "7 years"
+      "data": "U2FsdGVkX1/QtsAooDq4Wn/mH4oyYeoha7ZnCilY276+RbGZu5hc3yhVp/cAIlAMnIiZ7h7SaC0dkGaMuG000G8GjmFgGgOCDoD0B+8jsKuOHUEo9BEzQlJvlmZGt1xdRa556O2/279Wabs+QUKCxrGzQ1W+i+vSlAxzzc1SrkIX47noCSAWSm5z9P162PQYSb2YoJadlCEynbzxq+GdQw=="
     }
   ],
   "receptionists": [
     {
       "id": "1",
-      "name": "Riya Sharma",
-      "shift": "Morning",
-      "email": "riya.sharma@example.com",
-      "password": "recep123",
-      "role": "receptionist",
-      "contact": "9876543210",
-      "status": "Active"
+      "data": "U2FsdGVkX1/uSGInJ6r/ZWL+f3KCO3DhmJemnHFjHusKNlh8eecif1O+Ur9NvQpZ2hp2ORYny8K6rfn2/B9rpg3huY3Mq3tbtTrB87zYTGeZBJmPsGkcBQn0oBDuvvktTZFy9rU5h/gMnF+HYyWZQPLiddJA2fP118bqjmUu7PzSnrQautTEukwL5olvxUNONuLadCt9EuKwjO1xg8O/vlGvDmBFXQk7R+9SuKKFvVsR8DZYOy9QjsEFipZLvfy5"
     },
     {
       "id": "2",
-      "name": "Anjali Mehta",
-      "shift": "Evening",
-      "email": "anjali.mehta@example.com",
-      "contact": "9876543211",
-      "status": "Active"
+      "data": "U2FsdGVkX18b32ap/0uahgt7hBmttUV035vUSCluTDkntTkzPxjwUvpvsWYyQVKNqace0EeiUmLso1A5oLGhYxmt4/Ri0XB2qaJNKsCaef80RJjyehXmukGT+gno4r+cWSJ4SHPS1yLxp5Epc0HX2qfTBjYyOqljAU0YI/dZSoOGBeZO1wQIyInzxIFAiXUe"
     },
     {
       "id": "3",
-      "name": "Priya Singh",
-      "shift": "Night",
-      "email": "priya.singh@example.com",
-      "contact": "9876543212",
-      "status": "Active"
+      "data": "U2FsdGVkX19wVJjZLsdDPRnSzoyY+9Nos3nr+R6LHb99kUO2ANrbhPoLD67mWgUV9gTUI3DCjLF4E3k22fn19u42/Lh4QC4vTin5vgxCSJ0r2hroRMbNxWsUMc+/uk5A6d6KsrN6Zvib0AhUtmjuqobvug3LSnJD7pOwDE7y1+gbal0HwQ74a2dYrTmQLhJy"
     },
     {
       "id": "4",
-      "name": "Neha Gupta",
-      "shift": "Morning",
-      "email": "neha.gupta@example.com",
-      "contact": "9876543213",
-      "status": "Active"
+      "data": "U2FsdGVkX19zHhavr7zRwx2QxUldwbWmui9mxxsHC9a2A+l4Mp0FzDAKADyk5vFUEmdSxZmbsjvGwqCoGLdE2hQ2MfWGMKVfdtLknPKWpWRxf0wgtrBs1M3rDKKVHgiF/wJwoLqy/pmWrr33JHH10XkeI5E6FPqOPhS+P0blS+m6jKJ2MyOmmDLFt9W9w9UI"
     },
     {
       "id": "5",
-      "name": "Shreya Rao",
-      "shift": "Evening",
-      "email": "shreya.rao@example.com",
-      "contact": "9876543214",
-      "status": "Active"
+      "data": "U2FsdGVkX18YNy3wfoU8IStjKLzY70nKOkQCOpVy9Wh52LDzIjvTwoKN30h3Do9BbIqg5F/CBviQJMHjUlYeqID/WST3PJyOZ/tO/ZkQ/ReVs9/AScV49FdYqDwXqx/6eV73TzoLEdX+mg2/hXx35DCDhAHVol9RRbyzcouwR2/m9gcvMnl0P7QqtcGhWv1G"
     }
   ],
-  "communications": [
-    {
-      "id": "1",
-      "patientId": 2,
-      "doctorId": 2,
-      "query": "Dose unclear — morning or night?",
-      "reply": "morning",
-      "status": "replied",
-      "timestamp": "2025-11-16T11:17:46.829Z"
-    },
-    {
-      "patientId": 4,
-      "doctorId": 2,
-      "nurseId": 2,
-      "query": "dsfgdzh",
-      "reply": "ok",
-      "status": "replied",
-      "timestamp": "2025-11-20T01:39:14.242Z",
-      "id": "rayhITa"
-    },
-    {
-      "patientId": 3,
-      "nurseId": 3,
-      "doctorId": 1,
-      "query": "dg",
-      "reply": "",
-      "status": "pending",
-      "timestamp": "2025-11-20T07:45:40.634Z",
-      "id": "EO55CjL"
-    },
-    {
-      "patientId": 4,
-      "nurseId": 3,
-      "doctorId": 2,
-      "query": "hhnb",
-      "reply": "kl",
-      "status": "replied",
-      "timestamp": "2025-11-20T09:03:57.643Z",
-      "id": "WJby7uI"
-    },
-    {
-      "patientId": 1,
-      "nurseId": 3,
-      "doctorId": 1,
-      "query": "fcb",
-      "reply": "",
-      "status": "pending",
-      "timestamp": "2025-11-20T09:13:43.041Z",
-      "id": "zVzextf"
-    },
-    {
-      "patientId": 1,
-      "nurseId": 3,
-      "doctorId": 1,
-      "query": "dxvcc",
-      "reply": "",
-      "status": "pending",
-      "timestamp": "2025-11-20T09:14:03.667Z",
-      "id": "gqzhRTr"
-    }
-  ],
-  "notifications": [
-    {
-      "id": "notif-1",
-      "roles": [
-        "doctor"
-      ],
-      "message": "New query from John Doe",
-      "redirect": "/doctor-communications",
-      "timestamp": "2025-11-19T15:00:00Z",
-      "readBy": [
-        1,
-        2
-      ]
-    },
-    {
-      "roles": [
-        "doctor"
-      ],
-      "userId": 2,
-      "message": "New query from Nurse Sara for patient Diya Sharma",
-      "redirect": "/doctor-communications",
-      "timestamp": "2025-11-20T01:34:47.340Z",
-      "readBy": [
-        2
-      ],
-      "id": "7xYyVce"
-    },
-    {
-      "roles": [
-        "doctor"
-      ],
-      "userId": 1,
-      "message": "New query from Nurse Priya Raj for patient Ananya",
-      "redirect": "/doctor-communications",
-      "timestamp": "2025-11-20T01:38:18.711Z",
-      "readBy": [
-        2
-      ],
-      "id": "7gqRGL1"
-    },
-    {
-      "roles": [
-        "nurse"
-      ],
-      "userId": 2,
-      "message": "Doctor replied to your query for patient Diya Sharma.",
-      "redirect": "/communication",
-      "timestamp": "2025-11-20T01:39:14.272Z",
-      "readBy": [
-        3
-      ],
-      "id": "KVSAqqH"
-    },
-    {
-      "roles": [
-        "doctor"
-      ],
-      "userId": 1,
-      "message": "New query from Nurse Priya Raj for patient Aarav",
-      "redirect": "/doctor-communications",
-      "timestamp": "2025-11-20T02:42:14.637Z",
-      "readBy": [
-        2
-      ],
-      "id": "D1HkpSh"
-    },
-    {
-      "roles": [
-        "doctor"
-      ],
-      "userId": 1,
-      "message": "New query from Nurse Priya Raj for patient Aarav",
-      "redirect": "/doctor-communications",
-      "timestamp": "2025-11-20T07:27:14.723Z",
-      "readBy": [
-        2
-      ],
-      "id": "3iI0U6Z"
-    },
-    {
-      "roles": [
-        "doctor"
-      ],
-      "userId": 2,
-      "message": "New query from Nurse Priya Raj for patient Diya Sharma",
-      "redirect": "/doctor-communications",
-      "timestamp": "2025-11-20T09:01:38.605Z",
-      "readBy": [
-        2
-      ],
-      "id": "OwsAYTn"
-    },
-    {
-      "roles": [
-        "nurse"
-      ],
-      "userId": 3,
-      "message": "Doctor replied to your query for patient Diya Sharma.",
-      "redirect": "/all-communications",
-      "timestamp": "2025-11-20T09:03:57.741Z",
-      "readBy": [
-        3
-      ],
-      "id": "AtjoO5X"
-    },
-    {
-      "roles": [
-        "doctor"
-      ],
-      "userId": 1,
-      "message": "New query from Nurse Priya Raj for patient Aarav",
-      "redirect": "/doctor-communications",
-      "timestamp": "2025-11-20T09:11:19.128Z",
-      "readBy": [
-        2
-      ],
-      "id": "D7LnMwL"
-    },
-    {
-      "roles": [
-        "doctor"
-      ],
-      "userId": 1,
-      "message": "New query from Nurse Priya Raj for patient Aarav",
-      "redirect": "/doctor-communications",
-      "timestamp": "2025-11-20T09:13:43.077Z",
-      "readBy": [
-        2
-      ],
-      "id": "J_sZPzW"
-    },
-    {
-      "roles": [
-        "doctor"
-      ],
-      "userId": 1,
-      "message": "New query from Nurse Priya Raj for patient Aarav",
-      "redirect": "/doctor-communications",
-      "timestamp": "2025-11-20T09:14:03.685Z",
-      "readBy": [
-        2
-      ],
-      "id": "ZsgDazE"
-    }
-  ]
+  "communications": {
+    "data": "U2FsdGVkX1//Af1WILeS0Pn9ur7x4+GIIxLJIPjyF5jRA+d4NsxdbkADQV8rvKsKJ4BgpOz3tVKAKM2GJQbNLlAXq6HOdg2h9gE9tefCxZHdoVItzkSrOsm+K7+vUuChOcmfHaK6dfeWElQhJVhWNDwD5OR8sNdXI41p9UUCbOPawdErsRsp/unJNu9lkEDdHZAqk16TOQBH/9/ma5YtYLcYWA1Ct/YLQf+3VwhY+octtRhoupZz4gU749WaE9S9+6tMmH1BxWO1XBHt4OavvTv2NzHWhK8/8JbzhYa0XAWQ7t9u2pAm7UYIKhHUkD1wB3qBVMP5XgfywS+0qIL9nNoF5A6C6lqb0tB0ia6/bRlreXSARK7mYw+TVDR2BIGSOx4bsQevc7qrqiQNRzt82is7vJsnwg2RsoMETUes+3kCP13d5iyfBw/HaIwdDT1mLcG8UVoWW+HmxcBEmEIbx5Hudwqci4A3l+wB+03EW3TLUsXNYfs7anP1geOFFTt26oNhDw5i4z7Kb4MiscssDEd5+XnrISjOumo5Y7tIRrDjpcnCNjMdgUHgATP34haZX9AfBIK2IHbc6euuJz2V18oNsqdtmMIQDHQTdF+FX0EstPgpMTYiIGoFTIOOugDXOvmNbkP0Cp6CH6Eo+fvXn9BYf+OJx+TVDfNytpFZLQv32seitZvtqmQnyfigGVU8NAQDkvq2jU9Yxm8ct5/5DMI3KaxelVToG469NvqA/osaWTJdbiJTbL68KvkZ3q4Aw/ufq7mx/k7ufOr43Etzmp2SrOcLa8+XiEeORPK0S7g+YRpQJONlHLoV0vi0mENVn1CDPXS0ClLs1mUGJ+oinV/8Y74Sp0ivi3wij2mH+81VuBZ2cUa8N8ClnFTxLaCrvcpOK6oUVUhnI7mTTZFJhQi61Gd6OMVUleDr3axvyFbJuxjuXGgSwOCS2XjvdTDmtzO70vtHrrnxowC2HpgFrB22wgZqqO7YKx3rCsnOyyayV1OnxPZJrhcnsXmeSWcvJdoTnFcHuAFKnx6K8bium7sJlCsRhnFTGhhdaPXH4JTQfnXtQNbuNrSn84jpSASgeOrh8v8Y9ExvJjdFzpRuRe1c3MvZ7UkzQ2aTkrR4NYXsBiQp8AC/JiLbhY+aT5GUM9AkL791YfXA5AVD8dPG8+WvumKNo2eOdL9KS5+G8aZFbxr5D055TV5RNIe9XxrHG+OqrxmY8uEeCle4Ju2tK9+R39Nj2H3t7GENqsSTiEkSGm2OHJfRNTbocNdjA5LrpT6yjN7nCfhQovxjKMt8w3lZFMUCSnDP0PDO3eUaRPgAZy/p/576kcUw6471cOIQ/eavYqogzA37/IWNAS8IqCin4iO5dD8GovbFWZ6cneV/c6YDVY7qZushwzG2zpt8pkqZe+tXF9OCSfYAxcU0Fn5K/ymAZOrj8PO9s8cKBKqpic1ekt3NK86+Xf2NSRUKZ1byDtgaxnvQVACfG3F7ikTsSzgy+zYW2F0WTD8Zx8mZKmhX3QB8R5dhQwqitxuRzv1Tfsv6TAwtnB3RthYK3HCxpXLaQDnuQNJcLIH2mJk="
+  },
+  "notifications": {
+    "data": "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"
+  }
 }

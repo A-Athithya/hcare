@@ -1,13 +1,15 @@
-
 body {
   background-color: #fafbfc;
   font-family: "Inter", "Roboto", sans-serif;
 }
 
+/* ================= SIDEBAR UI ================= */
+
 .sidebar {
-  transition: all 0.3s ease;
+  transition: width 0.25s ease, padding 0.25s ease;
   border-right: 1px solid #e8eaed;
   background: white;
+  will-change: width;
 }
 
 .sidebar-collapsed {
@@ -19,14 +21,23 @@ body {
   width: 240px;
 }
 
+/* Links spacing smooth */
 .sidebar a {
-  display: block;
-  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
   color: #3c4043;
   text-decoration: none;
-  border-radius: 8px;
-  transition: background 0.2s ease;
-  margin: 4px 8px;
+  border-radius: 10px;
+  transition: background 0.15s ease, padding 0.2s ease;
+  margin: 3px 8px;
+  white-space: nowrap;
+}
+
+.sidebar-collapsed a {
+  justify-content: center;
+  padding: 12px 0;
 }
 
 .sidebar a:hover {
@@ -38,6 +49,26 @@ body {
   color: #1a73e8;
   font-weight: 500;
 }
+
+/* ✅ Stop Jumping Effect */
+.MuiDrawer-paper {
+  transition: width 0.25s ease !important;
+  will-change: width;
+  contain: layout paint;
+}
+
+/* Fix icon bottom jump */
+.MuiListItem-root {
+  margin-bottom: 4px;
+}
+
+/* Icon alignment smooth */
+.MuiListItemIcon-root {
+  min-width: 40px;
+  transition: margin 0.25s ease;
+}
+
+/* ================= NAVBAR ================= */
 
 .navbar {
   background-color: #ffffff;
@@ -63,13 +94,16 @@ body {
   box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.1);
 }
 
+/* ================= MAIN LAYOUT ================= */
+
 .layout-main {
   padding: 32px;
   min-height: calc(100vh - 70px);
   background: #fafbfc;
 }
 
-/* Enhanced dropdown styles */
+/* ================= DROPDOWN ================= */
+
 .dropdown-menu {
   border-radius: 12px;
   padding: 8px 0;
@@ -87,10 +121,7 @@ body {
   background-color: #f8f9fa;
 }
 
-/* MUI overrides for consistency */
-.MuiDrawer-paper {
-  border-right: 1px solid #e8eaed;
-}
+/* ================= MUI OVERRIDES ================= */
 
 .MuiAppBar-root {
   background: white;
