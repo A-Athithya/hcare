@@ -17,10 +17,15 @@ export default function PatientFormPage() {
     const load = async () => {
       setLoading(true);
       try {
-        const data = await getData(`/patients/${id}`);
-        setInitial(data);
+        // ❗ Direct single id call vendam - full list fetch panrom
+        const list = await getData("/patients");
+
+        // ✅ Id match aagura patient-ah find panrom
+        const patient = list.find(p => String(p.id) === String(id));
+
+        setInitial(patient || {});
       } catch (err) {
-        message.error("Failed to load patient");
+        message.error("Patient details load aagala");
       }
       setLoading(false);
     };
@@ -43,7 +48,7 @@ export default function PatientFormPage() {
           maxWidth: 1200,
           margin: "0 auto",
           marginTop: 10,
-          maxHeight: "98vh",        // 🔥 Increased height slightly
+          maxHeight: "98vh",
           overflowY: "auto",
           overflowX: "hidden",
           paddingBottom: 10,
@@ -58,11 +63,14 @@ export default function PatientFormPage() {
           <>
             <Row>
               <Col span={24}>
-                <PatientForm initial={initial} onSaved={handleSaved} ref={formRef} />
+                <PatientForm
+                  initial={initial}
+                  onSaved={handleSaved}
+                  ref={formRef}
+                />
               </Col>
             </Row>
 
-            {/* ⭐ These buttons are OUTSIDE the form now */}
             <div
               style={{
                 marginTop: 25,
@@ -73,7 +81,9 @@ export default function PatientFormPage() {
               <Button onClick={() => navigate("/patients")}>Back to List</Button>
 
               <div style={{ display: "flex", gap: 10 }}>
-                <Button onClick={() => formRef.current?.resetForm()}>Reset</Button>
+                <Button onClick={() => formRef.current?.resetForm()}>
+                  Reset
+                </Button>
 
                 <Button
                   type="primary"

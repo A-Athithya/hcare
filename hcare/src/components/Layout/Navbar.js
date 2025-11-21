@@ -17,7 +17,6 @@ import {
 } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import MenuIcon from "@mui/icons-material/Menu";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
@@ -33,7 +32,6 @@ export default function Navbar() {
   const [notifications, setNotifications] = useState([]);
   const [notifAnchorEl, setNotifAnchorEl] = useState(null);
 
-  // Fetch pending appointments
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
@@ -49,7 +47,6 @@ export default function Navbar() {
     return () => clearInterval(interval);
   }, []);
 
-  // Fetch unread notifications
   useEffect(() => {
     const fetchNotifications = async () => {
       if (!user) return;
@@ -94,8 +91,6 @@ export default function Navbar() {
     navigate("/login");
   };
 
-  const toggleSidebar = () => dispatch({ type: "ui/toggleSidebar" });
-
   return (
     <>
       <AppBar
@@ -106,16 +101,33 @@ export default function Navbar() {
           boxShadow: "0 6px 18px rgba(0,0,0,0.2)",
         }}
       >
-        <Toolbar sx={{ display: "flex", justifyContent: "space-between", minHeight: "72px", px: 2 }}>
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            minHeight: "72px",
+            px: 2,
+          }}
+        >
           {/* LEFT */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <IconButton color="inherit" onClick={toggleSidebar}>
-              <MenuIcon />
-            </IconButton>
+            <img
+              src="/logo192.png"
+              alt="logo"
+              width="38"
+              height="38"
+              style={{ borderRadius: "50%" }}
+            />
 
-            <img src="/logo192.png" alt="logo" width="38" height="38" style={{ borderRadius: "50%" }} />
-
-            <Link to="/dashboard" style={{ color: "white", textDecoration: "none", fontWeight: 700, fontSize: 18 }}>
+            <Link
+              to="/dashboard"
+              style={{
+                color: "white",
+                textDecoration: "none",
+                fontWeight: 700,
+                fontSize: 18,
+              }}
+            >
               HealthTool
             </Link>
           </Box>
@@ -134,7 +146,10 @@ export default function Navbar() {
                 borderRadius: 5,
                 background: "linear-gradient(90deg,#42a5f5,#1e88e5)",
                 boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
-                "&:hover": { background: "linear-gradient(90deg,#64b5f6,#2196f3)", boxShadow: "0 6px 20px rgba(0,0,0,0.3)" },
+                "&:hover": {
+                  background: "linear-gradient(90deg,#64b5f6,#2196f3)",
+                  boxShadow: "0 6px 20px rgba(0,0,0,0.3)",
+                },
               }}
             >
               Book Appointment
@@ -143,18 +158,16 @@ export default function Navbar() {
 
           {/* RIGHT */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <IconButton color="inherit" onClick={() => navigate("/patient/add")} sx={{ borderRadius: 2, "&:hover": { bgcolor: "rgba(255,255,255,0.25)" } }}>
+            <IconButton color="inherit" onClick={() => navigate("/patient/add")}>
               <PersonAddAlt1Icon />
             </IconButton>
 
-            {/* Notification Bell */}
-            <IconButton color="inherit" onClick={handleNotifOpen} sx={{ borderRadius: 2, "&:hover": { bgcolor: "rgba(255,255,255,0.25)" } }}>
+            <IconButton color="inherit" onClick={handleNotifOpen}>
               <Badge badgeContent={notifications.length} color="error">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
 
-            {/* Popper Notifications */}
             <Popper open={Boolean(notifAnchorEl)} anchorEl={notifAnchorEl} placement="bottom-end" sx={{ zIndex: 1301 }}>
               <ClickAwayListener onClickAway={handleNotifClose}>
                 <Paper sx={{ width: 360, maxHeight: 400, overflowY: "auto", borderRadius: 2, boxShadow: 3 }}>
@@ -164,7 +177,9 @@ export default function Navbar() {
                     notifications.map((n) => (
                       <Box key={n.id} sx={{ p: 1.5, borderBottom: "1px solid #eee", cursor: "pointer" }} onClick={handleNotificationClick(n)}>
                         <Typography sx={{ fontWeight: 600, fontSize: 14 }}>{n.message}</Typography>
-                        <Typography sx={{ fontSize: 12, color: "gray" }}>{new Date(n.timestamp).toLocaleString()}</Typography>
+                        <Typography sx={{ fontSize: 12, color: "gray" }}>
+                          {new Date(n.timestamp).toLocaleString()}
+                        </Typography>
                       </Box>
                     ))
                   ) : (
@@ -174,14 +189,19 @@ export default function Navbar() {
               </ClickAwayListener>
             </Popper>
 
-            {/* USER DROPDOWN */}
             {user && (
               <div className="dropdown">
                 <Button
                   variant="contained"
                   startIcon={<AccountCircle />}
                   data-bs-toggle="dropdown"
-                  sx={{ textTransform: "none", borderRadius: 3, bgcolor: "#fff", color: "#1976d2", "&:hover": { bgcolor: "#f0f0f0" } }}
+                  sx={{
+                    textTransform: "none",
+                    borderRadius: 3,
+                    bgcolor: "#fff",
+                    color: "#1976d2",
+                    "&:hover": { bgcolor: "#f0f0f0" },
+                  }}
                 >
                   {user.name}
                 </Button>
@@ -195,6 +215,7 @@ export default function Navbar() {
           </Box>
         </Toolbar>
       </AppBar>
+
       <Box sx={{ mt: "75px" }} />
     </>
   );
