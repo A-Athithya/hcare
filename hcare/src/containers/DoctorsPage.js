@@ -67,7 +67,6 @@ export default function DoctorsPage() {
 
   const [expandedDoctor, setExpandedDoctor] = useState(null);
 
-  // Filters
   const [search, setSearch] = useState("");
   const [deptFilter, setDeptFilter] = useState(null);
 
@@ -98,7 +97,6 @@ export default function DoctorsPage() {
   const submitBooking = async (vals) => {
     try {
       setSubmitting(true);
-
       const payload = {
         patientId: vals.patientId,
         doctorId: selectedDoctor.id,
@@ -112,7 +110,6 @@ export default function DoctorsPage() {
 
       const res = await postData("/appointments", payload);
       setAppointments((p) => [res, ...p]);
-
       message.success("Appointment booked successfully");
       setDrawerOpen(false);
     } catch {
@@ -126,11 +123,9 @@ export default function DoctorsPage() {
     try {
       const updated = { ...appt, status };
       await putData(`/appointments/${appt.id}`, updated);
-
       setAppointments((prev) =>
         prev.map((a) => (a.id === appt.id ? updated : a))
       );
-
       message.success(`Appointment ${status}`);
     } catch {
       message.error("Failed to update");
@@ -145,7 +140,6 @@ export default function DoctorsPage() {
       (a) => a.doctorId === docId && a.status === "Pending"
     );
 
-  // LOADING PAGE
   if (loading)
     return (
       <div style={{ padding: 40, textAlign: "center" }}>
@@ -154,33 +148,44 @@ export default function DoctorsPage() {
     );
 
   return (
-      <Box sx={{ padding: 0, pt: 1, background: "#fafbfc", minHeight: "100vh" }}>
-        <Typography variant="h5" sx={{ mb: 2, mt: 0 }}>
+    <Box sx={{ padding: 0, pt: 1, background: "#fafbfc", minHeight: "100vh" }}>
+
+      {/* ✅ TITLE + FILTER BAR PARALLEL */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 3,
+        }}
+      >
+        <Typography variant="h5" sx={{ m: 0 }}>
           Doctors Directory
         </Typography>
-      {/* FILTER BAR */}
-      <Box sx={{ display: "flex", gap: 2, mb: 3 }}>
-        <Input
-          placeholder="Search doctor..."
-          style={{ width: 240 }}
-          onChange={(e) => setSearch(e.target.value.toLowerCase())}
-        />
 
-        <Select
-          placeholder="Filter by Department"
-          allowClear
-          style={{ width: 200 }}
-          onChange={(v) => setDeptFilter(v)}
-        >
-          {[...new Set(doctors.map((d) => d.department))].map((dep) => (
-            <Select.Option key={dep} value={dep}>
-              {dep}
-            </Select.Option>
-          ))}
-        </Select>
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <Input
+            placeholder="Search doctor..."
+            style={{ width: 240 }}
+            onChange={(e) => setSearch(e.target.value.toLowerCase())}
+          />
+
+          <Select
+            placeholder="Filter by Department"
+            allowClear
+            style={{ width: 200 }}
+            onChange={(v) => setDeptFilter(v)}
+          >
+            {[...new Set(doctors.map((d) => d.department))].map((dep) => (
+              <Select.Option key={dep} value={dep}>
+                {dep}
+              </Select.Option>
+            ))}
+          </Select>
+        </Box>
       </Box>
 
-      {/* DOCTORS GRID */}
+      {/* ✅ REMAINING CODE EXACTLY SAME */}
       <Grid container spacing={3}>
         {doctors
           .filter((d) =>

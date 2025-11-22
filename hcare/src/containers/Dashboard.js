@@ -210,7 +210,7 @@ const Dashboard = () => {
     // start polling
     pollRef.current = setInterval(() => {
       loadStats();
-    }, 20000); // 20s - change as needed
+    }, 50000); // 20s - change as needed
 
     return () => {
       if (pollRef.current) clearInterval(pollRef.current);

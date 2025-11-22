@@ -12,7 +12,6 @@ export default function PrescriptionsPage() {
   const [doctors, setDoctors] = useState([]);
   const [patients, setPatients] = useState([]);
 
-  // ⭐ Fetch prescriptions + doctors + patients
   useEffect(() => {
     dispatch({ type: "prescriptions/fetchStart" });
 
@@ -27,7 +26,6 @@ export default function PrescriptionsPage() {
       .catch(() => setPatients([]));
   }, [dispatch]);
 
-  // ⭐ Fallback to db.json with role-based filtering
   useEffect(() => {
     if (list.length === 0) {
       const loadMock = async () => {
@@ -39,13 +37,11 @@ export default function PrescriptionsPage() {
 
             let prescriptions = data.prescriptions || [];
 
-            // Filter prescriptions based on user role
-            if (role === 'doctor') {
+            if (role === "doctor") {
               prescriptions = prescriptions.filter(p => p.doctorId == user.id);
-            } else if (role === 'patient') {
+            } else if (role === "patient") {
               prescriptions = prescriptions.filter(p => p.patientId == user.id);
             }
-            // Admin sees all prescriptions
 
             if (prescriptions.length > 0) {
               dispatch({
@@ -77,8 +73,8 @@ export default function PrescriptionsPage() {
   };
 
   return (
-    <div style={{ padding: 24 }}>
-      <h2>Prescriptions</h2>
+    <div style={{ padding: "12px 24px" }}> {/* ✅ top padding reduced */}
+      <h2 style={{ marginTop: 0, marginBottom: 16 }}>Prescriptions</h2> {/* ✅ top margin removed */}
 
       <Card>
         <List
