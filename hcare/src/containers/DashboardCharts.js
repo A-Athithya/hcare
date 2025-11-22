@@ -11,7 +11,6 @@ import {
   CartesianGrid,
   BarChart,
   Bar,
-  Legend,
   PieChart,
   Pie,
   Cell,
@@ -43,7 +42,14 @@ const RichTooltip = ({ active, payload, label }) => {
 
 export default DashboardCharts;
 
-const COLORS = ["#1976d2", "#4caf50", "#ff9800", "#f44336", "#7b1fa2"];
+const COLORS = [
+  "#4982c9ff",  // Pending
+  "#4caf82",  // Completed
+  "#f2a65a",  // Cancelled
+  "#e36464",  // Other
+  "#9aa5b1"
+];
+
 
 function DashboardCharts({ startDate, endDate }) {
   const [appointments, setAppointments] = useState(null);
@@ -168,9 +174,9 @@ function DashboardCharts({ startDate, endDate }) {
                   <Line
                     type="monotone"
                     dataKey="revenue"
-                    stroke="#1976d2"
+                    stroke="#3f72af"
                     strokeWidth={3}
-                    dot={{ r: 4 }}
+                    dot={{ r: 4, fill: "#3f72af" }}
                     animationDuration={800}
                   />
                 </LineChart>
@@ -256,10 +262,11 @@ function DashboardCharts({ startDate, endDate }) {
         {/* Bars */}
         <Bar
           dataKey="stock"
-          fill="#1976d2"
+          fill="#4f86c6"
           radius={[8, 8, 0, 0]}
           animationDuration={700}
         />
+
         </BarChart>
         </ResponsiveContainer>
           )}

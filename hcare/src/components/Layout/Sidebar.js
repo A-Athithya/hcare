@@ -30,6 +30,7 @@ import Inventory from "@mui/icons-material/Inventory2";
 import LogoutOutlined from "@ant-design/icons/LogoutOutlined";
 import UserOutlined from "@ant-design/icons/UserOutlined";
 import Communication from "@mui/icons-material/Message";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 
 export default function Sidebar() {
   const collapsed = useSelector((s) => s.ui?.sidebarCollapsed);
@@ -54,7 +55,7 @@ export default function Sidebar() {
       { text: "Doctors", icon: <LocalHospitalIcon />, link: "/doctors" },
       { text: "Prescriptions", icon: <ReceiptLongIcon />, link: "/prescriptions" },
       { text: "Billing", icon: <PaymentIcon />, link: "/billing" },
-      { text: "Payment Gateway", icon: <PaymentIcon />, link: "/payment" },
+      { text: "Payment", icon: <AccountBalanceWalletIcon />, link: "/payment" },
       { text: "Manage Staffs", icon: <Managestaff />, link: "/staff" },
       { text: "Inventory", icon: <Inventory />, link: "/inventory" },
     ],

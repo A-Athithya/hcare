@@ -10,14 +10,13 @@ import {
   Tooltip,
 } from "antd";
 import { getData } from "../api/client";
-
 import { useNavigate } from "react-router-dom";
 
 const { Title } = Typography;
 const { Option } = Select;
 
 const CalendarPage = () => {
-  const navigate = useNavigate(); // ✅ added
+  const navigate = useNavigate();
 
   const [appointments, setAppointments] = useState([]);
   const [filterDoctor, setFilterDoctor] = useState("all");
@@ -58,73 +57,75 @@ const CalendarPage = () => {
     const listData = getListData(value);
 
     return (
-      <ul className="events" style={{ listStyle: "none", padding: 0, margin: 0 }}>
-        {listData.map((item) => (
-          <Tooltip
-            key={item.id}
-            title={
-              <div>
-                <strong>{item.patientName}</strong> <br />
-                Time: {item.appointmentTime} <br />
-                Doctor: {doctors.find(d => d.id === item.doctorId)?.name || 'Unknown'} <br />
-                Reason: {item.reason} <br />
-                Status: {item.status}
-              </div>
-            }
-          >
-            <li
-              style={{
-                marginBottom: 4,
-                padding: "2px 4px",
-                background: "#f7f7f7",
-                borderRadius: 6,
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-              }}
+        <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+          {listData.map((item) => (
+            <Tooltip
+              key={item.id}
+              title={
+                <div>
+                  <strong>{item.patientName}</strong> <br />
+                  Time: {item.appointmentTime} <br />
+                  Doctor: {doctors.find(d => d.id === item.doctorId)?.name || 'Unknown'} <br />
+                  Reason: {item.reason} <br />
+                  Status: {item.status}
+                </div>
+              }
             >
-              <Badge
-                status={
-                  item.status === "Completed"
-                    ? "success"
-                    : item.status === "Pending"
-                    ? "warning"
-                    : "error"
-                }
-              />
-              <span style={{ fontSize: 12, marginLeft: 6, color: "#444" }}>
-                {patients.find(p => p.id === item.patientId)?.name || item.patientName || 'Unknown'} — {item.appointmentTime}
-              </span>
-            </li>
-          </Tooltip>
-        ))}
-      </ul>
-    );
-  };
+              <li
+                style={{
+                  marginBottom: 4,
+                  padding: "2px 6px",
+                  background: "#f7f7f7",
+                  borderRadius: 6,
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <Badge
+                  status={
+                    item.status === "Completed"
+                      ? "success"
+                      : item.status === "Pending"
+                      ? "warning"
+                      : "error"
+                  }
+                />
+                <span style={{ fontSize: 12, marginLeft: 6, color: "#444" }}>
+                  {patients.find(p => p.id === item.patientId)?.name || item.patientName || 'Unknown'} — {item.appointmentTime}
+                </span>
+              </li>
+            </Tooltip>
+          ))}
+        </ul>
+      );
+    };
 
-  // ✅ UPDATED FUNCTION (redirect)
-  const handleAddAppointment = () => {
-    navigate("/appointments?create=true");
-  };
+    const handleAddAppointment = () => {
+      navigate("/appointments?create=true");
+    };
 
   return (
-    <div style={{ padding: "10px 24px", background: "#fafbfc", minHeight: "90vh" }}>
-      {/* Page Header */}
-      <Title level={2} style={{ marginTop: 0, marginBottom: 24, color: "#202124" }}>
-        Appointment Calendar
-      </Title>
+    <div style={{ padding: "0px 24px 10px", background: "#fafbfc", minHeight: "85vh" }}>
 
-        {/* Filter and Add Section - SIMPLE (NO CARD) */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: 12
-          }}
-        >
+      {/* HEADER ROW */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 12,   // 🔥 reduced spacing
+        }}
+      >
+        <Title level={2} style={{ margin: 0, color: "#202124" }}>
+          Appointment Calendar
+        </Title>
+
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <div>
-            <span style={{ marginRight: 8, fontWeight: 500 }}>Filter by Doctor:</span>
+            <span style={{ marginRight: 8, fontWeight: 500 }}>
+              Filter by Doctor:
+            </span>
             <Select
               value={filterDoctor}
               onChange={setFilterDoctor}
@@ -143,10 +144,10 @@ const CalendarPage = () => {
             + Add Appointment
           </Button>
         </div>
+      </div>
 
-      <Divider style={{ margin: "24px 0" }} />
+      <Divider style={{ margin: "10px 0" }} />  {/* ✅ reduced gap */}
 
-      {/* Calendar */}
       <Card
         style={{
           borderRadius: 12,
