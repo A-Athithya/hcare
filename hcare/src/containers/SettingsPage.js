@@ -1,6 +1,6 @@
-// src/containers/SettingsPage.js
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchProfileStart } from "../features/profile/profileSlice";
 import {
   Card,
   Button,
@@ -26,8 +26,10 @@ const { Title, Text } = Typography;
 const { Option } = Select;
 
 export default function SettingsPage() {
+  const dispatch = useDispatch();
   const auth = useSelector((s) => s.auth || {});
-  const user = auth.user;
+  const profile = useSelector((s) => s.profile || {});
+  const user = profile.data || auth.user;
 
   const [currentView, setCurrentView] = useState("profile");
   const [passwordModalVisible, setPasswordModalVisible] = useState(false);
@@ -35,7 +37,12 @@ export default function SettingsPage() {
   const [updateProfileForm] = Form.useForm();
   const [passwordForm] = Form.useForm();
 
-  // If no user is logged in, show a message
+  useEffect(() => {
+    if (auth.user?.id && auth.user?.role && auth.user?.email) {
+      dispatch(fetchProfileStart({ id: auth.user.id, role: auth.user.role, email: auth.user.email }));
+    }
+  }, [auth.user, dispatch]);
+
   if (!user) {
     return (
       <div style={{ padding: 24, textAlign: "center" }}>
@@ -60,9 +67,6 @@ export default function SettingsPage() {
     passwordForm.resetFields();
   };
 
-  // ----------------------------------------------
-  // 🔵 UPDATE PROFILE VIEW
-  // ----------------------------------------------
   if (currentView === "updateProfile") {
     return (
       <div style={{ padding: 24 }}>
@@ -86,9 +90,7 @@ export default function SettingsPage() {
               email: user.email,
               phone: user.phone || user.contact,
               address: user.address,
-              dateOfBirth: user.dateOfBirth
-                ? moment(user.dateOfBirth)
-                : null,
+              dateOfBirth: user.dateOfBirth ? moment(user.dateOfBirth) : null,
               gender: user.gender,
               department: user.department,
               specialization: user.specialization,
@@ -100,6 +102,7 @@ export default function SettingsPage() {
               emergencyContact: user.emergencyContact,
               licenseNo: user.licenseNo,
               shift: user.shift,
+              registeredDate: user.registeredDate ? moment(user.registeredDate) : null,
             }}
           >
             <div
@@ -109,11 +112,7 @@ export default function SettingsPage() {
                 gap: 16,
               }}
             >
-              <Form.Item
-                name="name"
-                label="Name"
-                rules={[{ required: true }]}
-              >
+              <Form.Item name="name" label="Name" rules={[{ required: true }]}>
                 <Input />
               </Form.Item>
 
@@ -128,11 +127,7 @@ export default function SettingsPage() {
                 <Input />
               </Form.Item>
 
-              <Form.Item
-                name="phone"
-                label="Phone"
-                rules={[{ required: true }]}
-              >
+              <Form.Item name="phone" label="Phone" rules={[{ required: true }]}>
                 <Input />
               </Form.Item>
 
@@ -144,8 +139,7 @@ export default function SettingsPage() {
                 <Input.TextArea rows={2} />
               </Form.Item>
 
-              {/* Role-specific fields */}
-              {user.role === 'patient' && (
+              {user.role === "patient" && (
                 <>
                   <Form.Item
                     name="bloodGroup"
@@ -164,17 +158,11 @@ export default function SettingsPage() {
                     </Select>
                   </Form.Item>
 
-                  <Form.Item
-                    name="medicalHistory"
-                    label="Medical History"
-                  >
+                  <Form.Item name="medicalHistory" label="Medical History">
                     <Input.TextArea rows={2} />
                   </Form.Item>
 
-                  <Form.Item
-                    name="allergies"
-                    label="Allergies"
-                  >
+                  <Form.Item name="allergies" label="Allergies">
                     <Input.TextArea rows={2} />
                   </Form.Item>
 
@@ -188,7 +176,9 @@ export default function SettingsPage() {
                 </>
               )}
 
-              {(user.role === 'nurse' || user.role === 'pharmacist' || user.role === 'receptionist') && (
+              {(user.role === "nurse" ||
+                user.role === "pharmacist" ||
+                user.role === "receptionist") && (
                 <>
                   <Form.Item
                     name="licenseNo"
@@ -275,12 +265,8 @@ export default function SettingsPage() {
 
             <Form.Item style={{ textAlign: "right", marginTop: 24 }}>
               <Space>
-                <Button onClick={() => setCurrentView("profile")}>
-                  Cancel
-                </Button>
-                <Button type="primary" htmlType="submit">
-                  Update Profile
-                </Button>
+                <Button onClick={() => setCurrentView("profile")}>Cancel</Button>
+                <Button type="primary" htmlType="submit">Update Profile</Button>
               </Space>
             </Form.Item>
           </Form>
@@ -309,10 +295,8 @@ export default function SettingsPage() {
             <Title level={4} style={{ margin: 0 }}>
               {user.name}
             </Title>
-
             <Text type="secondary">{user.email}</Text>
             <br />
-
             <Text type="secondary" style={{ textTransform: "capitalize" }}>
               Role: {user.role}
             </Text>
@@ -323,13 +307,7 @@ export default function SettingsPage() {
 
         <Title level={5}>Profile Details</Title>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 16,
-          }}
-        >
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
           <div>
             <Text strong>Phone: </Text> {user.phone || user.contact}
           </div>
@@ -337,64 +315,38 @@ export default function SettingsPage() {
             <Text strong>Address: </Text> {user.address}
           </div>
           <div>
-            <Text strong>Date of Birth: </Text> {user.dateOfBirth}
+            <Text strong>Date of Birth: </Text> {user.dateOfBirth ? moment(user.dateOfBirth).format("YYYY-MM-DD") : ""}
           </div>
           <div>
             <Text strong>Gender: </Text> {user.gender}
           </div>
-          {/* Show role-specific fields */}
-          {user.role === 'doctor' && (
+
+          {user.role === "doctor" && (
             <>
-              <div>
-                <Text strong>Department: </Text> {user.department}
-              </div>
-              <div>
-                <Text strong>Specialization: </Text> {user.specialization}
-              </div>
-              <div>
-                <Text strong>Experience: </Text> {user.experience}
-              </div>
-              <div>
-                <Text strong>Qualification: </Text> {user.qualification}
-              </div>
-              <div>
-                <Text strong>License Number: </Text> {user.licenseNumber}
-              </div>
-              <div>
-                <Text strong>Consultation Fee: </Text> ₹{user.consultationFee}
-              </div>
+              <div><Text strong>Department: </Text> {user.department}</div>
+              <div><Text strong>Specialization: </Text> {user.specialization}</div>
+              <div><Text strong>Experience: </Text> {user.experience}</div>
+              <div><Text strong>Qualification: </Text> {user.qualification}</div>
+              <div><Text strong>License Number: </Text> {user.licenseNo}</div>
+              <div><Text strong>Consultation Fee: </Text> ₹{user.consultationFee}</div>
             </>
           )}
-          {user.role === 'patient' && (
+
+          {user.role === "patient" && (
             <>
-              <div>
-                <Text strong>Blood Group: </Text> {user.bloodGroup}
-              </div>
-              <div>
-                <Text strong>Medical History: </Text> {user.medicalHistory}
-              </div>
-              <div>
-                <Text strong>Allergies: </Text> {user.allergies}
-              </div>
-              <div>
-                <Text strong>Emergency Contact: </Text> {user.emergencyContact}
-              </div>
-              <div>
-                <Text strong>Registered Date: </Text> {user.registeredDate}
-              </div>
+              <div><Text strong>Blood Group: </Text> {user.bloodGroup}</div>
+              <div><Text strong>Medical History: </Text> {user.medicalHistory}</div>
+              <div><Text strong>Allergies: </Text> {user.allergies}</div>
+              <div><Text strong>Emergency Contact: </Text> {user.emergencyContact}</div>
+              <div><Text strong>Registered Date: </Text> {user.registeredDate ? moment(user.registeredDate).format("YYYY-MM-DD") : ""}</div>
             </>
           )}
-          {(user.role === 'nurse' || user.role === 'pharmacist' || user.role === 'receptionist') && (
+
+          {(user.role === "nurse" || user.role === "pharmacist" || user.role === "receptionist") && (
             <>
-              <div>
-                <Text strong>License Number: </Text> {user.licenseNo}
-              </div>
-              <div>
-                <Text strong>Experience: </Text> {user.experience}
-              </div>
-              <div>
-                <Text strong>Shift: </Text> {user.shift}
-              </div>
+              <div><Text strong>License Number: </Text> {user.licenseNo}</div>
+              <div><Text strong>Experience: </Text> {user.experience}</div>
+              <div><Text strong>Shift: </Text> {user.shift}</div>
             </>
           )}
         </div>
@@ -403,49 +355,29 @@ export default function SettingsPage() {
 
         <div style={{ textAlign: "right" }}>
           <Space>
-            <Button
-              icon={<LockOutlined />}
-              onClick={() => setPasswordModalVisible(true)}
-            >
+            <Button icon={<LockOutlined />} onClick={() => setPasswordModalVisible(true)}>
               Change Password
             </Button>
 
-            <Button
-              type="primary"
-              icon={<UserOutlined />}
-              onClick={() => setCurrentView("updateProfile")}
-            >
+            <Button type="primary" icon={<UserOutlined />} onClick={() => setCurrentView("updateProfile")}>
               Update Profile
             </Button>
           </Space>
         </div>
       </Card>
 
-      {/* Password Change Modal */}
       <Modal
         title="Change Password"
         open={passwordModalVisible}
         onCancel={() => setPasswordModalVisible(false)}
         footer={null}
       >
-        <Form
-          layout="vertical"
-          form={passwordForm}
-          onFinish={handlePasswordChange}
-        >
-          <Form.Item
-            name="currentPassword"
-            label="Current Password"
-            rules={[{ required: true }]}
-          >
+        <Form layout="vertical" form={passwordForm} onFinish={handlePasswordChange}>
+          <Form.Item name="currentPassword" label="Current Password" rules={[{ required: true }]}>
             <Input.Password />
           </Form.Item>
 
-          <Form.Item
-            name="newPassword"
-            label="New Password"
-            rules={[{ required: true }, { min: 6 }]}
-          >
+          <Form.Item name="newPassword" label="New Password" rules={[{ required: true }, { min: 6 }]}>
             <Input.Password />
           </Form.Item>
 
@@ -460,7 +392,7 @@ export default function SettingsPage() {
                   if (!value || getFieldValue("newPassword") === value) {
                     return Promise.resolve();
                   }
-                  return Promise.reject("Passwords do not match!");
+                  return Promise.reject(new Error("Passwords do not match!"));
                 },
               }),
             ]}
@@ -473,9 +405,7 @@ export default function SettingsPage() {
               <Button type="primary" htmlType="submit">
                 Change Password
               </Button>
-              <Button onClick={() => setPasswordModalVisible(false)}>
-                Cancel
-              </Button>
+              <Button onClick={() => setPasswordModalVisible(false)}>Cancel</Button>
             </Space>
           </Form.Item>
         </Form>
