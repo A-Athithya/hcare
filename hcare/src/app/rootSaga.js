@@ -1,3 +1,4 @@
+import profileSaga from '../features/profile/profileSaga';
 import { all } from "redux-saga/effects";
 import authSaga from "../features/auth/authSaga";
 import dashboardSaga from "../features/dashboard/dashboardSaga";
@@ -11,6 +12,7 @@ import doctorsSaga from "../features/doctors/doctorsSaga";
 
 export default function* rootSaga() {
   yield all([
+    profileSaga(),
     authSaga(),
     dashboardSaga(),
     patientsSaga(),

@@ -6,302 +6,329 @@ import {
   updateStaffRequest,
   deleteStaffRequest,
 } from "../../features/staff/staffSlice";
-import {
-  Table,
-  Card,
-  Input,
-  Button,
-  Modal,
-  Form,
-  message,
-  Avatar,
-} from "antd";
-import {
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  EyeOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { Table, Card, Input, Button, Space, Tag, message } from "antd";
 
-export default function DoctorsPage() {
+export default function Doctors() {
   const dispatch = useDispatch();
   const { doctors, loading } = useSelector((s) => s.staff);
 
-  const [filter, setFilter] = useState("");
-  const [filtered, setFiltered] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalMode, setModalMode] = useState("add"); // add / edit / view
-  const [selectedDoctor, setSelectedDoctor] = useState(null);
-  const [form] = Form.useForm();
+  const [mode, setMode] = useState("list"); // list | new | edit | view
+  const [selected, setSelected] = useState(null);
+  const [search, setSearch] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    gender: "",
+    age: "",
+    specialization: "",
+    department: "",
+    qualification: "",
+    experience: "",
+    contact: "",
+    email: "",
+    status: "",
+    address: "",
+    bio: "",
+  });
 
   useEffect(() => {
     dispatch(fetchStaffRequest({ role: "doctors" }));
   }, [dispatch]);
 
-  // Filter search
-  useEffect(() => {
-    const q = filter.toLowerCase();
-    setFiltered(
-      doctors.filter(
-        (d) =>
-          d.name?.toLowerCase().includes(q) ||
-          d.specialization?.toLowerCase().includes(q) ||
-          d.department?.toLowerCase().includes(q) ||
-          d.status?.toLowerCase().includes(q)
-      )
-    );
-  }, [filter, doctors]);
-
-  // Modal controls
-  const openModal = (mode, record = null) => {
-    setModalMode(mode);
-    setSelectedDoctor(record);
-    setModalVisible(true);
-    if (record) form.setFieldsValue(record);
-    else form.resetFields();
-  };
-
-  const closeModal = () => {
-    setModalVisible(false);
-    form.resetFields();
-  };
-
-  // Save doctor
-  const handleSave = () => {
-    form.validateFields().then((values) => {
-      if (modalMode === "edit") {
-        dispatch(
-          updateStaffRequest({
-            role: "doctors",
-            staff: { ...selectedDoctor, ...values },
-          })
-        );
-        message.success("Doctor updated successfully!");
-      } else if (modalMode === "add") {
-        dispatch(
-          addStaffRequest({
-            role: "doctors",
-            staff: { ...values, id: Date.now().toString() },
-          })
-        );
-        message.success("Doctor added successfully!");
-      }
-      closeModal();
+  // Open new / edit / view
+  const openNew = () => {
+    setSelected(null);
+    setFormData({
+      name: "",
+      gender: "",
+      age: "",
+      specialization: "",
+      department: "",
+      qualification: "",
+      experience: "",
+      contact: "",
+      email: "",
+      status: "",
+      address: "",
+      bio: "",
     });
+    setMode("new");
   };
 
-  // Delete doctor
+  const openEdit = (record) => {
+    setSelected(record);
+    setFormData({ ...record });
+    setMode("edit");
+  };
+
+  const openView = (record) => {
+    setSelected(record);
+    setFormData({ ...record });
+    setMode("view");
+  };
+
+  const backToList = () => {
+    setMode("list");
+    setSelected(null);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSave = () => {
+    if (mode === "edit") {
+      dispatch(
+        updateStaffRequest({ role: "doctors", staff: { ...selected, ...formData } })
+      );
+      message.success("Doctor updated successfully!");
+    } else if (mode === "new") {
+      dispatch(
+        addStaffRequest({
+          role: "doctors",
+          staff: { ...formData, id: Date.now().toString() },
+        })
+      );
+      message.success("Doctor added successfully!");
+    }
+    dispatch(fetchStaffRequest({ role: "doctors" }));
+    setMode("list");
+  };
+
   const handleDelete = (id) => {
     dispatch(deleteStaffRequest({ role: "doctors", id }));
     message.success("Doctor deleted successfully!");
   };
 
-  // Table columns
+  const filtered = doctors.filter(
+    (d) =>
+      !search ||
+      d.name?.toLowerCase().includes(search.toLowerCase()) ||
+      d.specialization?.toLowerCase().includes(search.toLowerCase()) ||
+      d.department?.toLowerCase().includes(search.toLowerCase()) ||
+      d.status?.toLowerCase().includes(search.toLowerCase())
+  );
+
   const columns = [
     { title: "Name", dataIndex: "name", key: "name" },
     { title: "Specialization", dataIndex: "specialization", key: "specialization" },
     { title: "Department", dataIndex: "department", key: "department" },
-    { title: "Status", dataIndex: "status", key: "status" },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (s) => {
+        let color =
+          s === "Active" ? "green" : s === "Inactive" ? "red" : "orange";
+        return <Tag color={color}>{s}</Tag>;
+      },
+    },
     { title: "Contact", dataIndex: "contact", key: "contact" },
     {
       title: "Actions",
       key: "actions",
       render: (_, record) => (
-        <div style={{ display: "flex", gap: 6 }}>
-          <Button
-            type="link"
-            icon={<EyeOutlined />}
-            size="small"
-            onClick={() => openModal("view", record)}
-          />
-          <Button
-            type="link"
-            icon={<EditOutlined />}
-            size="small"
-            onClick={() => openModal("edit", record)}
-          />
-          <Button
-            type="link"
-            danger
-            icon={<DeleteOutlined />}
-            size="small"
-            onClick={() => handleDelete(record.id)}
-          />
-        </div>
+        <Space>
+          <Button size="small" onClick={() => openView(record)}>
+            View
+          </Button>
+          <Button size="small" type="primary" onClick={() => openEdit(record)}>
+            Edit
+          </Button>
+          <Button size="small" danger onClick={() => handleDelete(record.id)}>
+            Delete
+          </Button>
+        </Space>
       ),
     },
   ];
 
-  return (
-    <div style={{ padding: "16px 20px" }}>
-      <h2 style={{ marginBottom: 10 }}>Doctors</h2>
+  // -----------------------------
+  // FULL-WIDTH FORM + PREVIEW
+  // -----------------------------
+  if (mode !== "list") {
+    return (
+      <div style={{ padding: 24, display: "flex", gap: 24, height: "100%" }}>
+        {/* LEFT PANEL - FORM */}
+        <Card style={{ width: "55%", height: "100%", overflowY: "auto", padding: 20 }}>
+          <h2 style={{ marginTop: 0 }}>
+            {mode === "edit"
+              ? "Edit Doctor"
+              : mode === "view"
+              ? "Doctor Details"
+              : "Add Doctor"}
+          </h2>
 
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSave();
+            }}
+            style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}
+          >
+            {[
+              { label: "Name", name: "name" },
+              { label: "Gender", name: "gender" },
+              { label: "Age", name: "age" },
+              { label: "Specialization", name: "specialization" },
+              { label: "Department", name: "department" },
+              { label: "Qualification", name: "qualification" },
+              { label: "Experience", name: "experience" },
+              { label: "Contact", name: "contact" },
+              { label: "Email", name: "email" },
+              { label: "Status", name: "status" },
+            ].map((item) => (
+              <div key={item.name}>
+                <label>{item.label}</label>
+                <input
+                  name={item.name}
+                  value={formData[item.name]}
+                  onChange={handleChange}
+                  readOnly={mode === "view"}
+                  style={{
+                    width: "100%",
+                    padding: 8,
+                    borderRadius: 8,
+                    border: "1px solid #ccc",
+                  }}
+                />
+              </div>
+            ))}
+
+            <div style={{ gridColumn: "1 / span 2" }}>
+              <label>Address</label>
+              <textarea
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                readOnly={mode === "view"}
+                rows={2}
+                style={{
+                  width: "100%",
+                  padding: 8,
+                  borderRadius: 8,
+                  border: "1px solid #ccc",
+                }}
+              />
+            </div>
+
+            <div style={{ gridColumn: "1 / span 2" }}>
+              <label>Bio</label>
+              <textarea
+                name="bio"
+                value={formData.bio}
+                onChange={handleChange}
+                readOnly={mode === "view"}
+                rows={2}
+                style={{
+                  width: "100%",
+                  padding: 8,
+                  borderRadius: 8,
+                  border: "1px solid #ccc",
+                }}
+              />
+            </div>
+
+            {mode !== "view" && (
+              <div style={{ gridColumn: "1 / span 2", display: "flex", gap: 8 }}>
+                <Button htmlType="submit" type="primary">
+                  {mode === "edit" ? "Update Doctor" : "Add Doctor"}
+                </Button>
+                <Button
+                  type="default"
+                  onClick={() => setFormData(selected || {})}
+                >
+                  Reset
+                </Button>
+              </div>
+            )}
+          </form>
+
+          <div style={{ marginTop: 12 }}>
+            <Button onClick={backToList}>Back to List</Button>
+          </div>
+        </Card>
+
+        {/* RIGHT PANEL - PREVIEW */}
+        <Card
+          style={{
+            width: "45%",
+            height: "100%",
+            overflowY: "auto",
+            padding: 20,
+            background: "#fafafa",
+          }}
+        >
+          {selected ? (
+            <>
+              <h3>Doctor Preview</h3>
+              {Object.entries(selected).map(([key, val]) =>
+                key === "status" ? (
+                  <p key={key}>
+                    <strong>Status:</strong>{" "}
+                    <Tag
+                      color={
+                        val === "Active" ? "green" : val === "Inactive" ? "red" : "orange"
+                      }
+                    >
+                      {val}
+                    </Tag>
+                  </p>
+                ) : (
+                  <p key={key}>
+                    <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong>{" "}
+                    {val || "—"}
+                  </p>
+                )
+              )}
+            </>
+          ) : (
+            <>
+              <h3>New Doctor</h3>
+              <p>Fill the form to see preview here...</p>
+            </>
+          )}
+        </Card>
+      </div>
+    );
+  }
+
+  // -----------------------------
+  // LIST MODE
+  // -----------------------------
+  return (
+    <div style={{ padding: 24 }}>
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
-          marginBottom: 10,
-          flexWrap: "wrap",
-          gap: 6,
+          marginBottom: 16,
         }}
       >
-        <Input
-          placeholder="Search doctor..."
-          style={{ width: 240, height: 32 }}
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-        />
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          size="small"
-          onClick={() => openModal("add")}
-        >
-          Add Doctor
-        </Button>
+        <h2 style={{ margin: 0 }}>Doctors</h2>
+
+        <div style={{ display: "flex", gap: 8 }}>
+          <Input.Search
+            placeholder="Search doctor"
+            onSearch={(v) => setSearch(v)}
+            allowClear
+            style={{ width: 220 }}
+          />
+          <Button type="primary" onClick={openNew}>
+            Add Doctor
+          </Button>
+        </div>
       </div>
 
-      <Card style={{ borderRadius: 8 }}>
-        {!loading && doctors.length === 0 && (
-          <p style={{ textAlign: "center", color: "gray", margin: 0 }}>
-            No doctors found.
-          </p>
-        )}
+      <Card>
         <Table
+          rowKey="id"
           dataSource={filtered}
           columns={columns}
           loading={loading}
-          rowKey="id"
-          pagination={{ pageSize: 7 }}
-          size="small"
+          pagination={{ pageSize: 8 }}
         />
       </Card>
-
-      {/* Compact Add / Edit / View Modal */}
-      <Modal
-        title={
-          modalMode === "view"
-            ? "View Doctor"
-            : modalMode === "edit"
-            ? "Edit Doctor"
-            : "Add Doctor"
-        }
-        open={modalVisible}
-        onCancel={closeModal}
-        onOk={modalMode === "view" ? closeModal : handleSave}
-        okText={modalMode === "view" ? "Close" : "Save"}
-        cancelButtonProps={{
-          style: { display: modalMode === "view" ? "none" : "inline-block" },
-        }}
-        width={520}
-        bodyStyle={{
-          maxHeight: "65vh",
-          overflowY: "auto",
-          padding: "10px 16px 6px",
-        }}
-      >
-        {modalMode === "view" ? (
-          <div style={{ textAlign: "center", paddingTop: 4 }}>
-            <Avatar
-              size={64}
-              icon={<UserOutlined />}
-              style={{ backgroundColor: "#87d068", marginBottom: 6 }}
-            />
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "6px 12px",
-                textAlign: "left",
-                marginTop: "6px",
-                fontSize: 13.5,
-              }}
-            >
-              {[
-                { label: "Name", value: selectedDoctor?.name },
-                { label: "Gender", value: selectedDoctor?.gender },
-                { label: "Age", value: selectedDoctor?.age },
-                { label: "Specialization", value: selectedDoctor?.specialization },
-                { label: "Department", value: selectedDoctor?.department },
-                { label: "Qualification", value: selectedDoctor?.qualification },
-                { label: "Experience", value: selectedDoctor?.experience },
-                { label: "Contact", value: selectedDoctor?.contact },
-                { label: "Email", value: selectedDoctor?.email },
-                { label: "Status", value: selectedDoctor?.status },
-              ].map((item, index) => (
-                <div key={index}>
-                  <strong style={{ color: "#444" }}>{item.label}:</strong>
-                  <div style={{ color: "#222", marginTop: 1 }}>
-                    {item.value || "-"}
-                  </div>
-                </div>
-              ))}
-              <div style={{ gridColumn: "1 / span 2" }}>
-                <strong style={{ color: "#444" }}>Address:</strong>
-                <div style={{ color: "#222", marginTop: 1 }}>
-                  {selectedDoctor?.address || "-"}
-                </div>
-              </div>
-              <div style={{ gridColumn: "1 / span 2" }}>
-                <strong style={{ color: "#444" }}>Bio:</strong>
-                <div style={{ color: "#222", marginTop: 1 }}>
-                  {selectedDoctor?.bio || "-"}
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <Form
-            form={form}
-            layout="vertical"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "8px 14px",
-              marginTop: 6,
-            }}
-            size="small"
-          >
-            <Form.Item name="name" label="Name" rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
-            <Form.Item name="gender" label="Gender">
-              <Input />
-            </Form.Item>
-            <Form.Item name="age" label="Age">
-              <Input />
-            </Form.Item>
-            <Form.Item name="specialization" label="Specialization">
-              <Input />
-            </Form.Item>
-            <Form.Item name="department" label="Department">
-              <Input />
-            </Form.Item>
-            <Form.Item name="qualification" label="Qualification">
-              <Input />
-            </Form.Item>
-            <Form.Item name="experience" label="Experience">
-              <Input />
-            </Form.Item>
-            <Form.Item name="contact" label="Contact">
-              <Input />
-            </Form.Item>
-            <Form.Item name="email" label="Email">
-              <Input />
-            </Form.Item>
-            <Form.Item name="status" label="Status">
-              <Input />
-            </Form.Item>
-            <Form.Item name="address" label="Address" style={{ gridColumn: "1 / span 2" }}>
-              <Input.TextArea rows={2} style={{ resize: "none" }} />
-            </Form.Item>
-            <Form.Item name="bio" label="Bio" style={{ gridColumn: "1 / span 2" }}>
-              <Input.TextArea rows={2} style={{ resize: "none" }} />
-            </Form.Item>
-          </Form>
-        )}
-      </Modal>
     </div>
   );
 }

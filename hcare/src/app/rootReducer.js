@@ -11,6 +11,7 @@ import inventoryReducer from "../features/inventory/inventorySlice";
 import doctorsReducer from "../features/doctors/doctorsSlice";
 
 const rootReducer = combineReducers({
+  profile: require('../features/profile/profileSlice').default,
   auth: authReducer,
   dashboard: dashboardReducer,
   patients: patientsReducer,

@@ -12,7 +12,7 @@ export default function PatientsPage() {
 
   useEffect(() => {
     dispatch({ type: "patients/fetchStart" });
-  }, []);
+  }, [dispatch]);
 
 
 const filterText = filter.toLowerCase();
@@ -48,7 +48,7 @@ const cols = [
 
 
   return (
-    <div style={{ padding: 24 }}>
+    <div style={{ padding: "0px 24px 10px", background: "#fafbfc", minHeight: "85vh" }}>
       <div
         style={{
           display: "flex",

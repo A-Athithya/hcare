@@ -1,3 +1,4 @@
+// src/containers/AppointmentsPage.js
 import React, { useEffect, useState } from "react";
 import {
   Card,
@@ -15,21 +16,19 @@ import AppointmentForm from "../components/Forms/AppointmentForm";
 import { useLocation } from "react-router-dom";
 
 export default function AppointmentsPage() {
-  const location = useLocation(); // ⭐ For reading query params
+  const location = useLocation();
 
   const [appointments, setAppointments] = useState([]);
   const [patients, setPatients] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Full-width layout mode
   const [mode, setMode] = useState("list"); // list | new | edit | view
   const [selected, setSelected] = useState(null);
 
   const [filter, setFilter] = useState("Upcoming");
   const [search, setSearch] = useState("");
 
-  // Fetch data
   const loadData = async () => {
     setLoading(true);
     try {
@@ -52,7 +51,7 @@ export default function AppointmentsPage() {
     loadData();
   }, []);
 
-  // ⭐ CHECK URL PARAM "?create=true"
+  // Open form directly from query param
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     if (params.get("create") === "true") {
@@ -106,6 +105,7 @@ export default function AppointmentsPage() {
 
   const columns = [
     { title: "ID", dataIndex: "id", width: 70 },
+
     {
       title: "Patient",
       dataIndex: "patientId",
@@ -121,7 +121,9 @@ export default function AppointmentsPage() {
       dataIndex: "appointmentDate",
       render: (d) => dayjs(d).format("DD MMM YYYY"),
     },
+
     { title: "Time", dataIndex: "appointmentTime" },
+
     {
       title: "Status",
       dataIndex: "status",
@@ -135,6 +137,7 @@ export default function AppointmentsPage() {
         return <Tag color={color}>{s}</Tag>;
       },
     },
+
     {
       title: "Actions",
       render: (_, r) => (
@@ -180,20 +183,22 @@ export default function AppointmentsPage() {
     return true;
   });
 
-  // -----------------------------
-  // FULL-WIDTH FORM VIEW
-  // -----------------------------
+  // -----------------------
+  // FULL-WIDTH FORM PAGE
+  // -----------------------
   if (mode !== "list") {
     return (
-      <div style={{ padding: 24, display: "flex", gap: 24, height: "100%" }}>
-        {/* LEFT PANEL - FORM */}
+      <div style={{ padding: 24 }}>
         <Card
           style={{
-            width: "55%",
-            height: "100%",
-            overflowY: "auto",
+            width: "100%",
+            maxWidth: 1100,
+            margin: "0 auto",
             padding: 20,
+            maxHeight: "98vh",
+            overflowY: "auto",
           }}
+          bodyStyle={{ padding: 10 }}
         >
           <h2 style={{ marginTop: 0 }}>
             {mode === "edit"
@@ -203,95 +208,62 @@ export default function AppointmentsPage() {
               : "Schedule Appointment"}
           </h2>
 
+          {/* FORM FULL WIDTH */}
           <AppointmentForm
             initial={mode !== "new" ? selected : null}
             onSaved={onSaved}
-            autoFocusPatientId={
-              mode === "edit" ? selected?.patientId : undefined
-            }
+            autoFocusPatientId={mode === "edit" ? selected?.patientId : undefined}
             readOnly={mode === "view"}
           />
 
-          {/* BUTTON BAR */}
+          {/* BUTTONS */}
           <div
             style={{
+              marginTop: 20,
               display: "flex",
               justifyContent: "space-between",
-              marginTop: 20,
             }}
           >
             <Button onClick={backToList}>Back to List</Button>
 
-            <div style={{ display: "flex", gap: 8 }}>
-              <Button onClick={() => document.querySelector("form")?.reset()}>
+            <div style={{ display: "flex", gap: 10 }}>
+              <Button
+                onClick={() =>
+                  document.querySelector("form")?.reset()
+                }
+              >
                 Reset
               </Button>
+
               <Button
                 type="primary"
                 onClick={() =>
                   document
                     .querySelector("form")
                     ?.dispatchEvent(
-                      new Event("submit", { bubbles: true, cancelable: true })
+                      new Event("submit", {
+                        bubbles: true,
+                        cancelable: true,
+                      })
                     )
                 }
               >
-                {mode === "edit" ? "Update Appointment" : "Schedule Appointment"}
+                {mode === "edit"
+                  ? "Update Appointment"
+                  : "Schedule Appointment"}
               </Button>
             </div>
           </div>
-        </Card>
-
-        {/* RIGHT PANEL - PREVIEW */}
-        <Card
-          style={{
-            width: "45%",
-            height: "100%",
-            overflowY: "auto",
-            padding: 20,
-            background: "#fafafa",
-          }}
-        >
-          {selected ? (
-            <>
-              <h3>Appointment Preview</h3>
-              <p>
-                <strong>Patient:</strong> {getPatientName(selected.patientId)}
-              </p>
-              <p>
-                <strong>Doctor:</strong> {getDoctorName(selected.doctorId)}
-              </p>
-              <p>
-                <strong>Date:</strong>{" "}
-                {dayjs(selected.appointmentDate).format("DD MMM YYYY")}
-              </p>
-              <p>
-                <strong>Time:</strong> {selected.appointmentTime}
-              </p>
-              <p>
-                <strong>Reason:</strong> {selected.reason || "—"}
-              </p>
-              <p>
-                <strong>Status:</strong> {selected.status}
-              </p>
-            </>
-          ) : (
-            <>
-              <h3>New Appointment</h3>
-              <p>Select patient & doctor to see preview...</p>
-            </>
-          )}
         </Card>
       </div>
     );
   }
 
-  // -----------------------------
-  // LIST MODE
-  // -----------------------------
+  // -----------------------
+  // LIST VIEW
+  // -----------------------
   return (
     <div style={{ padding: 24 }}>
-      {/* HEADER */}
       <div
         style={{
           display: "flex",
@@ -305,9 +277,10 @@ export default function AppointmentsPage() {
           <Input.Search
             placeholder="Search patient"
             onSearch={(v) => setSearch(v)}
-            allowClear
             style={{ width: 220 }}
+            allowClear
           />
+
           <Select
             value={filter}
             onChange={(v) => setFilter(v)}
@@ -318,18 +291,18 @@ export default function AppointmentsPage() {
             <Select.Option value="Past">Past</Select.Option>
             <Select.Option value="All">All</Select.Option>
           </Select>
+
           <Button type="primary" onClick={openNew}>
             Schedule Appointment
           </Button>
         </div>
       </div>
 
-      {/* TABLE */}
       <Card>
         <Table
           rowKey="id"
-          dataSource={filtered}
           columns={columns}
+          dataSource={filtered}
           loading={loading}
           pagination={{ pageSize: 8 }}
         />

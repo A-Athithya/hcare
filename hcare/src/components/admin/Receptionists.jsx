@@ -6,274 +6,280 @@ import {
   updateStaffRequest,
   deleteStaffRequest,
 } from "../../features/staff/staffSlice";
-import {
-  Table,
-  Card,
-  Input,
-  Button,
-  Modal,
-  Form,
-  message,
-  Avatar,
-} from "antd";
-import {
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  EyeOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { Table, Card, Input, Button, message, Tag } from "antd";
 
-export default function ReceptionistsPage() {
+export default function Receptionists() {
   const dispatch = useDispatch();
   const { receptionists, loading } = useSelector((s) => s.staff);
 
-  const [filter, setFilter] = useState("");
-  const [filtered, setFiltered] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalMode, setModalMode] = useState("add"); // add / edit / view
-  const [selectedReceptionist, setSelectedReceptionist] = useState(null);
-  const [form] = Form.useForm();
+  const [mode, setMode] = useState("list"); // list | add | edit | view
+  const [selected, setSelected] = useState(null);
+  const [search, setSearch] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    shift: "",
+    email: "",
+    contact: "",
+    status: "Active",
+    address: "",
+  });
 
   useEffect(() => {
     dispatch(fetchStaffRequest({ role: "receptionists" }));
   }, [dispatch]);
 
-  // Filter search
-  useEffect(() => {
-    const q = filter.toLowerCase();
-    setFiltered(
-      receptionists.filter(
-        (r) =>
-          r.name?.toLowerCase().includes(q) ||
-          r.shift?.toLowerCase().includes(q) ||
-          r.email?.toLowerCase().includes(q) ||
-          r.contact?.toLowerCase().includes(q) ||
-          r.status?.toLowerCase().includes(q)
-      )
-    );
-  }, [filter, receptionists]);
-
-  // Modal controls
-  const openModal = (mode, record = null) => {
-    setModalMode(mode);
-    setSelectedReceptionist(record);
-    setModalVisible(true);
-    if (record) form.setFieldsValue(record);
-    else form.resetFields();
-  };
-
-  const closeModal = () => {
-    setModalVisible(false);
-    form.resetFields();
-  };
-
-  // Save receptionist
-  const handleSave = () => {
-    form.validateFields().then((values) => {
-      if (modalMode === "edit") {
-        dispatch(
-          updateStaffRequest({
-            role: "receptionists",
-            staff: { ...selectedReceptionist, ...values },
-          })
-        );
-        message.success("Receptionist updated successfully!");
-      } else if (modalMode === "add") {
-        dispatch(
-          addStaffRequest({
-            role: "receptionists",
-            staff: { ...values, id: Date.now().toString() },
-          })
-        );
-        message.success("Receptionist added successfully!");
-      }
-      closeModal();
+  const openAdd = () => {
+    setMode("add");
+    setSelected(null);
+    setFormData({
+      name: "",
+      shift: "",
+      email: "",
+      contact: "",
+      status: "Active",
+      address: "",
     });
   };
 
-  // Delete receptionist
+  const openEdit = (record) => {
+    setMode("edit");
+    setSelected(record);
+    setFormData({ ...record });
+  };
+
+  const openView = (record) => {
+    setMode("view");
+    setSelected(record);
+    setFormData({ ...record });
+  };
+
+  const backToList = () => {
+    setMode("list");
+    setSelected(null);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSave = () => {
+    if (mode === "edit") {
+      dispatch(
+        updateStaffRequest({ role: "receptionists", staff: { ...selected, ...formData } })
+      );
+      message.success("Receptionist updated successfully!");
+    } else if (mode === "add") {
+      dispatch(
+        addStaffRequest({ role: "receptionists", staff: { ...formData, id: Date.now().toString() } })
+      );
+      message.success("Receptionist added successfully!");
+    }
+    dispatch(fetchStaffRequest({ role: "receptionists" }));
+    backToList();
+  };
+
   const handleDelete = (id) => {
     dispatch(deleteStaffRequest({ role: "receptionists", id }));
     message.success("Receptionist deleted successfully!");
   };
 
-  // Table columns
+  const filtered = receptionists.filter(
+    (r) =>
+      !search ||
+      r.name?.toLowerCase().includes(search.toLowerCase()) ||
+      r.shift?.toLowerCase().includes(search.toLowerCase()) ||
+      r.email?.toLowerCase().includes(search.toLowerCase()) ||
+      r.contact?.toLowerCase().includes(search.toLowerCase()) ||
+      r.status?.toLowerCase().includes(search.toLowerCase())
+  );
+
   const columns = [
     { title: "Name", dataIndex: "name", key: "name" },
     { title: "Shift", dataIndex: "shift", key: "shift" },
     { title: "Email", dataIndex: "email", key: "email" },
     { title: "Contact", dataIndex: "contact", key: "contact" },
-    { title: "Status", dataIndex: "status", key: "status" },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (s) => <Tag color={s === "Active" ? "green" : "red"}>{s}</Tag>,
+    },
     {
       title: "Actions",
       key: "actions",
       render: (_, record) => (
         <div style={{ display: "flex", gap: 6 }}>
-          <Button
-            type="link"
-            icon={<EyeOutlined />}
-            size="small"
-            onClick={() => openModal("view", record)}
-          />
-          <Button
-            type="link"
-            icon={<EditOutlined />}
-            size="small"
-            onClick={() => openModal("edit", record)}
-          />
-          <Button
-            type="link"
-            danger
-            icon={<DeleteOutlined />}
-            size="small"
-            onClick={() => handleDelete(record.id)}
-          />
+          <Button size="small" onClick={() => openView(record)}>
+            View
+          </Button>
+          <Button size="small" type="primary" onClick={() => openEdit(record)}>
+            Edit
+          </Button>
+          <Button size="small" danger onClick={() => handleDelete(record.id)}>
+            Delete
+          </Button>
         </div>
       ),
     },
   ];
 
-  return (
-    <div style={{ padding: "16px 20px" }}>
-      <h2 style={{ marginBottom: 10 }}>Receptionists</h2>
+  if (mode !== "list") {
+    return (
+      <div style={{ display: "flex", gap: 24, padding: 24 }}>
+        {/* Form Panel */}
+        <Card style={{ flex: 1, padding: 20 }}>
+          <h2 style={{ marginTop: 0 }}>
+            {mode === "view"
+              ? "View Receptionist"
+              : mode === "edit"
+              ? "Edit Receptionist"
+              : "Add Receptionist"}
+          </h2>
 
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSave();
+            }}
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: 12,
+            }}
+          >
+            {[
+              { label: "Name", name: "name" },
+              { label: "Shift", name: "shift" },
+              { label: "Email", name: "email" },
+              { label: "Contact", name: "contact" },
+              { label: "Status", name: "status" },
+              { label: "Address", name: "address", isTextArea: true },
+            ].map((item) => (
+              <div
+                key={item.name}
+                style={{ gridColumn: item.isTextArea ? "1 / span 2" : undefined }}
+              >
+                <label>{item.label}</label>
+                {item.isTextArea ? (
+                  <textarea
+                    name={item.name}
+                    value={formData[item.name]}
+                    onChange={handleChange}
+                    readOnly={mode === "view"}
+                    rows={2}
+                    style={{
+                      width: "100%",
+                      padding: 8,
+                      borderRadius: 8,
+                      border: "1px solid #ccc",
+                      resize: "none",
+                    }}
+                  />
+                ) : (
+                  <input
+                    name={item.name}
+                    value={formData[item.name]}
+                    onChange={handleChange}
+                    readOnly={mode === "view"}
+                    style={{
+                      width: "100%",
+                      padding: 8,
+                      borderRadius: 8,
+                      border: "1px solid #ccc",
+                    }}
+                  />
+                )}
+              </div>
+            ))}
+
+            {mode !== "view" && (
+              <div style={{ gridColumn: "1 / span 2", display: "flex", gap: 8 }}>
+                <Button htmlType="submit" type="primary">
+                  {mode === "edit" ? "Update" : "Add"}
+                </Button>
+                <Button
+                  type="default"
+                  onClick={() => setFormData(selected || { ...formData })}
+                >
+                  Reset
+                </Button>
+              </div>
+            )}
+          </form>
+
+          <div style={{ marginTop: 12 }}>
+            <Button onClick={backToList}>Back to List</Button>
+          </div>
+        </Card>
+
+        {/* Preview Panel */}
+        <Card style={{ flex: 1, background: "#fafafa", padding: 20 }}>
+          <h3>Receptionist Preview</h3>
+          {selected ? (
+            <>
+              <p>
+                <strong>Name:</strong> {selected.name || "-"}
+              </p>
+              <p>
+                <strong>Shift:</strong> {selected.shift || "-"}
+              </p>
+              <p>
+                <strong>Email:</strong> {selected.email || "-"}
+              </p>
+              <p>
+                <strong>Contact:</strong> {selected.contact || "-"}
+              </p>
+              <p>
+                <strong>Status:</strong>{" "}
+                <Tag color={selected.status === "Active" ? "green" : "red"}>
+                  {selected.status}
+                </Tag>
+              </p>
+              <p>
+                <strong>Address:</strong> {selected.address || "-"}
+              </p>
+            </>
+          ) : (
+            <p>Fill the form to see preview here...</p>
+          )}
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ padding: 24 }}>
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
-          marginBottom: 10,
-          flexWrap: "wrap",
-          gap: 6,
+          marginBottom: 16,
         }}
       >
-        <Input
-          placeholder="Search receptionist..."
-          style={{ width: 240, height: 32 }}
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-        />
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          size="small"
-          onClick={() => openModal("add")}
-        >
-          Add Receptionist
-        </Button>
+        <h2>Receptionists</h2>
+        <div style={{ display: "flex", gap: 8 }}>
+          <Input.Search
+            placeholder="Search receptionist"
+            allowClear
+            onSearch={(v) => setSearch(v)}
+            style={{ width: 220 }}
+          />
+          <Button type="primary" onClick={openAdd}>
+            Add Receptionist
+          </Button>
+        </div>
       </div>
 
-      <Card style={{ borderRadius: 8 }}>
-        {!loading && receptionists.length === 0 && (
-          <p style={{ textAlign: "center", color: "gray", margin: 0 }}>
-            No receptionists found.
-          </p>
-        )}
+      <Card>
         <Table
+          rowKey="id"
           dataSource={filtered}
           columns={columns}
           loading={loading}
-          rowKey="id"
           pagination={{ pageSize: 7 }}
-          size="small"
         />
       </Card>
-
-      {/* Compact Add / Edit / View Modal */}
-      <Modal
-        title={
-          modalMode === "view"
-            ? "View Receptionist"
-            : modalMode === "edit"
-            ? "Edit Receptionist"
-            : "Add Receptionist"
-        }
-        open={modalVisible}
-        onCancel={closeModal}
-        onOk={modalMode === "view" ? closeModal : handleSave}
-        okText={modalMode === "view" ? "Close" : "Save"}
-        cancelButtonProps={{
-          style: { display: modalMode === "view" ? "none" : "inline-block" },
-        }}
-        width={520}
-        bodyStyle={{
-          maxHeight: "65vh",
-          overflowY: "auto",
-          padding: "10px 16px 6px",
-        }}
-      >
-        {modalMode === "view" ? (
-          <div style={{ textAlign: "center", paddingTop: 4 }}>
-            <Avatar
-              size={64}
-              icon={<UserOutlined />}
-              style={{ backgroundColor: "#1890ff", marginBottom: 6 }}
-            />
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "6px 12px",
-                textAlign: "left",
-                marginTop: "6px",
-                fontSize: 13.5,
-              }}
-            >
-              {[
-                { label: "Name", value: selectedReceptionist?.name },
-                { label: "Shift", value: selectedReceptionist?.shift },
-                { label: "Email", value: selectedReceptionist?.email },
-                { label: "Contact", value: selectedReceptionist?.contact },
-                { label: "Status", value: selectedReceptionist?.status },
-              ].map((item, index) => (
-                <div key={index}>
-                  <strong style={{ color: "#444" }}>{item.label}:</strong>
-                  <div style={{ color: "#222", marginTop: 1 }}>
-                    {item.value || "-"}
-                  </div>
-                </div>
-              ))}
-              <div style={{ gridColumn: "1 / span 2" }}>
-                <strong style={{ color: "#444" }}>Address:</strong>
-                <div style={{ color: "#222", marginTop: 1 }}>
-                  {selectedReceptionist?.address || "-"}
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <Form
-            form={form}
-            layout="vertical"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "8px 14px",
-              marginTop: 6,
-            }}
-            size="small"
-          >
-            <Form.Item name="name" label="Name" rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
-            <Form.Item name="shift" label="Shift">
-              <Input />
-            </Form.Item>
-            <Form.Item name="email" label="Email">
-              <Input />
-            </Form.Item>
-            <Form.Item name="contact" label="Contact">
-              <Input />
-            </Form.Item>
-            <Form.Item name="status" label="Status">
-              <Input />
-            </Form.Item>
-            <Form.Item name="address" label="Address" style={{ gridColumn: "1 / span 2" }}>
-              <Input.TextArea rows={2} style={{ resize: "none" }} />
-            </Form.Item>
-          </Form>
-        )}
-      </Modal>
     </div>
   );
 }

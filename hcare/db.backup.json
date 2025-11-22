@@ -1,0 +1,1744 @@
+{
+  "doctors": [
+    {
+      "id": 1,
+      "name": "Dr. Asha R",
+      "gender": "Female",
+      "age": 35,
+      "specialization": "Cardiologist",
+      "qualification": "MBBS, MD",
+      "experience": "10 years",
+      "contact": "9876543210",
+      "email": "asha.r@gmail.com",
+      "password": "Asha@2024",
+      "role": "doctor",
+      "address": "Trichy, Tamil Nadu",
+      "availableDays": [
+        "Monday",
+        "Wednesday",
+        "Friday"
+      ],
+      "availableTime": "10:00 AM - 2:00 PM",
+      "status": "Active",
+      "department": "Cardiology",
+      "licenseNumber": "TN12345",
+      "rating": 4.7,
+      "consultationFee": 500,
+      "bio": "Specialist in heart and blood vessel conditions with 10 years of experience."
+    },
+    {
+      "id": 2,
+      "name": "Dr. Karthik M",
+      "gender": "Male",
+      "age": 40,
+      "specialization": "Orthopedic Surgeon",
+      "qualification": "MBBS, MS (Ortho)",
+      "experience": "12 years",
+      "contact": "9876543211",
+      "email": "karthik.m@gmail.com",
+      "password": "Karthik@2024",
+      "role": "doctor",
+      "address": "Chennai, Tamil Nadu",
+      "availableDays": [
+        "Tuesday",
+        "Thursday"
+      ],
+      "availableTime": "9:00 AM - 1:00 PM",
+      "status": "Active",
+      "department": "Orthopedics",
+      "licenseNumber": "TN12346",
+      "rating": 4.5,
+      "consultationFee": 600,
+      "bio": "Expert in bone and joint surgeries with over 12 years of experience."
+    },
+    {
+      "id": 3,
+      "name": "Dr. Priya S",
+      "gender": "Female",
+      "age": 32,
+      "specialization": "Dermatologist",
+      "qualification": "MBBS, MD (Dermatology)",
+      "experience": "8 years",
+      "contact": "9876543212",
+      "email": "priya.s@gmail.com",
+      "password": "Priya@2024",
+      "role": "doctor",
+      "address": "Coimbatore, Tamil Nadu",
+      "availableDays": [
+        "Monday",
+        "Thursday",
+        "Saturday"
+      ],
+      "availableTime": "11:00 AM - 3:00 PM",
+      "status": "Active",
+      "department": "Dermatology",
+      "licenseNumber": "TN12347",
+      "rating": 4.6,
+      "consultationFee": 450,
+      "bio": "Dermatology specialist handling skin, hair, and nail-related conditions."
+    },
+    {
+      "id": 4,
+      "name": "Dr. Suresh K",
+      "gender": "Male",
+      "age": 45,
+      "specialization": "Neurologist",
+      "qualification": "MBBS, DM (Neurology)",
+      "experience": "15 years",
+      "contact": "9876543213",
+      "email": "suresh.k@gmail.com",
+      "password": "Suresh@2024",
+      "role": "doctor",
+      "address": "Madurai, Tamil Nadu",
+      "availableDays": [
+        "Tuesday",
+        "Friday"
+      ],
+      "availableTime": "10:00 AM - 1:00 PM",
+      "status": "Active",
+      "department": "Neurology",
+      "licenseNumber": "TN12348",
+      "rating": 4.8,
+      "consultationFee": 700,
+      "bio": "Experienced neurologist specializing in brain and nervous system disorders."
+    },
+    {
+      "id": 5,
+      "name": "Dr. Nithya V",
+      "gender": "Female",
+      "age": 38,
+      "specialization": "Gynecologist",
+      "qualification": "MBBS, MD (OBG)",
+      "experience": "11 years",
+      "contact": "9876543214",
+      "email": "nithya.v@gmail.com",
+      "password": "Nithya@2024",
+      "role": "doctor",
+      "address": "Salem, Tamil Nadu",
+      "availableDays": [
+        "Wednesday",
+        "Saturday"
+      ],
+      "availableTime": "9:30 AM - 1:30 PM",
+      "status": "Active",
+      "department": "Gynecology",
+      "licenseNumber": "TN12349",
+      "rating": 4.9,
+      "consultationFee": 550,
+      "bio": "Specialist in women’s health, pregnancy care, and reproductive health."
+    },
+    {
+      "id": 6,
+      "name": "Dr. Aravind T",
+      "gender": "Male",
+      "age": 37,
+      "specialization": "ENT Specialist",
+      "qualification": "MBBS, MS (ENT)",
+      "experience": "9 years",
+      "contact": "9876543215",
+      "email": "aravind.t@gmail.com",
+      "password": "Aravind@2024",
+      "role": "doctor",
+      "address": "Chennai, Tamil Nadu",
+      "availableDays": [
+        "Monday",
+        "Tuesday",
+        "Friday"
+      ],
+      "availableTime": "2:00 PM - 6:00 PM",
+      "status": "Active",
+      "department": "ENT",
+      "licenseNumber": "TN12350",
+      "rating": 4.4,
+      "consultationFee": 400,
+      "bio": "ENT specialist treating ear, nose, and throat-related conditions."
+    },
+    {
+      "id": 7,
+      "name": "Dr. Meenakshi L",
+      "gender": "Female",
+      "age": 42,
+      "specialization": "Ophthalmologist",
+      "qualification": "MBBS, MS (Ophthalmology)",
+      "experience": "14 years",
+      "contact": "9876543216",
+      "email": "meenakshi.l@gmail.com",
+      "password": "Meena@2024",
+      "role": "doctor",
+      "address": "Tirunelveli, Tamil Nadu",
+      "availableDays": [
+        "Thursday",
+        "Saturday"
+      ],
+      "availableTime": "10:00 AM - 2:00 PM",
+      "status": "Active",
+      "department": "Ophthalmology",
+      "licenseNumber": "TN12351",
+      "rating": 4.7,
+      "consultationFee": 500,
+      "bio": "Eye specialist with strong experience in vision care and eye surgeries."
+    },
+    {
+      "id": 8,
+      "name": "Dr. Raghavan P",
+      "gender": "Male",
+      "age": 50,
+      "specialization": "General Physician",
+      "qualification": "MBBS",
+      "experience": "20 years",
+      "contact": "9876543217",
+      "email": "raghavan.p@gmail.com",
+      "password": "Raghavan@2024",
+      "role": "doctor",
+      "address": "Trichy, Tamil Nadu",
+      "availableDays": [
+        "Monday",
+        "Wednesday",
+        "Friday"
+      ],
+      "availableTime": "9:00 AM - 12:00 PM",
+      "status": "Active",
+      "department": "General Medicine",
+      "licenseNumber": "TN12352",
+      "rating": 4.3,
+      "consultationFee": 300,
+      "bio": "General physician with expertise in diagnosing common medical problems."
+    },
+    {
+      "id": 9,
+      "name": "Dr. Lakshmi D",
+      "gender": "Female",
+      "age": 33,
+      "specialization": "Pediatrician",
+      "qualification": "MBBS, MD (Pediatrics)",
+      "experience": "7 years",
+      "contact": "9876543218",
+      "email": "lakshmi.d@gmail.com",
+      "password": "Lakshmi@2024",
+      "role": "doctor",
+      "address": "Chennai, Tamil Nadu",
+      "availableDays": [
+        "Tuesday",
+        "Thursday",
+        "Saturday"
+      ],
+      "availableTime": "11:00 AM - 4:00 PM",
+      "status": "Active",
+      "department": "Pediatrics",
+      "licenseNumber": "TN12353",
+      "rating": 4.8,
+      "consultationFee": 480,
+      "bio": "Child specialist providing care for infants, toddlers, and adolescents."
+    },
+    {
+      "id": 10,
+      "name": "Dr. Manoj V",
+      "gender": "Male",
+      "age": 39,
+      "specialization": "Psychiatrist",
+      "qualification": "MBBS, MD (Psychiatry)",
+      "experience": "10 years",
+      "contact": "9876543219",
+      "email": "manoj.v@gmail.com",
+      "password": "Manoj@2024",
+      "role": "doctor",
+      "address": "Chennai, Tamil Nadu",
+      "availableDays": [
+        "Wednesday",
+        "Friday"
+      ],
+      "availableTime": "3:00 PM - 7:00 PM",
+      "status": "Active",
+      "department": "Psychiatry",
+      "licenseNumber": "TN12354",
+      "rating": 4.6,
+      "consultationFee": 650,
+      "bio": "Psychiatrist specializing in mental health, stress, and emotional wellbeing."
+    }
+  ],
+  "patients": [
+    {
+      "id": 1,
+      "name": "Aarav",
+      "age": 32,
+      "gender": "Male",
+      "bloodGroup": "A+",
+      "contact": "9876543210",
+      "email": "aarav.kumar@gmail.com",
+      "password": "Aarav@2024",
+      "role": "patient",
+      "address": "123 Main St, Trichy",
+      "medicalHistory": "Diabetes",
+      "allergies": "Penicillin",
+      "emergencyContact": "Ananya (Sister) - 9876501234",
+      "status": "Active",
+      "registeredDate": "2025-11-01"
+    },
+    {
+      "id": 2,
+      "name": "Ananya",
+      "age": 27,
+      "gender": "Female",
+      "contact": "9876543211",
+      "email": "ananya.raj@gmail.com",
+      "bloodGroup": "O+",
+      "address": "45 MG Street, Trichy",
+      "registeredDate": "2025-11-02",
+      "medicalHistory": "Asthma",
+      "allergies": "Dust",
+      "emergencyContact": "Aarav (Brother) - 9876543210",
+      "status": "Active"
+    },
+    {
+      "id": 3,
+      "name": "Abinav",
+      "age": 30,
+      "gender": "Male",
+      "contact": "9876543210",
+      "email": "abinav@gmail.com",
+      "password": "Abinav@2024",
+      "role": "patient",
+      "address": "Park street, Thanjavur",
+      "registeredDate": "2025-11-12",
+      "status": "Active"
+    },
+    {
+      "id": 4,
+      "name": "Diya Sharma",
+      "age": 25,
+      "gender": "Female",
+      "contact": "9876543220",
+      "email": "diya.sharma@gmail.com",
+      "password": "Diya@2024",
+      "role": "patient",
+      "address": "12 MG Road, Trichy",
+      "registeredDate": "2025-11-05",
+      "medicalHistory": "Hypertension",
+      "allergies": "None",
+      "emergencyContact": "Rohan (Brother) - 9876543221",
+      "status": "Active"
+    },
+    {
+      "id": 5,
+      "name": "Rohan Verma",
+      "age": 29,
+      "gender": "Male",
+      "contact": "9876543230",
+      "email": "rohan.verma@gmail.com",
+      "password": "Rohan@2024",
+      "role": "patient",
+      "address": "56 Park Avenue, Trichy",
+      "registeredDate": "2025-11-06",
+      "medicalHistory": "None",
+      "allergies": "Peanuts",
+      "emergencyContact": "Diya (Sister) - 9876543220",
+      "status": "Active"
+    },
+    {
+      "id": 6,
+      "name": "Ishaan Rao",
+      "age": 31,
+      "gender": "Male",
+      "contact": "9876543240",
+      "email": "ishaan.rao@gmail.com",
+      "password": "Ishaan@2024",
+      "role": "patient",
+      "address": "78 Lake View, Trichy",
+      "registeredDate": "2025-11-07",
+      "medicalHistory": "Allergic Rhinitis",
+      "allergies": "Pollen",
+      "emergencyContact": "Meera (Sister) - 9876543241",
+      "status": "Active"
+    },
+    {
+      "id": 7,
+      "name": "Meera Nair",
+      "age": 28,
+      "gender": "Female",
+      "contact": "9876543250",
+      "email": "meera.nair@gmail.com",
+      "password": "Meera@2024",
+      "role": "patient",
+      "address": "90 Central Street, Trichy",
+      "registeredDate": "2025-11-08",
+      "medicalHistory": "Thyroid",
+      "allergies": "Seafood",
+      "emergencyContact": "Ishaan (Brother) - 9876543240",
+      "status": "Active"
+    },
+    {
+      "id": 8,
+      "name": "Kavya Menon",
+      "age": 26,
+      "gender": "Female",
+      "contact": "9876543260",
+      "email": "kavya.menon@gmail.com",
+      "password": "Kavya@2024",
+      "role": "patient",
+      "address": "23 MG Road, Trichy",
+      "registeredDate": "2025-11-09",
+      "medicalHistory": "Migraine",
+      "allergies": "None",
+      "emergencyContact": "Aryan (Brother) - 9876543261",
+      "status": "Active"
+    },
+    {
+      "id": 9,
+      "name": "Aryan Gupta",
+      "age": 33,
+      "gender": "Male",
+      "contact": "9876543270",
+      "email": "aryan.gupta@gmail.com",
+      "password": "Aryan@2024",
+      "role": "patient",
+      "address": "14 Lake Road, Trichy",
+      "registeredDate": "2025-11-10",
+      "medicalHistory": "Heart Disease",
+      "allergies": "Dust",
+      "emergencyContact": "Kavya (Sister) - 9876543260",
+      "status": "Active"
+    },
+    {
+      "id": 10,
+      "name": "Saanvi Iyer",
+      "age": 24,
+      "gender": "Female",
+      "contact": "9876543280",
+      "email": "saanvi.iyer@gmail.com",
+      "password": "Saanvi@2024",
+      "role": "patient",
+      "address": "67 Park Lane, Trichy",
+      "registeredDate": "2025-11-11",
+      "medicalHistory": "None",
+      "allergies": "Gluten",
+      "emergencyContact": "Neil (Brother) - 9876543281",
+      "status": "Active"
+    }
+  ],
+  "appointments": [
+    {
+      "id": 101,
+      "patientId": 1,
+      "doctorId": 1,
+      "appointmentDate": "2025-11-10",
+      "appointmentTime": "10:30 AM",
+      "reason": "Routine Checkup",
+      "status": "Completed",
+      "paymentStatus": "Paid",
+      "remarks": "Patient is stable, advised for regular exercise."
+    },
+    {
+      "id": 102,
+      "patientId": 2,
+      "doctorId": 2,
+      "appointmentDate": "2025-11-11",
+      "appointmentTime": "02:00 PM",
+      "reason": "Asthma follow-up",
+      "status": "Rejected",
+      "paymentStatus": "Pending",
+      "remarks": ""
+    },
+    {
+      "patientId": 2,
+      "doctorId": 1,
+      "appointmentDate": "2025-11-20",
+      "appointmentTime": "05:00 PM",
+      "reason": "Asthma",
+      "remarks": "No",
+      "status": "Accepted",
+      "paymentStatus": "Pending",
+      "id": 103
+    },
+    {
+      "patientId": 1,
+      "doctorId": 2,
+      "appointmentDate": "2025-11-19",
+      "appointmentTime": "07:00 PM",
+      "reason": "Penicillin",
+      "remarks": "",
+      "status": "Rejected",
+      "paymentStatus": "Pending",
+      "id": 104
+    },
+    {
+      "patientId": 2,
+      "doctorId": 4,
+      "appointmentDate": "2025-11-27",
+      "appointmentTime": "04:00 PM",
+      "reason": "-",
+      "remarks": "-",
+      "status": "Rejected",
+      "paymentStatus": "Pending",
+      "id": 105
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "role": "admin",
+      "name": "Admin User",
+      "email": "admin@hospital.com",
+      "password": "admin123"
+    },
+    {
+      "id": 2,
+      "role": "doctor",
+      "name": "Dr. Asha R",
+      "email": "asha.r@gmail.com",
+      "password": "Asha@2024"
+    },
+    {
+      "id": 3,
+      "role": "nurse",
+      "name": "Priya Raj",
+      "email": "priya.raj@gmail.com",
+      "password": "nurse123"
+    },
+    {
+      "id": 4,
+      "role": "pharmacist",
+      "name": "Dr. Sameer",
+      "email": "sameer.pharma@example.com",
+      "password": "pharma123"
+    },
+    {
+      "id": 5,
+      "role": "receptionist",
+      "name": "Riya Sharma",
+      "email": "riya.sharma@example.com",
+      "password": "recep123"
+    },
+    {
+      "id": 6,
+      "role": "patient",
+      "name": "Aarav",
+      "email": "aarav.kumar@gmail.com",
+      "password": "Aarav@2024"
+    },
+    {
+      "name": "Sara",
+      "email": "sara@gmail.com",
+      "password": "sara123",
+      "role": "nurse",
+      "id": 7
+    }
+  ],
+  "news": [
+    {
+      "id": 1,
+      "title": "Free Health Checkup Camp",
+      "content": "Join our annual free health checkup at City Center Hospital this weekend."
+    },
+    {
+      "id": 2,
+      "title": "New Cardiology Wing Opened",
+      "content": "Our hospital inaugurates a new 24x7 cardiology unit with advanced equipment."
+    }
+  ],
+  "medicines": [
+    {
+      "id": 1,
+      "medicineName": "Paracetamol",
+      "genericName": "Acetaminophen",
+      "sku": "MED001",
+      "weight": "500mg",
+      "category": "Pain Relief",
+      "manufacturer": "Cipla Ltd",
+      "price": "30",
+      "manufacturerPrice": 18,
+      "stock": 120,
+      "expireDate": "2026-04-12",
+      "status": "Available",
+      "medicineDetails": "Used to reduce fever and relieve mild to moderate pain."
+    },
+    {
+      "id": 2,
+      "medicineName": "Aspirin",
+      "genericName": "Acetylsalicylic Acid",
+      "sku": "MED002",
+      "weight": "75mg",
+      "category": "Pain Relief",
+      "manufacturer": "Sun Pharma",
+      "price": "25",
+      "manufacturerPrice": 10,
+      "stock": 200,
+      "expireDate": "2026-05-20",
+      "status": "Available",
+      "medicineDetails": "Used for pain relief and anti-inflammatory."
+    },
+    {
+      "id": 3,
+      "medicineName": "Ibuprofen",
+      "genericName": "Ibuprofen",
+      "sku": "MED003",
+      "weight": "200mg",
+      "category": "Pain Relief",
+      "manufacturer": "Dr. Reddy's",
+      "price": 20,
+      "manufacturerPrice": 12,
+      "stock": 150,
+      "expireDate": "2026-06-15",
+      "status": "Available",
+      "medicineDetails": "Non-steroidal anti-inflammatory drug for pain and inflammation."
+    },
+    {
+      "id": 4,
+      "medicineName": "Paracetamol",
+      "genericName": "Acetaminophen",
+      "sku": "MED001",
+      "weight": "500mg",
+      "category": "Pain Relief",
+      "manufacturer": "Cipla Ltd",
+      "price": 25,
+      "manufacturerPrice": 18,
+      "stock": 120,
+      "expireDate": "2026-04-12",
+      "status": "Available",
+      "medicineDetails": "Used to reduce fever and relieve mild to moderate pain."
+    },
+    {
+      "id": 5,
+      "medicineName": "Amoxicillin",
+      "genericName": "Amoxicillin Trihydrate",
+      "sku": "MED002",
+      "weight": "250mg",
+      "category": "Antibiotic",
+      "manufacturer": "Sun Pharma",
+      "price": 40,
+      "manufacturerPrice": 30,
+      "stock": 80,
+      "expireDate": "2025-12-31",
+      "status": "Available",
+      "medicineDetails": "Used to treat bacterial infections such as respiratory tract infections."
+    },
+    {
+      "id": 6,
+      "medicineName": "Ibuprofen",
+      "genericName": "Ibuprofen",
+      "sku": "MED003",
+      "weight": "400mg",
+      "category": "Pain Relief",
+      "manufacturer": "Glenmark",
+      "price": 35,
+      "manufacturerPrice": 25,
+      "stock": 100,
+      "expireDate": "2026-06-30",
+      "status": "Available",
+      "medicineDetails": "Used to relieve pain, inflammation, and reduce fever."
+    },
+    {
+      "id": 7,
+      "medicineName": "Cetirizine",
+      "genericName": "Cetirizine Hydrochloride",
+      "sku": "MED004",
+      "weight": "10mg",
+      "category": "Antihistamine",
+      "manufacturer": "Dr. Reddy's",
+      "price": 20,
+      "manufacturerPrice": 12,
+      "stock": 150,
+      "expireDate": "2025-09-15",
+      "status": "Available",
+      "medicineDetails": "Used to relieve allergy symptoms such as sneezing, itching, and runny nose."
+    },
+    {
+      "id": 8,
+      "medicineName": "Metformin",
+      "genericName": "Metformin Hydrochloride",
+      "sku": "MED005",
+      "weight": "500mg",
+      "category": "Diabetes",
+      "manufacturer": "Sun Pharma",
+      "price": 50,
+      "manufacturerPrice": 35,
+      "stock": 60,
+      "expireDate": "2026-01-31",
+      "status": "Available",
+      "medicineDetails": "Used to control high blood sugar in patients with type 2 diabetes."
+    },
+    {
+      "id": 9,
+      "medicineName": "Omeprazole",
+      "genericName": "Omeprazole",
+      "sku": "MED006",
+      "weight": "20mg",
+      "category": "Gastrointestinal",
+      "manufacturer": "Cipla Ltd",
+      "price": 45,
+      "manufacturerPrice": 30,
+      "stock": 70,
+      "expireDate": "2026-03-30",
+      "status": "Available",
+      "medicineDetails": "Used to treat gastroesophageal reflux disease (GERD) and ulcers."
+    },
+    {
+      "id": 10,
+      "medicineName": "Aspirin",
+      "genericName": "Acetylsalicylic Acid",
+      "sku": "MED007",
+      "weight": "75mg",
+      "category": "Cardiovascular",
+      "manufacturer": "Bayer",
+      "price": 30,
+      "manufacturerPrice": 20,
+      "stock": 90,
+      "expireDate": "2025-11-30",
+      "status": "Available",
+      "medicineDetails": "Used to prevent blood clots, heart attack, and stroke."
+    },
+    {
+      "id": 11,
+      "medicineName": "Salbutamol",
+      "genericName": "Salbutamol Sulfate",
+      "sku": "MED008",
+      "weight": "100mcg",
+      "category": "Respiratory",
+      "manufacturer": "Novartis",
+      "price": 60,
+      "manufacturerPrice": 40,
+      "stock": 50,
+      "expireDate": "2026-07-15",
+      "status": "Available",
+      "medicineDetails": "Used to treat asthma and other respiratory conditions by opening airways."
+    },
+    {
+      "id": 12,
+      "medicineName": "Doxycycline",
+      "genericName": "Doxycycline Hyclate",
+      "sku": "MED009",
+      "weight": "100mg",
+      "category": "Antibiotic",
+      "manufacturer": "Alkem Labs",
+      "price": 55,
+      "manufacturerPrice": 40,
+      "stock": 100,
+      "expireDate": "2026-08-20",
+      "status": "Available",
+      "medicineDetails": "Used to treat bacterial infections including acne and respiratory infections."
+    },
+    {
+      "id": 13,
+      "medicineName": "Azithromycin",
+      "genericName": "Azithromycin",
+      "sku": "MED010",
+      "weight": "500mg",
+      "category": "Antibiotic",
+      "manufacturer": "Cipla Ltd",
+      "price": 80,
+      "manufacturerPrice": 60,
+      "stock": 70,
+      "expireDate": "2026-10-05",
+      "status": "Available",
+      "medicineDetails": "Used to treat respiratory infections, skin infections, and sexually transmitted diseases."
+    },
+    {
+      "id": 14,
+      "medicineName": "Pantoprazole",
+      "genericName": "Pantoprazole Sodium",
+      "sku": "MED011",
+      "weight": "40mg",
+      "category": "Gastrointestinal",
+      "manufacturer": "Sun Pharma",
+      "price": 35,
+      "manufacturerPrice": 22,
+      "stock": 90,
+      "expireDate": "2026-09-12",
+      "status": "Available",
+      "medicineDetails": "Used to reduce stomach acid and treat GERD."
+    },
+    {
+      "id": 15,
+      "medicineName": "Atorvastatin",
+      "genericName": "Atorvastatin Calcium",
+      "sku": "MED012",
+      "weight": "10mg",
+      "category": "Cardiovascular",
+      "manufacturer": "Dr. Reddy's",
+      "price": 75,
+      "manufacturerPrice": 55,
+      "stock": 110,
+      "expireDate": "2027-01-01",
+      "status": "Available",
+      "medicineDetails": "Used to reduce cholesterol and prevent heart disease."
+    },
+    {
+      "id": 16,
+      "medicineName": "Losartan",
+      "genericName": "Losartan Potassium",
+      "sku": "MED013",
+      "weight": "50mg",
+      "category": "Cardiovascular",
+      "manufacturer": "Torrent Pharma",
+      "price": 65,
+      "manufacturerPrice": 45,
+      "stock": 95,
+      "expireDate": "2026-12-10",
+      "status": "Available",
+      "medicineDetails": "Used to treat high blood pressure and protect kidneys."
+    },
+    {
+      "id": 17,
+      "medicineName": "Amlodipine",
+      "genericName": "Amlodipine Besylate",
+      "sku": "MED014",
+      "weight": "5mg",
+      "category": "Cardiovascular",
+      "manufacturer": "Cipla Ltd",
+      "price": 30,
+      "manufacturerPrice": 18,
+      "stock": 140,
+      "expireDate": "2026-11-22",
+      "status": "Available",
+      "medicineDetails": "Used to treat high blood pressure and chest pain."
+    },
+    {
+      "id": 18,
+      "medicineName": "Montelukast",
+      "genericName": "Montelukast Sodium",
+      "sku": "MED015",
+      "weight": "10mg",
+      "category": "Respiratory",
+      "manufacturer": "Sun Pharma",
+      "price": 45,
+      "manufacturerPrice": 30,
+      "stock": 85,
+      "expireDate": "2026-10-30",
+      "status": "Available",
+      "medicineDetails": "Used to prevent asthma and relieve allergy symptoms."
+    },
+    {
+      "id": 19,
+      "medicineName": "Ranitidine",
+      "genericName": "Ranitidine Hydrochloride",
+      "sku": "MED016",
+      "weight": "150mg",
+      "category": "Gastrointestinal",
+      "manufacturer": "Glenmark",
+      "price": 28,
+      "manufacturerPrice": 18,
+      "stock": 75,
+      "expireDate": "2026-09-05",
+      "status": "Available",
+      "medicineDetails": "Used to reduce stomach acid and treat ulcers."
+    },
+    {
+      "id": 20,
+      "medicineName": "Levocetirizine",
+      "genericName": "Levocetirizine Dihydrochloride",
+      "sku": "MED017",
+      "weight": "5mg",
+      "category": "Antihistamine",
+      "manufacturer": "Alkem Labs",
+      "price": 25,
+      "manufacturerPrice": 15,
+      "stock": 120,
+      "expireDate": "2026-06-18",
+      "status": "Available",
+      "medicineDetails": "Used to relieve allergic symptoms and chronic urticaria."
+    },
+    {
+      "id": 21,
+      "medicineName": "Fluconazole",
+      "genericName": "Fluconazole",
+      "sku": "MED018",
+      "weight": "150mg",
+      "category": "Antifungal",
+      "manufacturer": "Cipla Ltd",
+      "price": 50,
+      "manufacturerPrice": 35,
+      "stock": 60,
+      "expireDate": "2026-08-08",
+      "status": "Available",
+      "medicineDetails": "Used to treat fungal infections including yeast infections."
+    },
+    {
+      "id": 22,
+      "medicineName": "Clopidogrel",
+      "genericName": "Clopidogrel Bisulfate",
+      "sku": "MED019",
+      "weight": "75mg",
+      "category": "Cardiovascular",
+      "manufacturer": "Sun Pharma",
+      "price": 85,
+      "manufacturerPrice": 60,
+      "stock": 70,
+      "expireDate": "2026-12-20",
+      "status": "Available",
+      "medicineDetails": "Used to prevent blood clots and reduce risk of stroke."
+    },
+    {
+      "id": 23,
+      "medicineName": "Hydroxyzine",
+      "genericName": "Hydroxyzine Hydrochloride",
+      "sku": "MED020",
+      "weight": "25mg",
+      "category": "Antihistamine",
+      "manufacturer": "Dr. Reddy's",
+      "price": 40,
+      "manufacturerPrice": 28,
+      "stock": 65,
+      "expireDate": "2026-07-02",
+      "status": "Available",
+      "medicineDetails": "Used to treat anxiety and allergy symptoms."
+    },
+    {
+      "id": 24,
+      "medicineName": "Prednisolone",
+      "genericName": "Prednisolone",
+      "sku": "MED021",
+      "weight": "10mg",
+      "category": "Steroid",
+      "manufacturer": "Cipla Ltd",
+      "price": 45,
+      "manufacturerPrice": 32,
+      "stock": 55,
+      "expireDate": "2026-05-28",
+      "status": "Available",
+      "medicineDetails": "Used as an anti-inflammatory and immunosuppressant."
+    },
+    {
+      "id": 25,
+      "medicineName": "Vitamin C",
+      "genericName": "Ascorbic Acid",
+      "sku": "MED022",
+      "weight": "500mg",
+      "category": "Supplement",
+      "manufacturer": "Glenmark",
+      "price": 30,
+      "manufacturerPrice": 15,
+      "stock": 180,
+      "expireDate": "2027-02-10",
+      "status": "Available",
+      "medicineDetails": "Used as antioxidant support and immunity booster."
+    },
+    {
+      "id": 26,
+      "medicineName": "Iron Tablets",
+      "genericName": "Ferrous Sulfate",
+      "sku": "MED023",
+      "weight": "65mg",
+      "category": "Supplement",
+      "manufacturer": "Sun Pharma",
+      "price": 55,
+      "manufacturerPrice": 38,
+      "stock": 90,
+      "expireDate": "2026-09-25",
+      "status": "Available",
+      "medicineDetails": "Used to treat or prevent low blood levels of iron."
+    },
+    {
+      "id": 27,
+      "medicineName": "Calcium D3",
+      "genericName": "Calcium Carbonate + Vitamin D3",
+      "sku": "MED024",
+      "weight": "500mg",
+      "category": "Supplement",
+      "manufacturer": "Dr. Reddy's",
+      "price": 65,
+      "manufacturerPrice": 45,
+      "stock": 85,
+      "expireDate": "2027-01-15",
+      "status": "Available",
+      "medicineDetails": "Used to strengthen bones and prevent calcium deficiency."
+    },
+    {
+      "id": 28,
+      "medicineName": "Zinc Sulfate",
+      "genericName": "Zinc Sulfate Monohydrate",
+      "sku": "MED025",
+      "weight": "50mg",
+      "category": "Supplement",
+      "manufacturer": "Cipla Ltd",
+      "price": 45,
+      "manufacturerPrice": 28,
+      "stock": 110,
+      "expireDate": "2026-10-18",
+      "status": "Available",
+      "medicineDetails": "Used to boost immunity and treat zinc deficiency."
+    },
+    {
+      "id": 29,
+      "medicineName": "ORS Solution",
+      "genericName": "Oral Rehydration Salts",
+      "sku": "MED026",
+      "weight": "21g",
+      "category": "Hydration",
+      "manufacturer": "Reckitt",
+      "price": 20,
+      "manufacturerPrice": 10,
+      "stock": 200,
+      "expireDate": "2026-08-01",
+      "status": "Available",
+      "medicineDetails": "Used to prevent dehydration caused by diarrhea or heat."
+    },
+    {
+      "id": 30,
+      "medicineName": "Loperamide",
+      "genericName": "Loperamide Hydrochloride",
+      "sku": "MED027",
+      "weight": "2mg",
+      "category": "Gastrointestinal",
+      "manufacturer": "Alkem Labs",
+      "price": 35,
+      "manufacturerPrice": 22,
+      "stock": 90,
+      "expireDate": "2026-09-12",
+      "status": "Available",
+      "medicineDetails": "Used to control and treat diarrhea."
+    },
+    {
+      "id": 31,
+      "medicineName": "Guaifenesin",
+      "genericName": "Guaifenesin",
+      "sku": "MED028",
+      "weight": "200mg",
+      "category": "Respiratory",
+      "manufacturer": "Sun Pharma",
+      "price": 40,
+      "manufacturerPrice": 25,
+      "stock": 120,
+      "expireDate": "2026-11-04",
+      "status": "Available",
+      "medicineDetails": "Used as an expectorant to relieve chest congestion."
+    }
+  ],
+  "nurses": [
+    {
+      "id": 1,
+      "name": "Priya Raj",
+      "age": 28,
+      "gender": "Female",
+      "email": "priya.raj@gmail.com",
+      "password": "nurse123",
+      "role": "nurse",
+      "phone": "9876543210",
+      "department": "Cardiology",
+      "shift": "Morning (7AM–3PM)",
+      "experience": 4,
+      "status": "Active",
+      "assignedPatients": [
+        1,
+        2
+      ],
+      "dateJoined": "2021-06-15"
+    },
+    {
+      "id": 2,
+      "name": "Sara",
+      "age": 28,
+      "gender": "Female",
+      "email": "sara@gmail.com",
+      "password": "sara123",
+      "role": "nurse",
+      "phone": "8756904563",
+      "department": "Assist",
+      "shift": "Night",
+      "experience": "",
+      "status": "Active",
+      "assignedPatients": [
+        3,
+        4
+      ],
+      "dateJoined": "2025-11-19"
+    },
+    {
+      "id": 3,
+      "name": "Rohit Sharma",
+      "age": 32,
+      "gender": "Male",
+      "email": "rohit.sharma@gmail.com",
+      "password": "nurse123",
+      "role": "nurse",
+      "phone": "9876543212",
+      "department": "Pediatrics",
+      "shift": "Night (11PM–7AM)",
+      "experience": 6,
+      "status": "Active",
+      "assignedPatients": [
+        5,
+        6
+      ],
+      "dateJoined": "2019-03-20"
+    },
+    {
+      "id": 4,
+      "name": "Meera Iyer",
+      "age": 27,
+      "gender": "Female",
+      "email": "meera.iyer@gmail.com",
+      "password": "nurse123",
+      "role": "nurse",
+      "phone": "9876543213",
+      "department": "Oncology",
+      "shift": "Morning (7AM–3PM)",
+      "experience": 3,
+      "status": "Active",
+      "assignedPatients": [
+        7,
+        8
+      ],
+      "dateJoined": "2021-11-05"
+    },
+    {
+      "id": 5,
+      "name": "Arjun Rao",
+      "age": 29,
+      "gender": "Male",
+      "email": "arjun.rao@gmail.com",
+      "password": "nurse123",
+      "role": "nurse",
+      "phone": "9876543214",
+      "department": "Cardiology",
+      "shift": "Evening (3PM–11PM)",
+      "experience": 4,
+      "status": "Active",
+      "assignedPatients": [
+        9,
+        10
+      ],
+      "dateJoined": "2022-02-18"
+    }
+  ],
+  "invoices": [
+    {
+      "id": 1,
+      "patientId": 1,
+      "patientName": "Aarav Kumar",
+      "doctorId": 1,
+      "doctorName": "Dr. Asha R",
+      "appointmentId": 101,
+      "services": [
+        {
+          "service": "Consultation",
+          "amount": 500
+        },
+        {
+          "service": "ECG",
+          "amount": 200
+        }
+      ],
+      "totalAmount": 700,
+      "paidAmount": 700,
+      "balance": 0,
+      "status": "Paid",
+      "invoiceDate": "2025-11-10",
+      "dueDate": "2025-11-10",
+      "paymentMethod": "Cash",
+      "notes": "Routine checkup billing."
+    },
+    {
+      "id": 2,
+      "patientId": 2,
+      "patientName": "Ananya Raj",
+      "doctorId": 2,
+      "doctorName": "Dr. Karthik M",
+      "appointmentId": 102,
+      "services": [
+        {
+          "service": "Consultation",
+          "amount": 600
+        },
+        {
+          "service": "X-Ray",
+          "amount": 300
+        }
+      ],
+      "totalAmount": 900,
+      "paidAmount": 500,
+      "balance": 400,
+      "status": "Partial",
+      "invoiceDate": "2025-11-11",
+      "dueDate": "2025-11-18",
+      "paymentMethod": "Card",
+      "notes": "Follow-up appointment."
+    },
+    {
+      "id": 3,
+      "patientId": 1,
+      "patientName": "Aarav Kumar",
+      "doctorId": 2,
+      "doctorName": "Dr. Karthik M",
+      "appointmentId": null,
+      "services": [
+        {
+          "service": "Consultation",
+          "amount": 600
+        },
+        {
+          "service": "MRI",
+          "amount": 1500
+        }
+      ],
+      "totalAmount": 2100,
+      "paidAmount": 0,
+      "balance": 2100,
+      "status": "Unpaid",
+      "invoiceDate": "2025-11-12",
+      "dueDate": "2025-11-25",
+      "paymentMethod": "",
+      "notes": "Orthopedic consultation."
+    },
+    {
+      "id": 4,
+      "patientId": 2,
+      "patientName": "Ananya Raj",
+      "doctorId": 1,
+      "doctorName": "Dr. Asha R",
+      "appointmentId": null,
+      "services": [
+        {
+          "service": "Consultation",
+          "amount": 500
+        },
+        {
+          "service": "Blood Test",
+          "amount": 150
+        }
+      ],
+      "totalAmount": 650,
+      "paidAmount": 650,
+      "balance": 0,
+      "status": "Paid",
+      "invoiceDate": "2025-11-13",
+      "dueDate": "2025-11-13",
+      "paymentMethod": "Online",
+      "notes": "Cardiology follow-up."
+    }
+  ],
+  "prescriptions": [
+    {
+      "id": 1,
+      "patientId": 1,
+      "doctorId": 1,
+      "medicines": [
+        {
+          "medicineId": 1,
+          "medicineName": "Paracetamol",
+          "dosage": "500mg",
+          "frequency": "Twice daily",
+          "duration": "5 days"
+        }
+      ],
+      "nextFollowUp": "2025-11-15",
+      "notes": "Patient is stable, advised for regular exercise.",
+      "prescribedDate": "2025-11-10",
+      "status": "Active"
+    },
+    {
+      "id": 2,
+      "patientId": 2,
+      "doctorId": 2,
+      "medicines": [
+        {
+          "medicineId": 1,
+          "medicineName": "Paracetamol",
+          "dosage": "500mg",
+          "frequency": "Once daily",
+          "duration": "7 days"
+        }
+      ],
+      "nextFollowUp": "2025-11-18",
+      "notes": "Monitor asthma symptoms closely.",
+      "prescribedDate": "2025-11-11",
+      "status": "Active"
+    },
+    {
+      "id": 3,
+      "patientId": 1,
+      "doctorId": 2,
+      "medicines": [
+        {
+          "medicineId": 2,
+          "medicineName": "Aspirin",
+          "dosage": "75mg",
+          "frequency": "Once daily",
+          "duration": "10 days"
+        },
+        {
+          "medicineId": 3,
+          "medicineName": "Ibuprofen",
+          "dosage": "200mg",
+          "frequency": "Three times daily",
+          "duration": "7 days"
+        }
+      ],
+      "nextFollowUp": "2025-11-20",
+      "notes": "Pain management for joint issues.",
+      "prescribedDate": "2025-11-12",
+      "status": "Active"
+    },
+    {
+      "id": 4,
+      "patientId": 2,
+      "doctorId": 1,
+      "medicines": [
+        {
+          "medicineId": 1,
+          "medicineName": "Paracetamol",
+          "dosage": "500mg",
+          "frequency": "Twice daily",
+          "duration": "3 days"
+        },
+        {
+          "medicineId": 2,
+          "medicineName": "Aspirin",
+          "dosage": "75mg",
+          "frequency": "Once daily",
+          "duration": "5 days"
+        }
+      ],
+      "nextFollowUp": "2025-11-16",
+      "notes": "Fever and mild pain relief.",
+      "prescribedDate": "2025-11-13",
+      "status": "Active"
+    },
+    {
+      "id": 5,
+      "patientId": 3,
+      "doctorId": 1,
+      "medicines": [
+        {
+          "medicineId": 4,
+          "medicineName": "Metformin",
+          "dosage": "500mg",
+          "frequency": "Twice daily",
+          "duration": "30 days"
+        }
+      ],
+      "nextFollowUp": "2025-11-22",
+      "notes": "Diabetic patient, maintain diet and exercise.",
+      "prescribedDate": "2025-11-14",
+      "status": "Active"
+    },
+    {
+      "id": 6,
+      "patientId": 4,
+      "doctorId": 2,
+      "medicines": [
+        {
+          "medicineId": 5,
+          "medicineName": "Salbutamol",
+          "dosage": "2 puffs",
+          "frequency": "As needed",
+          "duration": "14 days"
+        }
+      ],
+      "nextFollowUp": "2025-11-23",
+      "notes": "Asthma patient, keep inhaler handy.",
+      "prescribedDate": "2025-11-15",
+      "status": "Active"
+    },
+    {
+      "id": 7,
+      "patientId": 5,
+      "doctorId": 1,
+      "medicines": [
+        {
+          "medicineId": 6,
+          "medicineName": "Atorvastatin",
+          "dosage": "10mg",
+          "frequency": "Once daily",
+          "duration": "30 days"
+        }
+      ],
+      "nextFollowUp": "2025-11-25",
+      "notes": "Cholesterol management.",
+      "prescribedDate": "2025-11-16",
+      "status": "Active"
+    },
+    {
+      "id": 8,
+      "patientId": 6,
+      "doctorId": 2,
+      "medicines": [
+        {
+          "medicineId": 7,
+          "medicineName": "Cetirizine",
+          "dosage": "10mg",
+          "frequency": "Once daily",
+          "duration": "7 days"
+        }
+      ],
+      "nextFollowUp": "2025-11-26",
+      "notes": "Allergic rhinitis symptoms.",
+      "prescribedDate": "2025-11-17",
+      "status": "Active"
+    },
+    {
+      "id": 9,
+      "patientId": 7,
+      "doctorId": 1,
+      "medicines": [
+        {
+          "medicineId": 8,
+          "medicineName": "Levothyroxine",
+          "dosage": "50mcg",
+          "frequency": "Once daily",
+          "duration": "60 days"
+        }
+      ],
+      "nextFollowUp": "2025-11-28",
+      "notes": "Thyroid management, take on empty stomach.",
+      "prescribedDate": "2025-11-18",
+      "status": "Active"
+    },
+    {
+      "id": 10,
+      "patientId": 8,
+      "doctorId": 2,
+      "medicines": [
+        {
+          "medicineId": 9,
+          "medicineName": "Sumatriptan",
+          "dosage": "50mg",
+          "frequency": "As needed",
+          "duration": "7 days"
+        }
+      ],
+      "nextFollowUp": "2025-11-30",
+      "notes": "Migraine management, avoid triggers.",
+      "prescribedDate": "2025-11-19",
+      "status": "Active"
+    }
+  ],
+  "pharmacists": [
+    {
+      "id": "1",
+      "name": "Dr. Sameer",
+      "licenseNo": "PH1234",
+      "email": "sameer.pharma@example.com",
+      "password": "pharma123",
+      "role": "pharmacist",
+      "contact": "9876501234",
+      "experience": "5 years"
+    },
+    {
+      "id": "2",
+      "name": "Dr. Nisha",
+      "licenseNo": "PH1235",
+      "email": "nisha.pharma@example.com",
+      "contact": "9876501235",
+      "experience": "4 years"
+    },
+    {
+      "id": "3",
+      "name": "Dr. Rajat",
+      "licenseNo": "PH1236",
+      "email": "rajat.pharma@example.com",
+      "contact": "9876501236",
+      "experience": "6 years"
+    },
+    {
+      "id": "4",
+      "name": "Dr. Ayesha",
+      "licenseNo": "PH1237",
+      "email": "ayesha.pharma@example.com",
+      "contact": "9876501237",
+      "experience": "3 years"
+    },
+    {
+      "id": "5",
+      "name": "Dr. Vikram",
+      "licenseNo": "PH1238",
+      "email": "vikram.pharma@example.com",
+      "contact": "9876501238",
+      "experience": "7 years"
+    }
+  ],
+  "receptionists": [
+    {
+      "id": "1",
+      "name": "Riya Sharma",
+      "shift": "Morning",
+      "email": "riya.sharma@example.com",
+      "password": "recep123",
+      "role": "receptionist",
+      "contact": "9876543210",
+      "status": "Active"
+    },
+    {
+      "id": "2",
+      "name": "Anjali Mehta",
+      "shift": "Evening",
+      "email": "anjali.mehta@example.com",
+      "contact": "9876543211",
+      "status": "Active"
+    },
+    {
+      "id": "3",
+      "name": "Priya Singh",
+      "shift": "Night",
+      "email": "priya.singh@example.com",
+      "contact": "9876543212",
+      "status": "Active"
+    },
+    {
+      "id": "4",
+      "name": "Neha Gupta",
+      "shift": "Morning",
+      "email": "neha.gupta@example.com",
+      "contact": "9876543213",
+      "status": "Active"
+    },
+    {
+      "id": "5",
+      "name": "Shreya Rao",
+      "shift": "Evening",
+      "email": "shreya.rao@example.com",
+      "contact": "9876543214",
+      "status": "Active"
+    }
+  ],
+  "communications": [
+    {
+      "id": "1",
+      "patientId": 2,
+      "doctorId": 2,
+      "query": "Dose unclear — morning or night?",
+      "reply": "morning",
+      "status": "replied",
+      "timestamp": "2025-11-16T11:17:46.829Z"
+    },
+    {
+      "patientId": 4,
+      "doctorId": 2,
+      "nurseId": 2,
+      "query": "dsfgdzh",
+      "reply": "ok",
+      "status": "replied",
+      "timestamp": "2025-11-20T01:39:14.242Z",
+      "id": "rayhITa"
+    },
+    {
+      "patientId": 3,
+      "nurseId": 3,
+      "doctorId": 1,
+      "query": "dg",
+      "reply": "",
+      "status": "pending",
+      "timestamp": "2025-11-20T07:45:40.634Z",
+      "id": "EO55CjL"
+    },
+    {
+      "patientId": 4,
+      "nurseId": 3,
+      "doctorId": 2,
+      "query": "hhnb",
+      "reply": "kl",
+      "status": "replied",
+      "timestamp": "2025-11-20T09:03:57.643Z",
+      "id": "WJby7uI"
+    },
+    {
+      "patientId": 1,
+      "nurseId": 3,
+      "doctorId": 1,
+      "query": "fcb",
+      "reply": "",
+      "status": "pending",
+      "timestamp": "2025-11-20T09:13:43.041Z",
+      "id": "zVzextf"
+    },
+    {
+      "patientId": 1,
+      "nurseId": 3,
+      "doctorId": 1,
+      "query": "dxvcc",
+      "reply": "",
+      "status": "pending",
+      "timestamp": "2025-11-20T09:14:03.667Z",
+      "id": "gqzhRTr"
+    },
+    {
+      "patientId": 1,
+      "nurseId": 3,
+      "doctorId": 1,
+      "query": "have a doubt",
+      "reply": "",
+      "status": "pending",
+      "timestamp": "2025-11-21T05:11:15.384Z",
+      "id": "5flkIYy"
+    },
+    {
+      "patientId": 1,
+      "nurseId": 3,
+      "doctorId": 1,
+      "query": "Medicine doubt",
+      "reply": "",
+      "status": "pending",
+      "timestamp": "2025-11-21T05:12:56.952Z",
+      "id": "b0Jy8MI"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "notif-1",
+      "roles": [
+        "doctor"
+      ],
+      "message": "New query from John Doe",
+      "redirect": "/doctor-communications",
+      "timestamp": "2025-11-19T15:00:00Z",
+      "readBy": [
+        1,
+        2
+      ]
+    },
+    {
+      "roles": [
+        "doctor"
+      ],
+      "userId": 2,
+      "message": "New query from Nurse Sara for patient Diya Sharma",
+      "redirect": "/doctor-communications",
+      "timestamp": "2025-11-20T01:34:47.340Z",
+      "readBy": [
+        2
+      ],
+      "id": "7xYyVce"
+    },
+    {
+      "roles": [
+        "doctor"
+      ],
+      "userId": 1,
+      "message": "New query from Nurse Priya Raj for patient Ananya",
+      "redirect": "/doctor-communications",
+      "timestamp": "2025-11-20T01:38:18.711Z",
+      "readBy": [
+        2
+      ],
+      "id": "7gqRGL1"
+    },
+    {
+      "roles": [
+        "nurse"
+      ],
+      "userId": 2,
+      "message": "Doctor replied to your query for patient Diya Sharma.",
+      "redirect": "/communication",
+      "timestamp": "2025-11-20T01:39:14.272Z",
+      "readBy": [
+        3
+      ],
+      "id": "KVSAqqH"
+    },
+    {
+      "roles": [
+        "doctor"
+      ],
+      "userId": 1,
+      "message": "New query from Nurse Priya Raj for patient Aarav",
+      "redirect": "/doctor-communications",
+      "timestamp": "2025-11-20T02:42:14.637Z",
+      "readBy": [
+        2
+      ],
+      "id": "D1HkpSh"
+    },
+    {
+      "roles": [
+        "doctor"
+      ],
+      "userId": 1,
+      "message": "New query from Nurse Priya Raj for patient Aarav",
+      "redirect": "/doctor-communications",
+      "timestamp": "2025-11-20T07:27:14.723Z",
+      "readBy": [
+        2
+      ],
+      "id": "3iI0U6Z"
+    },
+    {
+      "roles": [
+        "doctor"
+      ],
+      "userId": 2,
+      "message": "New query from Nurse Priya Raj for patient Diya Sharma",
+      "redirect": "/doctor-communications",
+      "timestamp": "2025-11-20T09:01:38.605Z",
+      "readBy": [
+        2
+      ],
+      "id": "OwsAYTn"
+    },
+    {
+      "roles": [
+        "nurse"
+      ],
+      "userId": 3,
+      "message": "Doctor replied to your query for patient Diya Sharma.",
+      "redirect": "/all-communications",
+      "timestamp": "2025-11-20T09:03:57.741Z",
+      "readBy": [
+        3
+      ],
+      "id": "AtjoO5X"
+    },
+    {
+      "roles": [
+        "doctor"
+      ],
+      "userId": 1,
+      "message": "New query from Nurse Priya Raj for patient Aarav",
+      "redirect": "/doctor-communications",
+      "timestamp": "2025-11-20T09:11:19.128Z",
+      "readBy": [
+        2
+      ],
+      "id": "D7LnMwL"
+    },
+    {
+      "roles": [
+        "doctor"
+      ],
+      "userId": 1,
+      "message": "New query from Nurse Priya Raj for patient Aarav",
+      "redirect": "/doctor-communications",
+      "timestamp": "2025-11-20T09:13:43.077Z",
+      "readBy": [
+        2
+      ],
+      "id": "J_sZPzW"
+    },
+    {
+      "roles": [
+        "doctor"
+      ],
+      "userId": 1,
+      "message": "New query from Nurse Priya Raj for patient Aarav",
+      "redirect": "/doctor-communications",
+      "timestamp": "2025-11-20T09:14:03.685Z",
+      "readBy": [
+        2
+      ],
+      "id": "ZsgDazE"
+    },
+    {
+      "roles": [
+        "doctor"
+      ],
+      "userId": 1,
+      "message": "New query from Nurse Priya Raj for patient Aarav",
+      "redirect": "/doctor-communications",
+      "timestamp": "2025-11-21T05:11:15.448Z",
+      "readBy": [
+        2
+      ],
+      "id": "nAh6BlC"
+    },
+    {
+      "roles": [
+        "doctor"
+      ],
+      "userId": 1,
+      "message": "New query from Nurse Priya Raj for patient Aarav",
+      "redirect": "/doctor-communications",
+      "timestamp": "2025-11-21T05:12:56.989Z",
+      "readBy": [
+        2
+      ],
+      "id": "8y-xGja"
+    }
+  ]
+}

@@ -1,38 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Card, Button } from "antd";
+import { Card, Button, Spin } from "antd";
+import dayjs from "dayjs";
+import { fetchProfileStart, clearProfile } from "../features/profile/profileSlice";
 
-export default function ProfilePage() {
-  const dispatch = useDispatch();
-  const auth = useSelector((s) => s.auth || {});
-  const user = auth.user || null;
+export default function ProfilePage(){
+  const dispatch=useDispatch();
+  const user=useSelector(s=>s.auth.user);
+  const profile=useSelector(s=>s.profile);
 
-  const logout = () => {
-    dispatch({ type: "auth/logout" });
-  };
+  useEffect(()=>{
+    if(user?.id&&user?.role&&user?.email){
+      dispatch(fetchProfileStart({id:user.id,role:user.role,email:user.email}));
+    }
+  },[user]);
 
-  if (!user) {
-    return (
-      <div style={{ padding: 24 }}>
-        <Card>
-          <p>No user logged in.</p>
-        </Card>
-      </div>
-    );
-  }
+  if(!user) return <p>Loading...</p>;
 
-  return (
-    <div style={{ padding: 24 }}>
-      <h2>My Profile</h2>
-      <Card style={{ maxWidth: 700 }}>
-        <p><strong>Name:</strong> {user.name}</p>
-        <p><strong>Email:</strong> {user.email}</p>
-        {user.role && <p><strong>Role:</strong> {user.role}</p>}
-        <div style={{ marginTop: 12 }}>
-          <Button type="primary" onClick={() => alert("Edit profile not implemented")}>Edit Profile</Button>
-          <Button style={{ marginLeft: 8 }} danger onClick={logout}>Logout</Button>
-        </div>
-      </Card>
-    </div>
-  );
+  const d=profile.data||{};
+  const f=x=>x||"—";
+  const fd=dob=>dob?dayjs(dob).format("DD MMM YYYY"):"—";
+
+  return(<div style={{padding:20}}>
+    <Card title="Profile">
+      <h2>{d.name||user.name}</h2>
+      <p>{d.email||user.email}</p>
+      {profile.loading&&<Spin/>}
+      <h3>Details</h3>
+      <p><b>Phone:</b> {f(d.phone||d.contact)}</p>
+      <p><b>Address:</b> {f(d.address)}</p>
+      <p><b>DOB:</b> {fd(d.dob)}</p>
+      <p><b>Gender:</b> {f(d.gender)}</p>
+    </Card>
+  </div>);
 }

@@ -17,10 +17,15 @@ export default function PatientFormPage() {
     const load = async () => {
       setLoading(true);
       try {
-        const data = await getData(`/patients/${id}`);
-        setInitial(data);
+        // ❗ Direct single id call vendam - full list fetch panrom
+        const list = await getData("/patients");
+
+        // ✅ Id match aagura patient-ah find panrom
+        const patient = list.find(p => String(p.id) === String(id));
+
+        setInitial(patient || {});
       } catch (err) {
-        message.error("Failed to load patient");
+        message.error("Patient details load aagala");
       }
       setLoading(false);
     };
@@ -37,17 +42,19 @@ export default function PatientFormPage() {
     <div style={{ padding: "10px 10px" }}>
       <Card
         title={id ? "Edit Patient" : "Add New Patient"}
-        bodyStyle={{ padding: 15 }}
+        bodyStyle={{ padding: 30 }}
         style={{
           width: "100%",
-          maxWidth: 1100,         // ⭐ width reduce pannum
-          margin: "0 auto",      // ⭐ center alignment
-          marginTop: 5,         // ⭐ top gap reduce
-          maxHeight: "85vh",     // ⭐ height limit
-          overflow: "auto"       // ⭐ page scroll avoid
+          maxWidth: 1200,
+          margin: "0 auto",
+          marginTop: 10,
+          maxHeight: "98vh",
+          overflowY: "auto",
+          overflowX: "hidden",
+          paddingBottom: 10,
+          borderRadius: 10
         }}
       >
-
         {loading ? (
           <div style={{ textAlign: "center", padding: 60 }}>
             <Spin size="large" />
@@ -56,11 +63,14 @@ export default function PatientFormPage() {
           <>
             <Row>
               <Col span={24}>
-                <PatientForm initial={initial} onSaved={handleSaved} ref={formRef} />
+                <PatientForm
+                  initial={initial}
+                  onSaved={handleSaved}
+                  ref={formRef}
+                />
               </Col>
             </Row>
 
-            {/* ⭐ These buttons are OUTSIDE the form now */}
             <div
               style={{
                 marginTop: 25,
@@ -71,7 +81,9 @@ export default function PatientFormPage() {
               <Button onClick={() => navigate("/patients")}>Back to List</Button>
 
               <div style={{ display: "flex", gap: 10 }}>
-                <Button onClick={() => formRef.current?.resetForm()}>Reset</Button>
+                <Button onClick={() => formRef.current?.resetForm()}>
+                  Reset
+                </Button>
 
                 <Button
                   type="primary"

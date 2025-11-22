@@ -1,6 +1,7 @@
 // src/api/client.js
 import axios from "axios";
 import { getStoredToken } from "../utils/tokenHelper";
+import { encrypt, decrypt } from "../utils/cryptoHelper";
 
 const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:4000";
 
@@ -10,7 +11,7 @@ const api = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
-// Request interceptor to add JWT token to headers
+/* ================= REQUEST INTERCEPTOR ================= */
 api.interceptors.request.use(
   (config) => {
     const token = getStoredToken();
@@ -19,83 +20,69 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-// Response interceptor to handle token expiration
+/* ================= RESPONSE INTERCEPTOR ================= */
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    let data = response.data;
+
+    // LIST RESPONSE (array of {id, data})
+    if (Array.isArray(data)) {
+      return {
+        ...response,
+        data: data.map(item => decrypt(item.data))
+      };
+    }
+
+    // SINGLE RESPONSE ({id, data})
+    if (data && data.data) {
+      return {
+        ...response,
+        data: decrypt(data.data)
+      };
+    }
+
+    return response;
+  },
   (error) => {
     if (error.response?.status === 401) {
-      // Token expired or invalid, redirect to login
-      localStorage.removeItem('authToken');
-      window.location.href = '/login';
+      localStorage.removeItem("authToken");
+      window.location.href = "/login";
     }
     return Promise.reject(error);
   }
 );
 
-// Load mock data from db.json for development fallback
-const loadMockData = async () => {
-  try {
-    const dbResponse = await fetch('/db.json');
-    if (dbResponse.ok) {
-      return await dbResponse.json();
-    }
-  } catch (error) {
-    console.warn('Could not load db.json for mock data fallback');
-  }
-  return {};
-};
-
-let mockDataPromise = loadMockData();
-
+/* ================= GET ================= */
 export const getData = async (endpoint) => {
-  try {
-    const res = await api.get(endpoint);
-    return res.data;
-  } catch (error) {
-    // Fallback to mock data from db.json if API fails
-    const mockData = await mockDataPromise;
-    const key = endpoint.replace('/', '');
-    console.warn(`API call to ${endpoint} failed, using mock data for ${key}`);
-    return mockData[key] || [];
-  }
+  const res = await api.get(endpoint);
+  return res.data;
 };
 
+/* ================= POST ================= */
 export const postData = async (endpoint, payload) => {
-  try {
-    // allow POST to /auth/register (routes.json -> /users) or other endpoints
-    const res = await api.post(endpoint, payload);
-    return res.data;
-  } catch (error) {
-    // For development, attempt to simulate server behaviour by writing to local db.json is not possible here.
-    // Simulate a created resource (client-side) to keep UI flowing.
-    console.warn(`API call to ${endpoint} failed, simulating success`, error?.message);
-    return { ...payload, id: Date.now() };
-  }
+  const encrypted = encrypt(payload);
+  const res = await api.post(endpoint, {
+    data: encrypted
+  });
+  return decrypt(res.data.data);
 };
 
+/* ================= PUT ================= */
 export const putData = async (endpoint, payload) => {
-  try {
-    const res = await api.put(endpoint, payload);
-    return res.data;
-  } catch (error) {
-    console.warn(`API call to ${endpoint} failed, simulating success`);
-    return payload;
-  }
+  const encrypted = encrypt(payload);
+  const res = await api.put(endpoint, {
+    data: encrypted
+  });
+  return decrypt(res.data.data);
 };
 
+/* ================= DELETE ================= */
 export const deleteData = async (endpoint) => {
-  try {
-    const res = await api.delete(endpoint);
-    return res.data;
-  } catch (error) {
-    console.warn(`API call to ${endpoint} failed, simulating success`);
-    return {};
-  }
+  const res = await api.delete(endpoint);
+  return res.data;
 };
 
 export default api;
