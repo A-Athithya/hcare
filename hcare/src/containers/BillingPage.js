@@ -1,3 +1,4 @@
+// src/containers/BillingPage.js
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -10,7 +11,7 @@ import {
   Descriptions,
 } from "antd";
 import { useNavigate } from "react-router-dom";
-import client from "../api/client";
+import { getData } from "../api/client";
 
 const { Title } = Typography;
 
@@ -18,8 +19,7 @@ export default function BillingPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { invoices } = useSelector((s) => s.billing);
-  const { user, role } = useSelector((state) => state.auth);
+  const invoices = useSelector((s) => s.billing?.list || []);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState(null);
@@ -30,54 +30,34 @@ export default function BillingPage() {
   useEffect(() => {
     dispatch({ type: "billing/fetchStart" });
 
-    client
-      .get("/doctors")
-      .then((res) => setDoctors(res.data))
-      .catch(() => setDoctors([]));
+    const loadData = async () => {
+      try {
+        const [d, p] = await Promise.all([
+          getData("/doctors"),
+          getData("/patients"),
+        ]);
 
-    client
-      .get("/patients")
-      .then((res) => setPatients(res.data))
-      .catch(() => setPatients([]));
+        setDoctors(Array.isArray(d) ? d : []);
+        setPatients(Array.isArray(p) ? p : []);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    loadData();
   }, [dispatch]);
 
-  // Fallback to db.json if no invoices loaded
-  useEffect(() => {
-    if (invoices.length === 0) {
-      const loadMock = async () => {
-        try {
-          const response = await fetch("/db.json");
-          if (response.ok) {
-            const data = await response.json();
+  const findPatient = (id) =>
+    patients.find((p) => String(p.id) === String(id));
 
-            let invoicesData = data.invoices || [];
+  const findDoctor = (id) =>
+    doctors.find((d) => String(d.id) === String(id));
 
-            // Apply role-based filtering
-            if (role === 'doctor') {
-              invoicesData = invoicesData.filter(invoice => invoice.doctorId == user.id);
-            } else if (role === 'patient') {
-              invoicesData = invoicesData.filter(invoice => invoice.patientId == user.id);
-            }
-            // Admin sees all invoices
+  const getPatientName = (id) =>
+    findPatient(id)?.name || "Unknown Patient";
 
-            if (invoicesData.length > 0) {
-              dispatch({
-                type: "billing/fetchSuccess",
-                payload: invoicesData,
-              });
-            }
-
-            setDoctors(data.doctors || []);
-            setPatients(data.patients || []);
-          }
-        } catch (error) {
-          console.error("Mock load error:", error);
-        }
-      };
-
-      loadMock();
-    }
-  }, [invoices.length, dispatch, role, user.id]);
+  const getDoctorName = (id) =>
+    findDoctor(id)?.name || "Unknown Doctor";
 
   const handleViewDetails = (invoice) => {
     setSelectedInvoice(invoice);
@@ -89,71 +69,51 @@ export default function BillingPage() {
     navigate("/payment", { state: { invoice } });
   };
 
-  const handleModalCancel = () => {
-    setIsModalVisible(false);
-    setSelectedInvoice(null);
-  };
-
-  const getDoctorName = (doctorId) => {
-    const doc = doctors.find((d) => d.id === doctorId);
-    return doc ? doc.name : "Unknown Doctor";
-  };
-
-  const getPatientName = (patientId) => {
-    const pat = patients.find((p) => p.id === patientId);
-    return pat ? pat.name : "Unknown Patient";
-  };
-
-  const calculateDoctorFees = (services) => {
-    const consultation = services.find((s) => s.service === "Consultation");
-    return consultation ? consultation.amount : 0;
-  };
-
-  const calculateMedicinesCost = (services, total) => {
-    const doctorFees = calculateDoctorFees(services);
-    return total - doctorFees;
-  };
-
   const columns = [
-    { title: "Invoice ID", dataIndex: "id", key: "id" },
+    { title: "Invoice ID", dataIndex: "id" },
 
     {
       title: "Patient",
-      key: "patientName",
       render: (_, rec) => getPatientName(rec.patientId),
     },
 
     {
       title: "Doctor",
-      key: "doctorName",
       render: (_, rec) => getDoctorName(rec.doctorId),
     },
 
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (status) => {
-        const color =
-          status === "Unpaid"
-            ? "red"
-            : status === "Partial"
-            ? "orange"
-            : "green";
-        return <Tag color={color}>{status}</Tag>;
+      title: "Amount",
+      render: (_, rec) => {
+        // ✅ SAFE OBJECT HANDLING
+        if (typeof rec.amount === "object") {
+          return `₹${rec.amount.amount}`;
+        }
+        return `₹${rec.amount}`;
       },
     },
 
-    { title: "Payment Method", dataIndex: "paymentMethod", key: "paymentMethod" },
+    {
+      title: "Status",
+      render: (_, rec) => {
+        const status =
+          typeof rec.status === "object"
+            ? rec.status.status
+            : rec.status;
 
-    { title: "Due Date", dataIndex: "dueDate", key: "dueDate" },
+        return (
+          <Tag color={status === "Paid" ? "green" : "red"}>
+            {status}
+          </Tag>
+        );
+      },
+    },
 
     {
       title: "Action",
-      key: "action",
       render: (_, record) => (
         <Button type="primary" onClick={() => handleViewDetails(record)}>
-          View Details
+          View
         </Button>
       ),
     },
@@ -164,57 +124,52 @@ export default function BillingPage() {
       <Title level={2}>Billing</Title>
 
       <Card>
-        <Table dataSource={invoices} columns={columns} rowKey="id" />
+        <Table
+          dataSource={Array.isArray(invoices) ? invoices : []}
+          columns={columns}
+          rowKey="id"
+        />
       </Card>
 
       <Modal
         title="Invoice Details"
         open={isModalVisible}
-        onCancel={handleModalCancel}
+        onCancel={() => setIsModalVisible(false)}
         footer={[
-          <Button key="close" onClick={handleModalCancel}>
+          <Button key="close" onClick={() => setIsModalVisible(false)}>
             Close
           </Button>,
-
-          selectedInvoice &&
-            selectedInvoice.balance > 0 && (
-              <Button
-                key="pay"
-                type="primary"
-                onClick={() => handlePay(selectedInvoice)}
-              >
-                Pay
-              </Button>
-            ),
+          selectedInvoice?.status !== "Paid" && (
+            <Button
+              key="pay"
+              type="primary"
+              onClick={() => handlePay(selectedInvoice)}
+            >
+              Pay
+            </Button>
+          ),
         ]}
       >
         {selectedInvoice && (
           <Descriptions bordered column={1}>
-            <Descriptions.Item label="Patient Name">
+            <Descriptions.Item label="Patient">
               {getPatientName(selectedInvoice.patientId)}
             </Descriptions.Item>
 
-            <Descriptions.Item label="Doctor Fees">
-              ₹{calculateDoctorFees(selectedInvoice.services)}
+            <Descriptions.Item label="Doctor">
+              {getDoctorName(selectedInvoice.doctorId)}
             </Descriptions.Item>
 
-            <Descriptions.Item label="Medicines Cost">
-              ₹{calculateMedicinesCost(
-                selectedInvoice.services,
-                selectedInvoice.totalAmount
-              )}
+            <Descriptions.Item label="Amount">
+              ₹{typeof selectedInvoice.amount === "object"
+                ? selectedInvoice.amount.amount
+                : selectedInvoice.amount}
             </Descriptions.Item>
 
-            <Descriptions.Item label="Total Amount">
-              ₹{selectedInvoice.totalAmount}
-            </Descriptions.Item>
-
-            <Descriptions.Item label="Amount Paid">
-              ₹{selectedInvoice.paidAmount}
-            </Descriptions.Item>
-
-            <Descriptions.Item label="Remaining Amount">
-              ₹{selectedInvoice.balance}
+            <Descriptions.Item label="Status">
+              {typeof selectedInvoice.status === "object"
+                ? selectedInvoice.status.status
+                : selectedInvoice.status}
             </Descriptions.Item>
           </Descriptions>
         )}

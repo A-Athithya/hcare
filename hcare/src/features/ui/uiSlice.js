@@ -1,10 +1,22 @@
-const initialUI = { sidebarCollapsed: false, notifications: [] };
+const initialUI = {
+  sidebarCollapsed: true,   // ✅ default ah icons-only mode
+  notifications: []
+};
+
 export default function uiReducer(state = initialUI, action) {
   switch (action.type) {
     case "ui/toggleSidebar":
-      return { ...state, sidebarCollapsed: !state.sidebarCollapsed };
+      return { 
+        ...state, 
+        sidebarCollapsed: !state.sidebarCollapsed 
+      };
+
     case "ui/addNotification":
-      return { ...state, notifications: [...state.notifications, action.payload] };
+      return { 
+        ...state, 
+        notifications: [...state.notifications, action.payload] 
+      };
+
     default:
       return state;
   }

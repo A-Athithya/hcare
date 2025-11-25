@@ -1,33 +1,31 @@
-import { call, put, takeLatest, select } from "redux-saga/effects";
-import client from "../../api/client";
+// src/features/billing/billingSaga.js
+import { call, put, takeLatest } from "redux-saga/effects";
+import { getData, postData } from "../../api/client";
 
-function fetchInvoicesApi() {
-  return client.get("/invoices").then((r) => r.data);
+// Fetch all billings
+function* fetchBilling() {
+  try {
+    const data = yield call(getData, "/billing");
+    yield put({ type: "billing/fetchSuccess", payload: data || [] });
+  } catch (e) {
+    yield put({ type: "billing/fetchFailure", payload: e.message });
+  }
 }
 
-function* fetchInvoices() {
+// Create billing after payment (triggered by PaymentPage)
+function* createBilling(action) {
   try {
-    const data = yield call(fetchInvoicesApi);
+    const created = yield call(postData, "/billing", action.payload);
+    yield put({ type: "billing/createSuccess", payload: created });
 
-    // Get user role from auth state
-    const { user, role } = yield select((state) => state.auth);
-
-    let filteredData = data;
-
-    // Filter invoices based on user role
-    if (role === 'doctor') {
-      filteredData = data.filter(invoice => invoice.doctorId == user.id);
-    } else if (role === 'patient') {
-      filteredData = data.filter(invoice => invoice.patientId == user.id);
-    }
-    // Admin sees all invoices
-
-    yield put({ type: "billing/fetchSuccess", payload: filteredData });
+    // optional: dashboard refresh
+    // yield put({ type: "dashboard/fetchDashboardData" });
   } catch (e) {
-    yield put({ type: "billing/failure", payload: e.message });
+    yield put({ type: "billing/createFailure", payload: e.message });
   }
 }
 
 export default function* billingSaga() {
-  yield takeLatest("billing/fetchStart", fetchInvoices);
+  yield takeLatest("billing/fetchStart", fetchBilling);
+  yield takeLatest("payment/createStart", createBilling);
 }

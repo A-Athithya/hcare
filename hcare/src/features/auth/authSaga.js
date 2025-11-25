@@ -16,10 +16,12 @@ function* loginSaga(action) {
     // 1) Fetch all users from db.json
     const users = yield call(getData, "/users");
 
-    if (!users || !Array.isArray(users)) {
-      yield put(loginFailure("User database not found"));
-      return;
-    }
+if (!Array.isArray(users)) {
+  console.error("USERS RESPONSE:", users);
+  yield put(loginFailure("User database not found"));
+  return;
+}
+
 
     // 2) Match user with email + password + role
     const found = users.find(

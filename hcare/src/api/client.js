@@ -1,4 +1,3 @@
-// src/api/client.js
 import axios from "axios";
 import { getStoredToken } from "../utils/tokenHelper";
 import { encrypt, decrypt } from "../utils/cryptoHelper";
@@ -25,27 +24,7 @@ api.interceptors.request.use(
 
 /* ================= RESPONSE INTERCEPTOR ================= */
 api.interceptors.response.use(
-  (response) => {
-    let data = response.data;
-
-    // LIST RESPONSE (array of {id, data})
-    if (Array.isArray(data)) {
-      return {
-        ...response,
-        data: data.map(item => decrypt(item.data))
-      };
-    }
-
-    // SINGLE RESPONSE ({id, data})
-    if (data && data.data) {
-      return {
-        ...response,
-        data: decrypt(data.data)
-      };
-    }
-
-    return response;
-  },
+  (response) => response,
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem("authToken");
@@ -58,25 +37,42 @@ api.interceptors.response.use(
 /* ================= GET ================= */
 export const getData = async (endpoint) => {
   const res = await api.get(endpoint);
-  return res.data;
+  let data = res.data;
+
+  // ✅ CASE A: Full DB encrypted => { data: "encrypted_string" }
+  if (data && typeof data.data === "string") {
+    const decrypted = decrypt(data.data);
+
+    if (Array.isArray(decrypted)) return decrypted;
+    if (typeof decrypted === "object") return Object.values(decrypted);
+  }
+
+  // ✅ CASE B: Per-record encrypted => [{id, data}]
+  if (Array.isArray(data)) {
+    return data.map(item => ({
+      id: item.id,
+      ...decrypt(item.data)
+    }));
+  }
+
+  return [];
 };
 
 /* ================= POST ================= */
 export const postData = async (endpoint, payload) => {
   const encrypted = encrypt(payload);
-  const res = await api.post(endpoint, {
-    data: encrypted
-  });
-  return decrypt(res.data.data);
+  const res = await api.post(endpoint, { data: encrypted });
+
+  // return clean decrypted object
+  return res.data?.data ? decrypt(res.data.data) : res.data;
 };
 
 /* ================= PUT ================= */
 export const putData = async (endpoint, payload) => {
   const encrypted = encrypt(payload);
-  const res = await api.put(endpoint, {
-    data: encrypted
-  });
-  return decrypt(res.data.data);
+  const res = await api.put(endpoint, { data: encrypted });
+
+  return res.data?.data ? decrypt(res.data.data) : res.data;
 };
 
 /* ================= DELETE ================= */

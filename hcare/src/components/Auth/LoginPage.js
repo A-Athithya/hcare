@@ -130,7 +130,7 @@ export default function LoginPage() {
               </Paper>
             </Box>
           </Paper>
-        </Grid>
+        </Grid> 
 
         {/* RIGHT SECTION - LOGIN FORM */}
         <Grid item xs={12} md={7}>
