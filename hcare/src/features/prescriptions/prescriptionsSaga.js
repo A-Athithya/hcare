@@ -1,30 +1,36 @@
-import { call, put, takeLatest, select } from "redux-saga/effects";
-import client from "../../api/client";
+import { call, put, takeLatest } from "redux-saga/effects";
+import { getData, postData, putData } from "../../api/client";
 
-function fetchApi() {
-  return client.get("/prescriptions").then((r) => r.data);
+function* fetchPrescriptions() {
+  try {
+    const data = yield call(getData, "/prescriptions"); // ✅ decrypted array
+    yield put({ type: "prescriptions/fetchSuccess", payload: data });
+  } catch (e) {
+    yield put({ type: "prescriptions/fetchFailure", payload: e.message });
+  }
 }
 
-function* fetch() {
+function* createPrescription(action) {
   try {
-    const data = yield call(fetchApi);
-    const { user, role } = yield select((state) => state.auth);
-
-    // Filter prescriptions based on user role
-    let filteredData = data;
-    if (role === 'doctor') {
-      filteredData = data.filter(p => p.doctorId == user.id);
-    } else if (role === 'patient') {
-      filteredData = data.filter(p => p.patientId == user.id);
-    }
-    // Admin sees all prescriptions
-
-    yield put({ type: "prescriptions/fetchSuccess", payload: filteredData });
+    const created = yield call(postData, "/prescriptions", action.payload);
+    yield put({ type: "prescriptions/createSuccess", payload: created });
   } catch (e) {
-    yield put({ type: "prescriptions/failure", payload: e.message });
+    yield put({ type: "prescriptions/createFailure", payload: e.message });
+  }
+}
+
+function* updatePrescription(action) {
+  try {
+    const { id, data } = action.payload;
+    const updated = yield call(putData, `/prescriptions/${id}`, data);
+    yield put({ type: "prescriptions/updateSuccess", payload: updated });
+  } catch (e) {
+    yield put({ type: "prescriptions/updateFailure", payload: e.message });
   }
 }
 
 export default function* prescriptionsSaga() {
-  yield takeLatest("prescriptions/fetchStart", fetch);
+  yield takeLatest("prescriptions/fetchStart", fetchPrescriptions);
+  yield takeLatest("prescriptions/createStart", createPrescription);
+  yield takeLatest("prescriptions/updateStart", updatePrescription);
 }

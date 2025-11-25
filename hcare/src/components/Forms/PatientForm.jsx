@@ -11,7 +11,6 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 import { useDispatch } from "react-redux";
-import { postData, putData } from "../../api/client";
 
 const { TextArea } = Input;
 
@@ -35,33 +34,34 @@ const PatientForm = forwardRef(({ initial = null, onSaved = () => {} }, ref) => 
     }
   }, [initial, form]);
 
-  const submit = async (vals) => {
-    try {
-      const payload = {
-        ...vals,
-        registeredDate: vals.registeredDate
-          ? vals.registeredDate.format("YYYY-MM-DD")
-          : "",
-      };
+const submit = async (vals) => {
+  try {
+    const payload = {
+      ...vals,
+      registeredDate: vals.registeredDate
+        ? vals.registeredDate.format("YYYY-MM-DD")
+        : "",
+    };
 
-      if (initial?.id) {
-        await putData(`/patients/${initial.id}`, payload);
-        dispatch({
-          type: "patients/updateSuccess",
-          payload: { ...payload, id: initial.id },
-        });
-        message.success("Patient updated");
-      } else {
-        const created = await postData("/patients", payload);
-        dispatch({ type: "patients/createSuccess", payload: created });
-        message.success("Patient created");
-      }
-
-      onSaved();
-    } catch {
-      message.error("Save failed");
+    if (initial?.id) {
+      dispatch({
+        type: "patients/updateStart",
+        payload: { id: initial.id, data: payload },
+      });
+      message.success("Patient updated");
+    } else {
+      dispatch({
+        type: "patients/createStart",
+        payload
+      });
+      message.success("Patient created");
     }
-  };
+
+    onSaved();
+  } catch {
+    message.error("Save failed");
+  }
+};
 
   return (
     <div style={{ paddingRight: 8 }}>

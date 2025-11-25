@@ -1,13 +1,9 @@
 import { call, put, takeLatest } from "redux-saga/effects";
-import client from "../../api/client";
-
-function fetchDoctorsApi() {
-  return client.get("/doctors").then((r) => r.data);
-}
+import { getData } from "../../api/client";
 
 function* fetchDoctors() {
   try {
-    const data = yield call(fetchDoctorsApi);
+    const data = yield call(getData, "/doctors");   // ✅ automatically decrypted
     yield put({ type: "doctors/fetchSuccess", payload: data });
   } catch (e) {
     yield put({ type: "doctors/fetchFailure", payload: e.message });

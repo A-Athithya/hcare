@@ -1,5 +1,5 @@
 // src/components/Auth/RegisterPage.jsx
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   Box,
   Grid,
@@ -18,7 +18,7 @@ import {
 import { ArrowBack } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
-import { postData } from "../../api/client";
+import { getData, postData } from "../../api/client";
 import dayjs from "dayjs";
 
 export default function RegisterPage() {
@@ -26,6 +26,7 @@ export default function RegisterPage() {
 
   const [role, setRole] = useState("patient");
   const [submitting, setSubmitting] = useState(false);
+  const submitLock = useRef(false); // 🔒 double-submit lock
 
   const [form, setForm] = useState({
     name: "",
@@ -89,12 +90,20 @@ export default function RegisterPage() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (!validateBasic()) return;
+
+    // 🔒 HARD LOCK – prevents double execution (React StrictMode)
+    if (submitLock.current) return;
+    submitLock.current = true;
+
+    if (!validateBasic()) {
+      submitLock.current = false;
+      return;
+    }
 
     setSubmitting(true);
+
     try {
       const section = sectionForRole(role);
-
       let rolePayload = { ...form, role };
 
       if (role === "doctor") {
@@ -193,13 +202,24 @@ export default function RegisterPage() {
       // Save to role section
       const created = await postData(`/${section}`, rolePayload);
 
-      // Save credentials to /users
-      await postData("/users", {
-        name: created.name,
-        email: created.email,
-        password: created.password,
-        role: created.role,
-      });
+      // ⬇️ IMPORT THE TOP IF NOT PRESENT
+      // import { getData } from "../../api/client";
+
+      // ✅ Check existing users before saving (prevent duplicate)
+      const existingUsers = await getData("/users");
+
+      const alreadyExists = Array.isArray(existingUsers) && existingUsers.some(
+        (u) => u.email?.toLowerCase() === created.email?.toLowerCase()
+      );
+
+      if (!alreadyExists) {
+        await postData("/users", {
+          name: created.name,
+          email: created.email,
+          password: created.password,
+          role: created.role,
+        });
+      }
 
       message.success("Registered successfully! Please login.");
       navigate("/login");
@@ -209,7 +229,8 @@ export default function RegisterPage() {
       message.error("Registration failed!");
     } finally {
       setSubmitting(false);
-    }
+      submitLock.current = false; // 🔓 unlock after complete
+    };
   };
 
   const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -230,7 +251,6 @@ export default function RegisterPage() {
           {/* FORM */}
           <Box component="form" onSubmit={onSubmit}>
             <Grid container spacing={2}>
-
               {/* ROLE FIRST */}
               <Grid item xs={12} sm={6} md={4}>
                 <FormControl fullWidth>

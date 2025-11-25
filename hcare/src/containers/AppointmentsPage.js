@@ -13,22 +13,27 @@ import {
 import dayjs from "dayjs";
 import { getData, putData } from "../api/client";
 import AppointmentForm from "../components/Forms/AppointmentForm";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 export default function AppointmentsPage() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [appointments, setAppointments] = useState([]);
   const [patients, setPatients] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const [mode, setMode] = useState("list"); // list | new | edit | view
+  // list | new | edit | view
+  const [mode, setMode] = useState("list");
   const [selected, setSelected] = useState(null);
 
   const [filter, setFilter] = useState("Upcoming");
   const [search, setSearch] = useState("");
 
+  // ================= LOAD DATA =================
   const loadData = async () => {
     setLoading(true);
     try {
@@ -38,11 +43,11 @@ export default function AppointmentsPage() {
         getData("/doctors"),
       ]);
 
-      setAppointments(a || []);
-      setPatients(p || []);
-      setDoctors(d || []);
+      setAppointments(Array.isArray(a) ? a : []);
+      setPatients(Array.isArray(p) ? p : []);
+      setDoctors(Array.isArray(d) ? d : []);
     } catch {
-      message.error("Failed to load");
+      message.error("Failed to load data");
     }
     setLoading(false);
   };
@@ -51,7 +56,7 @@ export default function AppointmentsPage() {
     loadData();
   }, []);
 
-  // Open form directly from query param
+  // URL ?create=true na direct form open
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     if (params.get("create") === "true") {
@@ -59,6 +64,7 @@ export default function AppointmentsPage() {
     }
   }, [location]);
 
+  // ================= HELPERS =================
   const openNew = () => {
     setSelected(null);
     setMode("new");
@@ -97,12 +103,32 @@ export default function AppointmentsPage() {
     }
   };
 
+  // ✅ COMPLETE → BILLING saga flow
+  const markAsCompleted = (rec) => {
+    // Saga-ku trigger: idhu than base
+    dispatch({
+      type: "appointments/updateStatus",
+      payload: {
+        appointment: rec,
+        status: "Completed",
+      },
+    });
+
+    message.success("Appointment Completed ✅ Billing create aagum");
+    // optional – list refresh
+    setTimeout(() => {
+      loadData();
+      navigate("/billing");
+    }, 600);
+  };
+
   const getPatientName = (id) =>
-    patients.find((p) => p.id == id)?.name || "—";
+    patients.find((p) => String(p.id) === String(id))?.name || "—";
 
   const getDoctorName = (id) =>
-    doctors.find((d) => d.id == id)?.name || "—";
+    doctors.find((d) => String(d.id) === String(id))?.name || "—";
 
+  // ================= TABLE COLUMNS =================
   const columns = [
     { title: "ID", dataIndex: "id", width: 70 },
 
@@ -119,9 +145,8 @@ export default function AppointmentsPage() {
     {
       title: "Date",
       dataIndex: "appointmentDate",
-      render: (d) => dayjs(d).format("DD MMM YYYY"),
+      render: (d) => (d ? dayjs(d).format("DD MMM YYYY") : "—"),
     },
-
     { title: "Time", dataIndex: "appointmentTime" },
 
     {
@@ -145,6 +170,7 @@ export default function AppointmentsPage() {
           <Button size="small" onClick={() => openView(r)}>
             View
           </Button>
+
           <Button
             size="small"
             type="primary"
@@ -153,6 +179,7 @@ export default function AppointmentsPage() {
           >
             Edit
           </Button>
+
           <Button
             size="small"
             danger
@@ -161,11 +188,22 @@ export default function AppointmentsPage() {
           >
             Cancel
           </Button>
+
+          {r.status !== "Completed" && r.status !== "Cancelled" && (
+            <Button
+              size="small"
+              style={{ background: "#52c41a", color: "#fff" }}
+              onClick={() => markAsCompleted(r)}
+            >
+              Complete
+            </Button>
+          )}
         </Space>
       ),
     },
   ];
 
+  // ================= FILTERED LIST =================
   const filtered = appointments.filter((a) => {
     const today = dayjs();
     const ad = dayjs(a.appointmentDate);
@@ -173,19 +211,20 @@ export default function AppointmentsPage() {
     if (filter === "Upcoming" && !ad.isAfter(today, "day")) return false;
     if (filter === "Today" && !ad.isSame(today, "day")) return false;
     if (filter === "Past" && !ad.isBefore(today, "day")) return false;
+    // "All" na above conditions none satisfy, so all pass
 
     if (
       search &&
-      !getPatientName(a.patientId).toLowerCase().includes(search.toLowerCase())
+      !getPatientName(a.patientId)
+        .toLowerCase()
+        .includes(search.toLowerCase())
     )
       return false;
 
     return true;
   });
 
-  // -----------------------
-  // FULL-WIDTH FORM PAGE
-  // -----------------------
+  // ================= FORM MODE VIEW =================
   if (mode !== "list") {
     return (
       <div style={{ padding: 24 }}>
@@ -208,15 +247,15 @@ export default function AppointmentsPage() {
               : "Schedule Appointment"}
           </h2>
 
-          {/* FORM FULL WIDTH */}
           <AppointmentForm
             initial={mode !== "new" ? selected : null}
             onSaved={onSaved}
-            autoFocusPatientId={mode === "edit" ? selected?.patientId : undefined}
+            autoFocusPatientId={
+              mode === "edit" ? selected?.patientId : undefined
+            }
             readOnly={mode === "view"}
           />
 
-          {/* BUTTONS */}
           <div
             style={{
               marginTop: 20,
@@ -226,42 +265,42 @@ export default function AppointmentsPage() {
           >
             <Button onClick={backToList}>Back to List</Button>
 
-            <div style={{ display: "flex", gap: 10 }}>
-              <Button
-                onClick={() =>
-                  document.querySelector("form")?.reset()
-                }
-              >
-                Reset
-              </Button>
+            {mode !== "view" && (
+              <div style={{ display: "flex", gap: 10 }}>
+                <Button
+                  onClick={() =>
+                    document.querySelector("form")?.reset()
+                  }
+                >
+                  Reset
+                </Button>
 
-              <Button
-                type="primary"
-                onClick={() =>
-                  document
-                    .querySelector("form")
-                    ?.dispatchEvent(
-                      new Event("submit", {
-                        bubbles: true,
-                        cancelable: true,
-                      })
-                    )
-                }
-              >
-                {mode === "edit"
-                  ? "Update Appointment"
-                  : "Schedule Appointment"}
-              </Button>
-            </div>
+                <Button
+                  type="primary"
+                  onClick={() =>
+                    document
+                      .querySelector("form")
+                      ?.dispatchEvent(
+                        new Event("submit", {
+                          bubbles: true,
+                          cancelable: true,
+                        })
+                      )
+                  }
+                >
+                  {mode === "edit"
+                    ? "Update Appointment"
+                    : "Schedule Appointment"}
+                </Button>
+              </div>
+            )}
           </div>
         </Card>
       </div>
     );
   }
 
-  // -----------------------
-  // LIST VIEW
-  // -----------------------
+  // ================= LIST MODE VIEW =================
   return (
     <div style={{ padding: 24 }}>
       <div
