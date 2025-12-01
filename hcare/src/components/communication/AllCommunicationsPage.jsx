@@ -1,250 +1,132 @@
-import React, { useEffect, useState } from "react";
-import {
-  Card,
-  Row,
-  Col,
-  Button,
-  message,
-  Tag,
-  Divider,
-  Dropdown,
-  Menu,
-  Modal,
-} from "antd";
-import { getData, deleteData } from "../../api/client";
+// src/components/communication/AllCommunicationsPage.jsx
+import React, { useEffect, useState, useMemo } from "react";
+import { Table, Button, Tag, Divider, Spin, Modal } from "antd";
 import { useNavigate } from "react-router-dom";
-import { EllipsisOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchCommunicationsRequest,
+  deleteCommunicationRequest,
+  fetchPatientsRequest,
+  fetchDoctorsRequest,
+} from "../../features/communication/communicationSlice";
 
 export default function AllCommunicationsPage() {
   const navigate = useNavigate();
-  const [communications, setCommunications] = useState([]);
-  const [filteredComms, setFilteredComms] = useState([]);
+  const dispatch = useDispatch();
+  const commState = useSelector((s) => s.communication || {});
+  const { items = [], patients = [], doctors = [], loading } = commState;
+
   const [filter, setFilter] = useState("all");
-  const [patients, setPatients] = useState([]);
-  const [doctors, setDoctors] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedComm, setSelectedComm] = useState(null);
-
-  const getPatientName = (id) => patients.find((p) => p.id === id)?.name || id;
-  const getDoctorName = (id) => doctors.find((d) => d.id === id)?.name || id;
-
-  const fetchData = () => {
-    getData("/communications?_sort=timestamp&_order=desc")
-      .then((res) => {
-        setCommunications(res);
-        applyFilter(res, filter);
-      })
-      .catch(() => message.error("Failed to fetch communications"));
-
-    getData("/patients").then(setPatients);
-    getData("/doctors").then(setDoctors);
-  };
+  const [selectedMsg, setSelectedMsg] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    dispatch(fetchCommunicationsRequest());
+    dispatch(fetchPatientsRequest());
+    dispatch(fetchDoctorsRequest());
+  }, [dispatch]);
 
-  const applyFilter = (data, selected) => {
-    if (selected === "replied") {
-      setFilteredComms(data.filter((c) => c.status === "replied"));
-    } else if (selected === "pending") {
-      setFilteredComms(data.filter((c) => c.status !== "replied"));
-    } else {
-      setFilteredComms(data);
-    }
+  const getPatientName = (id) => patients.find((p) => String(p.id) === String(id))?.name || `#${id}`;
+  const getDoctorName = (id) => doctors.find((d) => String(d.id) === String(id))?.name || `#${id}`;
+
+  const applyFilter = useMemo(() => {
+    if (filter === "replied") return items.filter((c) => c.status === "replied");
+    if (filter === "pending") return items.filter((c) => c.status !== "replied");
+    return items;
+  }, [items, filter]);
+
+  const handleDelete = (commId) => {
+    Modal.confirm({
+      title: "Are you sure you want to delete this communication?",
+      okText: "Yes",
+      cancelText: "No",
+      okButtonProps: { danger: true },
+      onOk: () => dispatch(deleteCommunicationRequest(commId)),
+    });
   };
 
-  const changeFilter = (value) => {
-    setFilter(value);
-    applyFilter(communications, value);
-  };
-
-  const handleEdit = (comm) => navigate(`/edit-communication/${comm.id}`);
-
-  const handleDelete = (comm) => {
-    setSelectedComm(comm);
-    setIsModalOpen(true);
-  };
-
-  const confirmDelete = () => {
-    deleteData(`/communications/${selectedComm.id}`)
-      .then(() => {
-        message.success("Communication deleted successfully");
-        fetchData();
-        setIsModalOpen(false);
-      })
-      .catch(() => message.error("Failed to delete communication"));
-  };
+  const columns = [
+    {
+      title: "Patient",
+      dataIndex: "patientId",
+      render: (v) => getPatientName(v),
+    },
+    {
+      title: "Doctor",
+      dataIndex: "doctorId",
+      render: (v) => getDoctorName(v),
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      render: (v) => (v === "replied" ? <Tag color="green">Replied</Tag> : <Tag color="orange">Pending</Tag>),
+    },
+    {
+      title: "Time",
+      dataIndex: "timestamp",
+      render: (v) => (v ? new Date(v).toLocaleString() : "-"),
+    },
+    {
+      title: "Actions",
+      render: (_, record) => (
+        <div style={{ display: "flex", gap: 6 }}>
+          <Button type="link" onClick={() => { setSelectedMsg(record); setIsModalVisible(true); }}>View</Button>
+          <Button danger type="text" onClick={() => handleDelete(record.id)}>Delete</Button>
+        </div>
+      ),
+    },
+  ];
 
   return (
-    <div style={{ padding: "24px", background: "#f5f6fa", minHeight: "100vh" }}>
-      {/* HEADER */}
-      <div style={{ marginBottom: 24, display: "flex", alignItems: "center" }}>
-        <Button type="default" onClick={() => navigate(-1)}>
-          Back
-        </Button>
-        <h2
-          style={{
-            marginLeft: 20,
-            fontWeight: 600,
-            color: "#1a1a1a",
-            fontSize: 24,
-          }}
-        >
-          All Communications
-        </h2>
+    <div style={{ padding: 24, background: "#f5f6fa", minHeight: "100vh" }}>
+      <div style={{ marginBottom: 16, display: "flex", alignItems: "center" }}>
+        <Button type="default" onClick={() => navigate(-1)}>Back</Button>
+        <h2 style={{ marginLeft: 20, fontWeight: 600 }}>All Communications</h2>
+        <div style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
+          <Button type={filter === "all" ? "primary" : "default"} onClick={() => setFilter("all")}>All</Button>
+          <Button type={filter === "pending" ? "primary" : "default"} onClick={() => setFilter("pending")}>Pending</Button>
+          <Button type={filter === "replied" ? "primary" : "default"} onClick={() => setFilter("replied")}>Replied</Button>
+        </div>
       </div>
 
-      {/* FILTER BUTTONS */}
-      <div style={{ marginBottom: 24 }}>
-        <Button
-          type={filter === "all" ? "primary" : "default"}
-          onClick={() => changeFilter("all")}
-          style={{ marginRight: 10 }}
-        >
-          All
-        </Button>
-
-        <Button
-          type={filter === "replied" ? "primary" : "default"}
-          onClick={() => changeFilter("replied")}
-          style={{ marginRight: 10 }}
-        >
-          Replied
-        </Button>
-
-        <Button
-          type={filter === "pending" ? "primary" : "default"}
-          onClick={() => changeFilter("pending")}
-        >
-          Pending
-        </Button>
-      </div>
-
-      {/* LIST */}
-      {filteredComms.length === 0 ? (
-        <Card
-          style={{
-            textAlign: "center",
-            padding: 30,
-            fontSize: 16,
-            borderRadius: 12,
-          }}
-        >
-          No communications found.
-        </Card>
+      {loading ? (
+        <Spin tip="Loading..." size="large" />
       ) : (
-        <Row gutter={[20, 20]}>
-          {filteredComms.map((msg) => {
-            const menu = (
-              <Menu>
-                <Menu.Item key="edit" onClick={() => handleEdit(msg)}>
-                  ✏️ Edit
-                </Menu.Item>
-                <Menu.Item key="delete" onClick={() => handleDelete(msg)}>
-                  ❌ Delete
-                </Menu.Item>
-              </Menu>
-            );
-
-            return (
-              <Col xs={24} sm={24} md={12} lg={8} key={msg.id}>
-                <Card
-                  hoverable
-                  style={{
-                    borderRadius: 14,
-                    background: "#fff",
-                    boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
-                  }}
-                  bodyStyle={{ padding: "20px" }}
-                  extra={
-                    <Dropdown overlay={menu} trigger={["click"]}>
-                      <EllipsisOutlined
-                        style={{
-                          fontSize: 22,
-                          cursor: "pointer",
-                          padding: 6,
-                          borderRadius: "50%",
-                        }}
-                      />
-                    </Dropdown>
-                  }
-                >
-                  <p style={{ marginBottom: 6 }}>
-                    <b>Patient:</b> {getPatientName(msg.patientId)}
-                  </p>
-
-                  <p style={{ marginBottom: 6 }}>
-                    <b>Doctor:</b> {getDoctorName(msg.doctorId)}
-                  </p>
-
-                  <Divider style={{ margin: "12px 0" }} />
-
-                  <div
-                    style={{
-                      background: "#f8f9fb",
-                      padding: 12,
-                      borderRadius: 8,
-                      border: "1px solid #eee",
-                      marginBottom: 12,
-                    }}
-                  >
-                    <b>Query:</b>
-                    <p style={{ marginTop: 6 }}>{msg.query}</p>
-                  </div>
-
-                  <div
-                    style={{
-                      background: "#fdfdfd",
-                      padding: 12,
-                      borderRadius: 8,
-                      border: "1px solid #eee",
-                      marginBottom: 12,
-                    }}
-                  >
-                    <b>Reply:</b>
-                    <p style={{ marginTop: 6 }}>
-                      {msg.reply || (
-                        <span style={{ color: "#888" }}>Pending</span>
-                      )}
-                    </p>
-                  </div>
-
-                  <p style={{ marginBottom: 10 }}>
-                    <b>Status:</b>{" "}
-                    {msg.status === "replied" ? (
-                      <Tag color="green">Replied</Tag>
-                    ) : (
-                      <Tag color="orange">Pending</Tag>
-                    )}
-                  </p>
-
-                  <p style={{ fontSize: 13, color: "#777" }}>
-                    <b>Time:</b>{" "}
-                    {msg.timestamp
-                      ? new Date(msg.timestamp).toLocaleString()
-                      : "-"}
-                  </p>
-                </Card>
-              </Col>
-            );
-          })}
-        </Row>
+        <Table
+          columns={columns}
+          dataSource={applyFilter.slice().sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))}
+          rowKey="id"
+          pagination={{ pageSize: 10 }}
+        />
       )}
 
-      {/* DELETE CONFIRMATION */}
-      <Modal
-        title="Confirm Delete"
-        open={isModalOpen}
-        onOk={confirmDelete}
-        onCancel={() => setIsModalOpen(false)}
-        okText="Delete"
-        okButtonProps={{ danger: true }}
-      >
-        <p style={{ fontSize: 15 }}>
-          Are you sure you want to delete this communication?
-        </p>
-      </Modal>
+      {/* Modal for View */}
+      {selectedMsg && (
+        <Modal
+          open={isModalVisible}
+          title={`Patient: ${getPatientName(selectedMsg.patientId)} | Doctor: ${getDoctorName(selectedMsg.doctorId)}`}
+          footer={<Button type="primary" onClick={() => setIsModalVisible(false)}>Close</Button>}
+          onCancel={() => setIsModalVisible(false)}
+          width={700}
+        >
+          <p><b>Query:</b></p>
+          <p>{selectedMsg.query}</p>
+
+          <Divider />
+
+          <p><b>Reply:</b></p>
+          {selectedMsg.status === "replied" ? (
+            <p>{selectedMsg.reply}</p>
+          ) : (
+            <p style={{ color: "#888" }}>Pending</p>
+          )}
+
+          <Divider />
+
+          <p><b>Status:</b> {selectedMsg.status === "replied" ? <Tag color="green">Replied</Tag> : <Tag color="orange">Pending</Tag>}</p>
+          <p><b>Time:</b> {selectedMsg.timestamp ? new Date(selectedMsg.timestamp).toLocaleString() : "-"}</p>
+        </Modal>
+      )}
     </div>
   );
 }

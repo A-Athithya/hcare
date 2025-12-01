@@ -9,7 +9,8 @@ import billingSaga from "../features/billing/billingSaga";
 import staffSaga from '../features/staff/staffSaga';
 import inventorySaga from "../features/inventory/inventorySaga";
 import doctorsSaga from "../features/doctors/doctorsSaga";
-
+import communicationSaga from "../features/communication/communicationSaga";
+import notificationSaga from '../features/notification/notificationSaga';
 export default function* rootSaga() {
   yield all([
     profileSaga(),
@@ -21,6 +22,8 @@ export default function* rootSaga() {
     billingSaga(),
     staffSaga(),
     inventorySaga(),
-    doctorsSaga()
+    doctorsSaga(),
+    communicationSaga(),
+    notificationSaga()
   ]);
 }

@@ -9,6 +9,9 @@ import uiReducer from "../features/ui/uiSlice";
 import staffReducer from "../features/staff/staffSlice";
 import inventoryReducer from "../features/inventory/inventorySlice";
 import doctorsReducer from "../features/doctors/doctorsSlice";
+import communicationReducer from "../features/communication/communicationSlice"; 
+import notificationReducer from "../features/notification/notificationSlice"; 
+
 
 const rootReducer = combineReducers({
   profile: require('../features/profile/profileSlice').default,
@@ -22,6 +25,8 @@ const rootReducer = combineReducers({
   staff: staffReducer,
   inventory: inventoryReducer,
   doctors: doctorsReducer,
+  communication: communicationReducer,
+  notification: notificationReducer
 });
 
 export default rootReducer;

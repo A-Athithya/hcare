@@ -41,7 +41,9 @@ const modules = [
   "pharmacists",
   "receptionists",
   "inventory",
-  "billing"
+  "billing",
+  "communications",
+  "notifications"
 ];
 
 modules.forEach((mod) => {
@@ -50,13 +52,16 @@ modules.forEach((mod) => {
 
   console.log(`\n🔍 Processing module: ${mod}`);
 
-  // ✅ CASE 1: Already per-record encrypted => [{ id, data }]
-  if (Array.isArray(value) && value.length > 0 && value[0].data) {
-    console.log(`  ➜ ${mod} already per-record encrypted. Skipping.`);
-    return;
-  }
-
-  let items = [];
+ // CASE 1: Already per-record encrypted => must have BOTH id & data
+if (
+  Array.isArray(value) &&
+  value.length > 0 &&
+  value[0].data &&
+  value[0].id != null
+) {
+  console.log(`  ➜ ${mod} already per-record encrypted. Skipping.`);
+  return;
+}
 
   // ✅ CASE 2: Plain array of objects (no data field yet)
   if (Array.isArray(value)) {
