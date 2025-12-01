@@ -28,62 +28,76 @@ export default function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [pendingCount, setPendingCount] = useState(0);
   const [notifications, setNotifications] = useState([]);
   const [notifAnchorEl, setNotifAnchorEl] = useState(null);
 
-  useEffect(() => {
-    const fetchAppointments = async () => {
-      try {
-        const data = await getData("/appointments");
-        const pending = data.filter((a) => a.status === "Pending").length;
-        setPendingCount(pending);
-      } catch (err) {
-        console.error("Error fetching appointments", err);
+  // ------------------ Fetch notifications ------------------
+  const fetchNotifications = async () => {
+    if (!user) return;
+    try {
+      const raw = await getData("/notifications");
+
+      const list = Array.isArray(raw)
+        ? raw.map((n) => ({ id: n.id, ...(n.data || n) }))
+        : raw
+        ? [{ id: raw.id, ...(raw.data || raw) }]
+        : [];
+
+      let filtered = [];
+
+      if (user.role === "admin") {
+        // Admin sees only notifications targeted for admin role
+        filtered = list.filter(
+          (n) => n.roles?.includes("admin") && !n.readBy?.includes(user.id)
+        );
+      } else {
+        // Other users (nurse, doctor, patient)
+        filtered = list.filter(
+          (n) =>
+            (n.roles?.includes(user.role) || n.userId === user.id) &&
+            !n.readBy?.includes(user.id)
+        );
       }
-    };
-    fetchAppointments();
-    const interval = setInterval(fetchAppointments, 10000);
-    return () => clearInterval(interval);
-  }, []);
+
+      // sort newest first
+      filtered = filtered.sort(
+        (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+      );
+
+      setNotifications(filtered);
+    } catch (err) {
+      console.error("Error fetching notifications:", err);
+    }
+  };
 
   useEffect(() => {
-    const fetchNotifications = async () => {
-      if (!user) return;
-      try {
-        const data = await getData("/notifications");
-        const unread = data
-          .filter(
-            (n) =>
-              (n.roles.includes(user.role) || n.userIds?.includes(user.id)) &&
-              !n.readBy?.includes(user.id)
-          )
-          .reverse();
-        setNotifications(unread);
-      } catch (err) {
-        console.error(err);
-      }
-    };
     fetchNotifications();
-    const timer = setInterval(fetchNotifications, 5000);
+    const timer = setInterval(fetchNotifications, 5000); // refresh every 5s
     return () => clearInterval(timer);
   }, [user]);
 
+  // ------------------ Mark notification as read ------------------
   const handleNotificationClick = (notif) => async () => {
     try {
-      await putData(`/notifications/${notif.id}`, {
+      const updated = {
         ...notif,
         readBy: [...(notif.readBy || []), user.id],
-      });
+      };
+      await putData(`/notifications/${notif.id}`, updated);
+
+      // remove read notification from local state
       setNotifications((prev) => prev.filter((n) => n.id !== notif.id));
-      navigate(notif.redirect);
+
+      // navigate if redirect exists
+      if (notif.redirect) navigate(notif.redirect);
     } catch (err) {
-      console.error(err);
+      console.error("Error marking notification read:", err);
+    } finally {
+      setNotifAnchorEl(null);
     }
-    setNotifAnchorEl(null);
   };
 
-  const handleNotifOpen = (event) => setNotifAnchorEl(event.currentTarget);
+  const handleNotifOpen = (e) => setNotifAnchorEl(e.currentTarget);
   const handleNotifClose = () => setNotifAnchorEl(null);
 
   const handleLogout = () => {
@@ -109,7 +123,7 @@ export default function Navbar() {
             px: 2,
           }}
         >
-          {/* LEFT */}
+          {/* LEFT: Logo + Dashboard */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <img
               src="/logo192.png"
@@ -118,7 +132,6 @@ export default function Navbar() {
               height="38"
               style={{ borderRadius: "50%" }}
             />
-
             <Link
               to="/dashboard"
               style={{
@@ -132,8 +145,14 @@ export default function Navbar() {
             </Link>
           </Box>
 
-          {/* CENTER */}
-          <Box sx={{ position: "absolute", left: "50%", transform: "translateX(-50%)" }}>
+          {/* CENTER: Book Appointment */}
+          <Box
+            sx={{
+              position: "absolute",
+              left: "50%",
+              transform: "translateX(-50%)",
+            }}
+          >
             <Button
               variant="contained"
               startIcon={<CalendarMonthIcon />}
@@ -156,9 +175,12 @@ export default function Navbar() {
             </Button>
           </Box>
 
-          {/* RIGHT */}
+          {/* RIGHT: Add Patient + Notifications + Profile */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <IconButton color="inherit" onClick={() => navigate("/patient/add")}>
+            <IconButton
+              color="inherit"
+              onClick={() => navigate("/patient/add")}
+            >
               <PersonAddAlt1Icon />
             </IconButton>
 
@@ -168,22 +190,53 @@ export default function Navbar() {
               </Badge>
             </IconButton>
 
-            <Popper open={Boolean(notifAnchorEl)} anchorEl={notifAnchorEl} placement="bottom-end" sx={{ zIndex: 1301 }}>
+            <Popper
+              open={Boolean(notifAnchorEl)}
+              anchorEl={notifAnchorEl}
+              placement="bottom-end"
+              sx={{ zIndex: 1301 }}
+            >
               <ClickAwayListener onClickAway={handleNotifClose}>
-                <Paper sx={{ width: 360, maxHeight: 400, overflowY: "auto", borderRadius: 2, boxShadow: 3 }}>
-                  <Typography sx={{ px: 2, py: 1, fontWeight: "bold" }}>Notifications</Typography>
+                <Paper
+                  sx={{
+                    width: 360,
+                    maxHeight: 400,
+                    overflowY: "auto",
+                    borderRadius: 2,
+                    boxShadow: 3,
+                  }}
+                >
+                  <Typography sx={{ px: 2, py: 1, fontWeight: "bold" }}>
+                    Notifications
+                  </Typography>
                   <Divider />
                   {notifications.length > 0 ? (
                     notifications.map((n) => (
-                      <Box key={n.id} sx={{ p: 1.5, borderBottom: "1px solid #eee", cursor: "pointer" }} onClick={handleNotificationClick(n)}>
-                        <Typography sx={{ fontWeight: 600, fontSize: 14 }}>{n.message}</Typography>
+                      <Box
+                        key={n.id}
+                        sx={{
+                          p: 1.5,
+                          borderBottom: "1px solid #eee",
+                          cursor: "pointer",
+                        }}
+                        onClick={handleNotificationClick(n)}
+                      >
+                        <Typography
+                          sx={{ fontWeight: 600, fontSize: 14 }}
+                        >
+                          {n.message}
+                        </Typography>
                         <Typography sx={{ fontSize: 12, color: "gray" }}>
                           {new Date(n.timestamp).toLocaleString()}
                         </Typography>
                       </Box>
                     ))
                   ) : (
-                    <Box sx={{ p: 2, textAlign: "center", color: "gray" }}>No notifications</Box>
+                    <Box
+                      sx={{ p: 2, textAlign: "center", color: "gray" }}
+                    >
+                      No notifications
+                    </Box>
                   )}
                 </Paper>
               </ClickAwayListener>
@@ -206,9 +259,24 @@ export default function Navbar() {
                   {user.name}
                 </Button>
                 <ul className="dropdown-menu dropdown-menu-end shadow-sm">
-                  <li><Link className="dropdown-item" to="/profile">My Profile</Link></li>
-                  <li><Link className="dropdown-item" to="/appointments">Appointments</Link></li>
-                  <li><button className="dropdown-item text-danger" onClick={handleLogout}>Logout</button></li>
+                  <li>
+                    <Link className="dropdown-item" to="/profile">
+                      My Profile
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/appointments">
+                      Appointments
+                    </Link>
+                  </li>
+                  <li>
+                    <button
+                      className="dropdown-item text-danger"
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </button>
+                  </li>
                 </ul>
               </div>
             )}
@@ -216,6 +284,7 @@ export default function Navbar() {
         </Toolbar>
       </AppBar>
 
+      {/* Spacer below navbar */}
       <Box sx={{ mt: "75px" }} />
     </>
   );
